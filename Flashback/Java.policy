@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// The host is part of Flashback. Imported code gets only the permissions below.
+grant codeBase "${flashback.runner}" {
+    permission java.security.AllPermission;
+};
+grant {
+    permission java.io.FilePermission "${flashback.game}", "read";
+    permission java.io.FilePermission "${flashback.game}/-", "read";
+    permission java.io.FilePermission "${user.home}", "read,write";
+    permission java.io.FilePermission "${user.home}/-", "read,write,delete";
+    permission java.util.PropertyPermission "*", "read";
+    permission java.lang.RuntimePermission "exitVM.*";
+    permission java.lang.RuntimePermission "modifyThread";
+    permission java.lang.RuntimePermission "modifyThreadGroup";
+    permission java.awt.AWTPermission "showWindowWithoutWarningBanner";
+    permission javax.sound.sampled.AudioPermission "play";
+};

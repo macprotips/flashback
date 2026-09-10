@@ -1,0 +1,1469 @@
+{
+  "schema_version": 1,
+  "compiled": "2026-09-10",
+  "what_this_is": "The identifiers Discover shows before a search is typed. Candidate titles were drawn from the browser-game portals of the Flash/Shockwave era, looked up against the Internet Archive collections Discover already searches, then filtered.",
+  "what_this_is_not": "Not a compatibility claim. An entry here means the Archive holds an item under that title with a file Flashback could open \u2014 not that the game runs. Discover labels every listing without a recorded gameplay check as untested, and that labelling is unchanged.",
+  "method": {
+    "search": "mediatype:software AND (collection:softwarelibrary_flash OR subject:Shockwave OR subject:\"Shockwave games\" OR subject:\"Macromedia Director\") AND \"<title>\"",
+    "match_rule": "The result title must equal or contain the candidate title; ties go to downloads.",
+    "filters": [
+      "Rejected screensavers, screenshots, wallpapers, intros, trailers, animations and collabs.",
+      "Required at least 150 recorded downloads.",
+      "Required at least one file with a playable extension within the 512 MB download limit."
+    ]
+  },
+  "counts": {
+    "candidates": 263,
+    "matched_on_archive": 159,
+    "no_archive_match": 102,
+    "kept_after_filters": 136,
+    "dropped_by_filters": 23
+  },
+  "entries": [
+    {
+      "candidate": "Stick RPG",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "stick-rpg-complete",
+      "archive_title": "Stick RPG Complete",
+      "downloads": 160316,
+      "playable_files": 1,
+      "example_file": "Stick-RPG-Complete.swf"
+    },
+    {
+      "candidate": "Swords and Sandals",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "swords-and-sandals-2",
+      "archive_title": "Swords And Sandals 2 (v 2.1.0)",
+      "downloads": 109801,
+      "playable_files": 1,
+      "example_file": "Swords and Sandals 2 (v 2.1.0).swf"
+    },
+    {
+      "candidate": "Bloxorz",
+      "group": "Miniclip",
+      "identifier": "bloxors",
+      "archive_title": "Bloxorz",
+      "downloads": 91922,
+      "playable_files": 1,
+      "example_file": "bloxors.swf"
+    },
+    {
+      "candidate": "Bubble Shooter",
+      "group": "Java applet era",
+      "identifier": "bubble-shooter_swf",
+      "archive_title": "Bubble Shooter",
+      "downloads": 62226,
+      "playable_files": 1,
+      "example_file": "bubble-shooter.swf"
+    },
+    {
+      "candidate": "Robot Unicorn Attack",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "robotunicornattack_flash",
+      "archive_title": "Robot Unicorn Attack",
+      "downloads": 61382,
+      "playable_files": 1,
+      "example_file": "robotunicornattack_flash.swf"
+    },
+    {
+      "candidate": "Impossible Quiz",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "impossible-quiz-deluxe-newgrounds",
+      "archive_title": "impossible quiz deluxe newgrounds",
+      "downloads": 59141,
+      "playable_files": 1,
+      "example_file": "365143_Impossible_Quiz_Deluxe_NG..swf"
+    },
+    {
+      "candidate": "The Impossible Quiz 2",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "tiq2_swf",
+      "archive_title": "The Impossible Quiz 2",
+      "downloads": 44652,
+      "playable_files": 1,
+      "example_file": "theimpossiblequiz2.swf"
+    },
+    {
+      "candidate": "Alien Hominid",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "flash_alien_hominid",
+      "archive_title": "Alien Hominid",
+      "downloads": 40830,
+      "playable_files": 1,
+      "example_file": "alien_hominid.swf"
+    },
+    {
+      "candidate": "The Last Stand Union City",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "the-last-stand-union-city",
+      "archive_title": "the-last-stand-union-city",
+      "downloads": 38424,
+      "playable_files": 1,
+      "example_file": "the-last-stand-union-city.swf"
+    },
+    {
+      "candidate": "Papa's Pizzeria",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "flash_papaspizzeria",
+      "archive_title": "Papa's Pizzeria",
+      "downloads": 37098,
+      "playable_files": 1,
+      "example_file": "papaspizzeria_v2.swf"
+    },
+    {
+      "candidate": "Portal The Flash Version",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "portal_flash_version",
+      "archive_title": "Portal: The Flash Version",
+      "downloads": 32733,
+      "playable_files": 1,
+      "example_file": "Portal_wcs2.swf"
+    },
+    {
+      "candidate": "Helicopter Game",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "helicoptergame_flash",
+      "archive_title": "Helicopter Game",
+      "downloads": 31757,
+      "playable_files": 1,
+      "example_file": "helicoptergame.swf"
+    },
+    {
+      "candidate": "Mario Combat",
+      "group": "FreeArcade and portal staples",
+      "identifier": "flash_Mario_Combat",
+      "archive_title": "Mario Combat",
+      "downloads": 29909,
+      "playable_files": 1,
+      "example_file": "Mario_Combat.swf"
+    },
+    {
+      "candidate": "Age of War",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "flash_age_of_war",
+      "archive_title": "Age of War",
+      "downloads": 29643,
+      "playable_files": 1,
+      "example_file": "age_of_war.swf"
+    },
+    {
+      "candidate": "Mud and Blood 2",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "mudandblood2_flash",
+      "archive_title": "Mud and Blood 2",
+      "downloads": 29319,
+      "playable_files": 1,
+      "example_file": "mudandblood2.swf"
+    },
+    {
+      "candidate": "Gun Mayhem",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "gun-mayhem-two",
+      "archive_title": "Gun Mayhem 2 More Mayhem",
+      "downloads": 17413,
+      "playable_files": 1,
+      "example_file": "Gun Mayhem 2 More Mayhem.swf"
+    },
+    {
+      "candidate": "Dad n Me",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "dadnme",
+      "archive_title": "Dad n Me",
+      "downloads": 17142,
+      "playable_files": 1,
+      "example_file": "dadnme.swf"
+    },
+    {
+      "candidate": "Ultimate Flash Sonic",
+      "group": "FreeArcade and portal staples",
+      "identifier": "ultimate-flash-sonic_202101",
+      "archive_title": "ultimate-flash-sonic",
+      "downloads": 16867,
+      "playable_files": 1,
+      "example_file": "ultimate-flash-sonic.swf"
+    },
+    {
+      "candidate": "Duck Life",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "duck-life-4_20210406",
+      "archive_title": "Duck Life 4",
+      "downloads": 16584,
+      "playable_files": 1,
+      "example_file": "duck-life-4_20210406.swf"
+    },
+    {
+      "candidate": "Plants vs Zombies",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "plants-vs-zombies_202111",
+      "archive_title": "Plants vs. Zombies",
+      "downloads": 13257,
+      "playable_files": 1,
+      "example_file": "plants vs zombies.swf"
+    },
+    {
+      "candidate": "Mahjong",
+      "group": "FreeArcade and portal staples",
+      "identifier": "mahjong_202011",
+      "archive_title": "mahjong",
+      "downloads": 12282,
+      "playable_files": 1,
+      "example_file": "mahjong.swf"
+    },
+    {
+      "candidate": "Learn to Fly 2",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "learn_to_fly_2",
+      "archive_title": "Learn to Fly 2",
+      "downloads": 12159,
+      "playable_files": 1,
+      "example_file": "secure_Learn2Fly.swf"
+    },
+    {
+      "candidate": "QWOP",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "qwop_flash",
+      "archive_title": "QWOP",
+      "downloads": 12020,
+      "playable_files": 1,
+      "example_file": "qwop.swf"
+    },
+    {
+      "candidate": "Super Mario Flash",
+      "group": "FreeArcade and portal staples",
+      "identifier": "super_mario-flash-3",
+      "archive_title": "Super Mario Flash 3",
+      "downloads": 11297,
+      "playable_files": 1,
+      "example_file": "Super Mario Flash 3.swf"
+    },
+    {
+      "candidate": "Bowmaster",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "bowmaster_prelude_202012",
+      "archive_title": "Bowmaster Prelude",
+      "downloads": 10507,
+      "playable_files": 1,
+      "example_file": "bowmaster_prelude.swf"
+    },
+    {
+      "candidate": "Line Rider",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "flash_Line_Rider_2",
+      "archive_title": "Line Rider",
+      "downloads": 10339,
+      "playable_files": 1,
+      "example_file": "Line_Rider_2.swf"
+    },
+    {
+      "candidate": "Interactive Buddy",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "interactive_buddy_v_1_02_by_shock_value_d6ma8m",
+      "archive_title": "Interactive Buddy",
+      "downloads": 8978,
+      "playable_files": 1,
+      "example_file": "interactive_buddy_v_1_02_by_shock_value_d6ma8m.swf"
+    },
+    {
+      "candidate": "Hobo",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "hobo1",
+      "archive_title": "Hobo 1: Brawl",
+      "downloads": 8699,
+      "playable_files": 1,
+      "example_file": "hobo1.swf"
+    },
+    {
+      "candidate": "Super Mario 63",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "super-mario-63",
+      "archive_title": "Super Mario 63",
+      "downloads": 8386,
+      "playable_files": 1,
+      "example_file": "Super_Mario_63.swf"
+    },
+    {
+      "candidate": "Swords and Sandals 2",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "swords-and-sandals-2_flash",
+      "archive_title": "Swords and Sandals 2",
+      "downloads": 8156,
+      "playable_files": 1,
+      "example_file": "swords_sandals2_download.swf"
+    },
+    {
+      "candidate": "Bad Ice Cream",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "bad_ice_cream",
+      "archive_title": "Bad Ice Cream",
+      "downloads": 7569,
+      "playable_files": 1,
+      "example_file": "bad_ice_cream.swf"
+    },
+    {
+      "candidate": "Warlords",
+      "group": "FreeArcade and portal staples",
+      "identifier": "warlords-calltoarms",
+      "archive_title": "Warlords\uff1aCall to arms",
+      "downloads": 6776,
+      "playable_files": 1,
+      "example_file": "warlords-calltoarms.swf"
+    },
+    {
+      "candidate": "Run 2",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "adobeflash-run2",
+      "archive_title": "Run 2",
+      "downloads": 6675,
+      "playable_files": 1,
+      "example_file": "Run 2.swf"
+    },
+    {
+      "candidate": "Courage the Cowardly Dog",
+      "group": "Shockwave 3D and Director",
+      "identifier": "courage_the_cowardly_dog_nightmare_vacation",
+      "archive_title": "Courage The Cowardly Dog: Nightmare Vacation",
+      "downloads": 6669,
+      "playable_files": 1,
+      "example_file": "game.swf"
+    },
+    {
+      "candidate": "Motherload",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "mother_load",
+      "archive_title": "MotherLoad",
+      "downloads": 6605,
+      "playable_files": 1,
+      "example_file": "motherload_2017.swf"
+    },
+    {
+      "candidate": "Earn to Die",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "earn_to-die",
+      "archive_title": "Earn to Die",
+      "downloads": 6605,
+      "playable_files": 1,
+      "example_file": "74774.swf"
+    },
+    {
+      "candidate": "Papa's Taco Mia",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "papastacomia_202008",
+      "archive_title": "Papa's Taco Mia!",
+      "downloads": 6588,
+      "playable_files": 1,
+      "example_file": "papastacomia_v2.swf"
+    },
+    {
+      "candidate": "Riddle School",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "flash_riddleschool",
+      "archive_title": "Riddle School",
+      "downloads": 6364,
+      "playable_files": 1,
+      "example_file": "riddleschool.swf"
+    },
+    {
+      "candidate": "This Is The Only Level",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "flash_thisistheonlylevel",
+      "archive_title": "This is the Only Level",
+      "downloads": 6255,
+      "playable_files": 1,
+      "example_file": "thisistheonlylevel.swf"
+    },
+    {
+      "candidate": "Duck Life 2",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "ducklife2worldchampion_flash",
+      "archive_title": "Duck Life 2",
+      "downloads": 6159,
+      "playable_files": 1,
+      "example_file": "ducklife2worldchampion.swf"
+    },
+    {
+      "candidate": "Red Ball",
+      "group": "Miniclip",
+      "identifier": "red-ball_",
+      "archive_title": "Red Ball",
+      "downloads": 5973,
+      "playable_files": 1,
+      "example_file": "RedBall_17Levels.swf"
+    },
+    {
+      "candidate": "Tank Trouble",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "tank-trouble_flash",
+      "archive_title": "Tank Trouble",
+      "downloads": 5524,
+      "playable_files": 1,
+      "example_file": "Tank_Trouble.swf"
+    },
+    {
+      "candidate": "Age of War 2",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "ageofwar2_202401",
+      "archive_title": "Age of War 2",
+      "downloads": 5420,
+      "playable_files": 1,
+      "example_file": "age-of-war-2-publicOTM3.swf"
+    },
+    {
+      "candidate": "Bloons",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "btd5-dat_20231125",
+      "archive_title": "Bloons Tower Defense 5 (Flash)",
+      "downloads": 5380,
+      "playable_files": 1,
+      "example_file": "btd5-dat.swf"
+    },
+    {
+      "candidate": "Cubefield",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "cubefield_flash",
+      "archive_title": "Cubefield",
+      "downloads": 5326,
+      "playable_files": 1,
+      "example_file": "cubefield.swf"
+    },
+    {
+      "candidate": "Duck Life 3",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "duck-life-3-evolution_202111",
+      "archive_title": "Duck Life 3 Evolution",
+      "downloads": 5273,
+      "playable_files": 1,
+      "example_file": "Duck Life 3 - Evolution.swf"
+    },
+    {
+      "candidate": "Electric Man 2",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "Example_flash13",
+      "archive_title": "electric_man 2",
+      "downloads": 5038,
+      "playable_files": 1,
+      "example_file": "electric_man.swf"
+    },
+    {
+      "candidate": "Commando 2",
+      "group": "Miniclip",
+      "identifier": "commando-2-battle-of-asia",
+      "archive_title": "Commando 2",
+      "downloads": 5034,
+      "playable_files": 1,
+      "example_file": "commando28.swf"
+    },
+    {
+      "candidate": "Curveball",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "curveball_flash",
+      "archive_title": "Curveball",
+      "downloads": 5007,
+      "playable_files": 1,
+      "example_file": "curveball.swf"
+    },
+    {
+      "candidate": "Asteroids",
+      "group": "FreeArcade and portal staples",
+      "identifier": "asteroids_swf",
+      "archive_title": "Asteroids",
+      "downloads": 4932,
+      "playable_files": 1,
+      "example_file": "asteroids.swf"
+    },
+    {
+      "candidate": "The Binding of Isaac",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "isaac_202102",
+      "archive_title": "The Binding of Isaac",
+      "downloads": 4824,
+      "playable_files": 1,
+      "example_file": "isaac.swf"
+    },
+    {
+      "candidate": "The Fancy Pants Adventure",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "fancypantsadventure_202011",
+      "archive_title": "The Fancy Pants Adventure",
+      "downloads": 4713,
+      "playable_files": 1,
+      "example_file": "fancypantsadventure.swf"
+    },
+    {
+      "candidate": "Run 3",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "run3_",
+      "archive_title": "Run 3",
+      "downloads": 4566,
+      "playable_files": 1,
+      "example_file": "run3.swf"
+    },
+    {
+      "candidate": "Feudalism",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "feudalism-ii",
+      "archive_title": "feudalism-ii",
+      "downloads": 4557,
+      "playable_files": 1,
+      "example_file": "feudalism-ii-2581.swf"
+    },
+    {
+      "candidate": "Bloons Tower Defense 3",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "bloons-tower-defense-3_202201",
+      "archive_title": "Bloons Tower Defense 3",
+      "downloads": 4473,
+      "playable_files": 1,
+      "example_file": "Bloons_Tower_Defense_3.swf"
+    },
+    {
+      "candidate": "Warfare 1917",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "warfare-1917",
+      "archive_title": "Warfare 1917",
+      "downloads": 4399,
+      "playable_files": 1,
+      "example_file": "warfare-1917.swf"
+    },
+    {
+      "candidate": "Kitten Cannon",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "flash_kitten_canons",
+      "archive_title": "Kitten Cannon",
+      "downloads": 4390,
+      "playable_files": 1,
+      "example_file": "kitten_canons.swf"
+    },
+    {
+      "candidate": "Strike Force Heroes",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "strikeforceheroes_202310",
+      "archive_title": "Strike Force Heroes",
+      "downloads": 4385,
+      "playable_files": 1,
+      "example_file": "strikeforceheroes.swf"
+    },
+    {
+      "candidate": "Stick War",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "stick-war",
+      "archive_title": "Stick War",
+      "downloads": 4185,
+      "playable_files": 1,
+      "example_file": "Stick War.swf"
+    },
+    {
+      "candidate": "Newgrounds Rumble",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "newgrounds-rumble",
+      "archive_title": "Newgrounds Rumble",
+      "downloads": 4035,
+      "playable_files": 1,
+      "example_file": "Newgrounds rumble.swf"
+    },
+    {
+      "candidate": "Achievement Unlocked",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "achievementflash",
+      "archive_title": "Achievement Unlocked",
+      "downloads": 3997,
+      "playable_files": 1,
+      "example_file": "achievement.swf"
+    },
+    {
+      "candidate": "Solitaire",
+      "group": "FreeArcade and portal staples",
+      "identifier": "1100_solitaire",
+      "archive_title": "Solitaire",
+      "downloads": 3845,
+      "playable_files": 1,
+      "example_file": "solitaire.swf"
+    },
+    {
+      "candidate": "Madness Interactive",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "madness_202303",
+      "archive_title": "Madness Interactive",
+      "downloads": 3781,
+      "playable_files": 1,
+      "example_file": "Madness.swf"
+    },
+    {
+      "candidate": "Xiao Xiao",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "1100_fight_man_xiaoxiao9",
+      "archive_title": "Fight Man Xiao-Xiao Number 9",
+      "downloads": 3771,
+      "playable_files": 1,
+      "example_file": "fight_man_xiaoxiao9.swf"
+    },
+    {
+      "candidate": "Kingdom Rush",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "kingdom-rush-frontie-15717",
+      "archive_title": "Kingdom Rush Frontiers",
+      "downloads": 3711,
+      "playable_files": 1,
+      "example_file": "kingdom-rush-frontie-15717.swf"
+    },
+    {
+      "candidate": "Toss the Turtle",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "toss_the_turtle_flash",
+      "archive_title": "Toss The Turtle",
+      "downloads": 3674,
+      "playable_files": 1,
+      "example_file": "toss_the_turtle.swf"
+    },
+    {
+      "candidate": "N Game",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "nv-12",
+      "archive_title": "N Game",
+      "downloads": 3504,
+      "playable_files": 1,
+      "example_file": "Nv12.swf"
+    },
+    {
+      "candidate": "Bowman",
+      "group": "FreeArcade and portal staples",
+      "identifier": "bowman2_flash",
+      "archive_title": "Bowman 2",
+      "downloads": 3498,
+      "playable_files": 1,
+      "example_file": "bowman2.swf"
+    },
+    {
+      "candidate": "Salad Fingers",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "flash_salad-fingers",
+      "archive_title": "Salad Fingers #1: Spoons",
+      "downloads": 3359,
+      "playable_files": 1,
+      "example_file": "Salad_Fingers.swf"
+    },
+    {
+      "candidate": "LEGO Racers",
+      "group": "Shockwave 3D and Director",
+      "identifier": "lego-racers-tiny-turbos-game",
+      "archive_title": "Lego Racers Tiny Turbos (Flash game)",
+      "downloads": 3331,
+      "playable_files": 6,
+      "example_file": "Launcher.zip"
+    },
+    {
+      "candidate": "Snail Bob",
+      "group": "Miniclip",
+      "identifier": "snailbob_flash",
+      "archive_title": "Snail Bob",
+      "downloads": 3238,
+      "playable_files": 1,
+      "example_file": "snailbob.swf"
+    },
+    {
+      "candidate": "Riddle Transfer",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "riddle-transfer1",
+      "archive_title": "Riddle Transfer",
+      "downloads": 3009,
+      "playable_files": 1,
+      "example_file": "riddletransfer (1).swf"
+    },
+    {
+      "candidate": "Learn to Fly",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "learn-to-fly",
+      "archive_title": "Learn to Fly",
+      "downloads": 3002,
+      "playable_files": 1,
+      "example_file": "Learn_to_fly_Final_3.52k.swf"
+    },
+    {
+      "candidate": "Space Invaders",
+      "group": "FreeArcade and portal staples",
+      "identifier": "flash_spaceinvaders",
+      "archive_title": "Space Invaders",
+      "downloads": 2872,
+      "playable_files": 1,
+      "example_file": "invaders.swf"
+    },
+    {
+      "candidate": "Bejeweled",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "bejeweled-ste",
+      "archive_title": "Bejeweled",
+      "downloads": 2723,
+      "playable_files": 1,
+      "example_file": "BejeweledSte.swf"
+    },
+    {
+      "candidate": "Papa's Burgeria",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "papasburgeria_v2",
+      "archive_title": "Papa's Burgeria",
+      "downloads": 2713,
+      "playable_files": 1,
+      "example_file": "papasburgeria_v2.swf"
+    },
+    {
+      "candidate": "Zuma",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "suma-the-lost-treasure_flash",
+      "archive_title": "Zuma: The Lost Treasure (Flash Version)",
+      "downloads": 2689,
+      "playable_files": 1,
+      "example_file": "Suma-The-Lost-Treasure.swf"
+    },
+    {
+      "candidate": "Frogger",
+      "group": "FreeArcade and portal staples",
+      "identifier": "frogger_202204",
+      "archive_title": "Frogger",
+      "downloads": 2612,
+      "playable_files": 1,
+      "example_file": "frogger.swf"
+    },
+    {
+      "candidate": "Vex",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "vex-2_20231202",
+      "archive_title": "VEX 2",
+      "downloads": 2412,
+      "playable_files": 1,
+      "example_file": "VEX 2.swf"
+    },
+    {
+      "candidate": "GemCraft",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "gemcraft-1716",
+      "archive_title": "gemcraft-1716",
+      "downloads": 2372,
+      "playable_files": 1,
+      "example_file": "gemcraft-1716.swf"
+    },
+    {
+      "candidate": "Bubble Bobble",
+      "group": "FreeArcade and portal staples",
+      "identifier": "bobble_swf",
+      "archive_title": "Bubble Bobble 2",
+      "downloads": 2335,
+      "playable_files": 1,
+      "example_file": "bobble.swf"
+    },
+    {
+      "candidate": "Fireboy and Watergirl",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "fireboy-and-watergirl-3-in-the-ice-temple",
+      "archive_title": "Fireboy and Watergirl 3: In The Ice Temple",
+      "downloads": 2279,
+      "playable_files": 1,
+      "example_file": "FireBoyAndWaterGirl.swf"
+    },
+    {
+      "candidate": "Bubble Tanks 2",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "Example_flash4",
+      "archive_title": "Bubble Tanks 2",
+      "downloads": 2266,
+      "playable_files": 1,
+      "example_file": "bubble-tanks-2 (6).swf"
+    },
+    {
+      "candidate": "Bookworm",
+      "group": "FreeArcade and portal staples",
+      "identifier": "bookworm_202403",
+      "archive_title": "Bookworm (Flash)",
+      "downloads": 2184,
+      "playable_files": 1,
+      "example_file": "bookworm.swf"
+    },
+    {
+      "candidate": "Bloons Tower Defense 5",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "btd_5",
+      "archive_title": "Bloons Tower Defense 5",
+      "downloads": 2177,
+      "playable_files": 1,
+      "example_file": "btd_5.swf"
+    },
+    {
+      "candidate": "Time Fcuk",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "time-fcuk",
+      "archive_title": "Time Fcuk",
+      "downloads": 2172,
+      "playable_files": 1,
+      "example_file": "511754_TF.swf"
+    },
+    {
+      "candidate": "Happy Wheels",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "happy-wheels_202209",
+      "archive_title": "happy-wheels",
+      "downloads": 2137,
+      "playable_files": 1,
+      "example_file": "happy-wheels.swf"
+    },
+    {
+      "candidate": "Dolphin Olympics 2",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "dolphin-olympics-2",
+      "archive_title": "Dolphin Olympics 2",
+      "downloads": 2118,
+      "playable_files": 1,
+      "example_file": "dolphin_olympics2.swf"
+    },
+    {
+      "candidate": "SpongeBob Squarepants Boating School",
+      "group": "Shockwave 3D and Director",
+      "identifier": "boating_dcr",
+      "archive_title": "SpongeBob Squarepants - Boating School",
+      "downloads": 2063,
+      "playable_files": 1,
+      "example_file": "boating.zip"
+    },
+    {
+      "candidate": "Heli Attack 2",
+      "group": "Miniclip",
+      "identifier": "heli_attack-2",
+      "archive_title": "Heli Attack 2",
+      "downloads": 1973,
+      "playable_files": 1,
+      "example_file": "heli-attack-2.swf"
+    },
+    {
+      "candidate": "Monkey Lander",
+      "group": "Miniclip",
+      "identifier": "flash_monkeylander",
+      "archive_title": "Monkey Lander",
+      "downloads": 1968,
+      "playable_files": 1,
+      "example_file": "monkeylander.swf"
+    },
+    {
+      "candidate": "Heli Attack 3",
+      "group": "Miniclip",
+      "identifier": "heli_attack-3_",
+      "archive_title": "Heli Attack 3",
+      "downloads": 1853,
+      "playable_files": 1,
+      "example_file": "ha3miniclip.swf"
+    },
+    {
+      "candidate": "Bubble Trouble",
+      "group": "Miniclip",
+      "identifier": "bubble_trouble_20210714",
+      "archive_title": "bubble_trouble",
+      "downloads": 1598,
+      "playable_files": 1,
+      "example_file": "bubble_trouble.swf"
+    },
+    {
+      "candidate": "Spider-Man",
+      "group": "Miniclip",
+      "identifier": "web-of-words-spiderman",
+      "archive_title": "Spider-Man 2: Web of Words",
+      "downloads": 1459,
+      "playable_files": 1,
+      "example_file": "web-of-words-spiderman.swf"
+    },
+    {
+      "candidate": "Raze",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "raze_20201123",
+      "archive_title": "Raze",
+      "downloads": 1455,
+      "playable_files": 1,
+      "example_file": "529542_SideShooterSWF_.swf"
+    },
+    {
+      "candidate": "Sushi Cat",
+      "group": "Miniclip",
+      "identifier": "sushi-cat-2",
+      "archive_title": "Sushi Cat 2",
+      "downloads": 1413,
+      "playable_files": 1,
+      "example_file": "sushi-cat-2.swf"
+    },
+    {
+      "candidate": "Snake",
+      "group": "FreeArcade and portal staples",
+      "identifier": "1100_snake",
+      "archive_title": "Snake",
+      "downloads": 1397,
+      "playable_files": 1,
+      "example_file": "snake.swf"
+    },
+    {
+      "candidate": "Pacman",
+      "group": "FreeArcade and portal staples",
+      "identifier": "pacman_pastore",
+      "archive_title": "Flash Pacman",
+      "downloads": 1372,
+      "playable_files": 1,
+      "example_file": "pacman_pastore.swf"
+    },
+    {
+      "candidate": "Volleyball",
+      "group": "Miniclip",
+      "identifier": "1100_boom_boom_volleyball",
+      "archive_title": "Boom Boom Volleyball, with Candy and Missy",
+      "downloads": 1359,
+      "playable_files": 1,
+      "example_file": "boom_boom_volleyball.swf"
+    },
+    {
+      "candidate": "NiGHTS into Dreams",
+      "group": "Shockwave 3D and Director",
+      "identifier": "nights-shockwave-game",
+      "archive_title": "NiGHTS into Dreams Shockwave Game",
+      "downloads": 1320,
+      "playable_files": 1,
+      "example_file": "NightsShockwaveGame.zip"
+    },
+    {
+      "candidate": "Sugar Sugar",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "sugarsugar_flash",
+      "archive_title": "Sugar, Sugar",
+      "downloads": 1295,
+      "playable_files": 1,
+      "example_file": "sugarsugar.swf"
+    },
+    {
+      "candidate": "Fireboy and Watergirl in the Forest Temple",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "fireboy_and-watergirl-in-the-forest-temple",
+      "archive_title": "Fireboy and Watergirl in The Forest Temple",
+      "downloads": 1240,
+      "playable_files": 1,
+      "example_file": "FireBoyAndWaterGirl_Kong.swf"
+    },
+    {
+      "candidate": "Ragdoll Cannon",
+      "group": "Miniclip",
+      "identifier": "ragdollcannon2_flash",
+      "archive_title": "Ragdoll Cannon 2",
+      "downloads": 1152,
+      "playable_files": 1,
+      "example_file": "ragdollcannon2.swf"
+    },
+    {
+      "candidate": "CatDog",
+      "group": "Shockwave 3D and Director",
+      "identifier": "minecar",
+      "archive_title": "CatDog Minecar Madness",
+      "downloads": 1101,
+      "playable_files": 1,
+      "example_file": "minecar.zip"
+    },
+    {
+      "candidate": "Territory War",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "2611-territory-war",
+      "archive_title": "Territory War",
+      "downloads": 1088,
+      "playable_files": 1,
+      "example_file": "2611 - Territory War.swf"
+    },
+    {
+      "candidate": "Dune Buggy",
+      "group": "Miniclip",
+      "identifier": "dune_buggy",
+      "archive_title": "Dune Buggy",
+      "downloads": 1082,
+      "playable_files": 1,
+      "example_file": "dune_buggy1.swf"
+    },
+    {
+      "candidate": "Galaga",
+      "group": "FreeArcade and portal staples",
+      "identifier": "pbs-galaga",
+      "archive_title": "PBS - The video game Revolution - Flash Galaga",
+      "downloads": 1044,
+      "playable_files": 1,
+      "example_file": "pbs_galaga.swf"
+    },
+    {
+      "candidate": "Epic Battle Fantasy 3",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "epic-battle-fantasy-3",
+      "archive_title": "Epic Battle Fantasy 3",
+      "downloads": 1031,
+      "playable_files": 1,
+      "example_file": "548041_Epic_Battle_Fantasy_3_secu.swf"
+    },
+    {
+      "candidate": "Fish Tales",
+      "group": "Miniclip",
+      "identifier": "fish-tales-flash-game",
+      "archive_title": "Fish Tales (flash game)",
+      "downloads": 927,
+      "playable_files": 1,
+      "example_file": "fish_tales.swf"
+    },
+    {
+      "candidate": "The Last Stand",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "the-last-stand",
+      "archive_title": "The Last Stand",
+      "downloads": 879,
+      "playable_files": 1,
+      "example_file": "The last Stand.swf"
+    },
+    {
+      "candidate": "Tetris",
+      "group": "FreeArcade and portal staples",
+      "identifier": "tetris_20201123_0932",
+      "archive_title": "Tetris",
+      "downloads": 862,
+      "playable_files": 1,
+      "example_file": "Tetris.swf"
+    },
+    {
+      "candidate": "Arkanoid",
+      "group": "FreeArcade and portal staples",
+      "identifier": "1100_flash_arkanoid",
+      "archive_title": "Arkanoid Flash",
+      "downloads": 833,
+      "playable_files": 1,
+      "example_file": "flash_arkanoid.swf"
+    },
+    {
+      "candidate": "American Football",
+      "group": "Miniclip",
+      "identifier": "1100_american_football",
+      "archive_title": "American Football",
+      "downloads": 819,
+      "playable_files": 1,
+      "example_file": "american_football.swf"
+    },
+    {
+      "candidate": "Centipede",
+      "group": "FreeArcade and portal staples",
+      "identifier": "centipede_202204",
+      "archive_title": "Centipede",
+      "downloads": 795,
+      "playable_files": 1,
+      "example_file": "Centipede.swf"
+    },
+    {
+      "candidate": "Breakout",
+      "group": "FreeArcade and portal staples",
+      "identifier": "breakout_202204",
+      "archive_title": "Breakout",
+      "downloads": 768,
+      "playable_files": 1,
+      "example_file": "breakout.swf"
+    },
+    {
+      "candidate": "Redline Rumble",
+      "group": "Shockwave 3D and Director",
+      "identifier": "redlinerumbleog",
+      "archive_title": "Redline Rumble (2003)",
+      "downloads": 760,
+      "playable_files": 1,
+      "example_file": "redlinerumbleog.zip"
+    },
+    {
+      "candidate": "8 Ball Pool",
+      "group": "Miniclip",
+      "identifier": "8_ball",
+      "archive_title": "8 Ball Pool",
+      "downloads": 743,
+      "playable_files": 1,
+      "example_file": "8ball.swf"
+    },
+    {
+      "candidate": "Pong",
+      "group": "FreeArcade and portal staples",
+      "identifier": "pongflashgame",
+      "archive_title": "pong",
+      "downloads": 689,
+      "playable_files": 1,
+      "example_file": "pong.swf"
+    },
+    {
+      "candidate": "Doodle God",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "doodle-god-2-11411ec92",
+      "archive_title": "Doodle God 2",
+      "downloads": 688,
+      "playable_files": 1,
+      "example_file": "DoodleGod2.swf"
+    },
+    {
+      "candidate": "Fragger",
+      "group": "Miniclip",
+      "identifier": "fragger_flash",
+      "archive_title": "Fragger",
+      "downloads": 678,
+      "playable_files": 1,
+      "example_file": "fragger.swf"
+    },
+    {
+      "candidate": "Free Rider 2",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "free-rider-2",
+      "archive_title": "free-rider-2",
+      "downloads": 651,
+      "playable_files": 1,
+      "example_file": "free-rider-2.swf"
+    },
+    {
+      "candidate": "Galidor Quest",
+      "group": "Shockwave 3D and Director",
+      "identifier": "galidor_quest",
+      "archive_title": "galidor quest",
+      "downloads": 594,
+      "playable_files": 1,
+      "example_file": "galidorgame.dcr"
+    },
+    {
+      "candidate": "Rooftop Skater",
+      "group": "Miniclip",
+      "identifier": "rooftop_skater_1",
+      "archive_title": "Rooftop Skater 1",
+      "downloads": 578,
+      "playable_files": 1,
+      "example_file": "30329_skate.swf"
+    },
+    {
+      "candidate": "Dragon Ball Z Flash",
+      "group": "FreeArcade and portal staples",
+      "identifier": "2557-dragon-ball-z-flash-dimension",
+      "archive_title": "Dragon Ball Z - Flash Dimension",
+      "downloads": 525,
+      "playable_files": 1,
+      "example_file": "2557 - Dragon Ball Z - Flash Dimension.swf"
+    },
+    {
+      "candidate": "Stick RPG 2",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "download_20220503",
+      "archive_title": "Stick rpg 2",
+      "downloads": 485,
+      "playable_files": 1,
+      "example_file": "download.swf"
+    },
+    {
+      "candidate": "Ultimate Football",
+      "group": "Miniclip",
+      "identifier": "1100_ultimatefootball",
+      "archive_title": "Ultimate Football",
+      "downloads": 402,
+      "playable_files": 1,
+      "example_file": "ultimatefootball.swf"
+    },
+    {
+      "candidate": "Powerpuff Girls Pillow Fight",
+      "group": "Shockwave 3D and Director",
+      "identifier": "powerpuff-girls-pillow-fight",
+      "archive_title": "Powerpuff Girls Pillow Fight",
+      "downloads": 389,
+      "playable_files": 1,
+      "example_file": "42384.dcr"
+    },
+    {
+      "candidate": "Sniper Assassin",
+      "group": "AddictingGames and Shockwave.com",
+      "identifier": "2549-sniper-assassin",
+      "archive_title": "Sniper Assassin",
+      "downloads": 357,
+      "playable_files": 1,
+      "example_file": "2549 - Sniper Assassin.swf"
+    },
+    {
+      "candidate": "Minesweeper",
+      "group": "FreeArcade and portal staples",
+      "identifier": "20_20240806",
+      "archive_title": "Minesweeper",
+      "downloads": 327,
+      "playable_files": 1,
+      "example_file": "20.swf"
+    },
+    {
+      "candidate": "Tomb Raider",
+      "group": "Shockwave 3D and Director",
+      "identifier": "game_20220603",
+      "archive_title": "Tomb raider",
+      "downloads": 316,
+      "playable_files": 1,
+      "example_file": "game.swf"
+    },
+    {
+      "candidate": "Candystand Mini Golf",
+      "group": "Shockwave 3D and Director",
+      "identifier": "nwmgholes",
+      "archive_title": "Nabisco World Candystand Mini-Golf",
+      "downloads": 288,
+      "playable_files": 1,
+      "example_file": "nwmgmain.dcr"
+    },
+    {
+      "candidate": "Sonny",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "1100_sonny",
+      "archive_title": "Sonny",
+      "downloads": 192,
+      "playable_files": 1,
+      "example_file": "sonny.swf"
+    },
+    {
+      "candidate": "Meat Boy",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "meat-boy-2388-1",
+      "archive_title": "Meat boy",
+      "downloads": 187,
+      "playable_files": 1,
+      "example_file": "meat-boy-2388 (1).swf"
+    },
+    {
+      "candidate": "Frantic",
+      "group": "Newgrounds and Armor Games",
+      "identifier": "1100_frantic",
+      "archive_title": "Frantic",
+      "downloads": 158,
+      "playable_files": 1,
+      "example_file": "frantic.swf"
+    },
+    {
+      "candidate": "Jetpack",
+      "group": "Miniclip",
+      "identifier": "1100_jetpack",
+      "archive_title": "Jetpack",
+      "downloads": 157,
+      "playable_files": 1,
+      "example_file": "jetpack.swf"
+    },
+    {
+      "candidate": "Club Penguin",
+      "group": "Miniclip",
+      "identifier": "rooms-town-water-scavenger-hunt",
+      "archive_title": "Club Penguin Water Scavenger Hunt - Town",
+      "downloads": 155,
+      "playable_files": 1,
+      "example_file": "RoomsTown-WaterScavengerHunt.swf"
+    }
+  ],
+  "dropped": [
+    {
+      "identifier": "thing-thing-2",
+      "archive_title": "Thing Thing 2",
+      "reason": "only 142 downloads"
+    },
+    {
+      "identifier": "give-up-2_20241216",
+      "archive_title": "give-up-2",
+      "reason": "only 61 downloads"
+    },
+    {
+      "identifier": "206373-numanuma",
+      "archive_title": "Numa Numa Dance",
+      "reason": "not a game"
+    },
+    {
+      "identifier": "bulletbill_psycity",
+      "archive_title": "Bullet Bill",
+      "reason": "only 15 downloads"
+    },
+    {
+      "identifier": "bloons-tower-defense-4_202603",
+      "archive_title": "Bloons Tower Defense 4",
+      "reason": "only 47 downloads"
+    },
+    {
+      "identifier": "AmateurSurgeonFlash",
+      "archive_title": "Amateur Surgeon (Flash)",
+      "reason": "only 11 downloads"
+    },
+    {
+      "identifier": "cat-mario_20260325",
+      "archive_title": "Cat Mario",
+      "reason": "only 48 downloads"
+    },
+    {
+      "identifier": "doodle-jump_202603",
+      "archive_title": "Doodle Jump",
+      "reason": "only 15 downloads"
+    },
+    {
+      "identifier": "chuzzle-1",
+      "archive_title": "Chuzzle ORIGINAL KING.COM FLASH VERSION!!",
+      "reason": "only 33 downloads"
+    },
+    {
+      "identifier": "dk-64-ss",
+      "archive_title": "Donkey Kong 64 Screensaver",
+      "reason": "not a game"
+    },
+    {
+      "identifier": "2005_20260819_202608",
+      "archive_title": "Sudoku",
+      "reason": "only 0 downloads"
+    },
+    {
+      "identifier": "crsonic_flash",
+      "archive_title": "CR Sonic (Flash intro)",
+      "reason": "not a game"
+    },
+    {
+      "identifier": "legowb3ds",
+      "archive_title": "LEGO World Builder 3DS Port (Homebrew)",
+      "reason": "only 0 downloads"
+    },
+    {
+      "identifier": "lego-island-xtreme-stunts-scavenger-hunt",
+      "archive_title": "LEGO Island Xtreme Stunts: Scavenger Hunt",
+      "reason": "only 118 downloads"
+    },
+    {
+      "identifier": "naboreo",
+      "archive_title": "NabiscoWorld - Oreo Adventure",
+      "reason": "only 60 downloads"
+    },
+    {
+      "identifier": "kremling",
+      "archive_title": "Camp Hyrule Kremling Krunch",
+      "reason": "only 20 downloads"
+    },
+    {
+      "identifier": "doomsday_shockwave",
+      "archive_title": "Doomsday (2008 Shockwave Game)",
+      "reason": "only 65 downloads"
+    },
+    {
+      "identifier": "scooby-doo-daphne-ss",
+      "archive_title": "Scooby-Doo \u201cDaphne\u201d Screensaver",
+      "reason": "not a game"
+    },
+    {
+      "identifier": "flash_hey-arnold-baseball_screenshot",
+      "archive_title": "Hey Arnold Baseball Game",
+      "reason": "not a game"
+    },
+    {
+      "identifier": "stunt_sled",
+      "archive_title": "Stunt Sled (2006 Shockwave Game)",
+      "reason": "only 12 downloads"
+    },
+    {
+      "identifier": "hwferrariswgame",
+      "archive_title": "Hot Wheels Ferrari X-V: Speed Trial",
+      "reason": "only 126 downloads"
+    },
+    {
+      "identifier": "redrangertotherescue",
+      "archive_title": "Power Rangers in Space: Red Ranger to the Rescue",
+      "reason": "only 118 downloads"
+    },
+    {
+      "identifier": "bw333",
+      "archive_title": "Black Wizard #.3 [\ud50c\ub798\uc2dc]",
+      "reason": "only 118 downloads"
+    }
+  ],
+  "candidates_without_an_archive_match": [
+    "Air Show",
+    "Alien Flux",
+    "Backyard Buzzing",
+    "Banjo-Kazooie Memory Game",
+    "Basketball Jam",
+    "Basketball Slam",
+    "Battle Wheels",
+    "Beach Soccer",
+    "Boombot",
+    "Boxhead",
+    "Bush Shootout",
+    "Canabalt",
+    "Castle Crashers",
+    "Centre Court Tennis",
+    "Collapse",
+    "Commandos 2 Target Practice",
+    "Contra Flash",
+    "Creepy Pong",
+    "Crush the Castle",
+    "Dark Orbit",
+    "Delta Force Operation Fire Shield",
+    "Donkey Kong Country Barrel Maze",
+    "Dynomite",
+    "Effing Worms",
+    "Excitebike",
+    "Extreme Trial",
+    "F-Zero X Academy",
+    "Fear Effect 2",
+    "Feeding Frenzy",
+    "Free Running",
+    "GIRP",
+    "Gibbets",
+    "Go Karts",
+    "Golf Ace",
+    "Gravitation",
+    "Gravity Guy",
+    "Great Firework Race",
+    "Gun Blood",
+    "Gyroball",
+    "Hedgehog Launch",
+    "Ice Racer",
+    "Insane Ski Jump",
+    "Insaniquarium",
+    "Java Breakout",
+    "Java Chess",
+    "Java Pacman",
+    "Java Snake",
+    "Java Tetris",
+    "Jet Ski Racing",
+    "Jewel Quest",
+    "Jousting",
+    "Karate King",
+    "LEGO Junkbot",
+    "LEGO Studios Backlot",
+    "LEGO Supersonic RC",
+    "Mario's Memory Madness",
+    "Merlin's Revenge",
+    "Metal Slug Flash",
+    "Micro Machines",
+    "Missile Command",
+    "Monster Bash",
+    "Monster Truck Nitro",
+    "Mortal Kombat Flash",
+    "Nabisco Mini Golf",
+    "Naruto Flash",
+    "On The Run 2",
+    "Operation Flashpoint Helicopter Gunship",
+    "Pandemic 2",
+    "Peggle",
+    "Pizza Hot",
+    "Powerboat",
+    "Puppy Games",
+    "Raceway 500",
+    "Rapunzel's Escape",
+    "Rocket Toilet",
+    "Sift Heads World",
+    "Sky Diver",
+    "Snowboard Madness",
+    "Snowcraft",
+    "Soccer Balls",
+    "Sonny 2",
+    "Sportbike Sprint",
+    "Stick Figure Badminton",
+    "Storm the House 3",
+    "Street Fighter Flash",
+    "Stunt Bike Draw",
+    "Super Breakout",
+    "Super Meat Boy",
+    "Super Trucks",
+    "Tank 2008",
+    "Tetris Flash",
+    "Text Twist",
+    "Tiny Wings",
+    "Tribal Wars",
+    "Turbo Racing 2",
+    "Typer Shark",
+    "Upgrade Complete",
+    "Wario's Whack Attack",
+    "White Water Rafting",
+    "Winter Bells",
+    "Word Whomp",
+    "Zombie Trailer Park"
+  ]
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; connect-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'self' blob:">
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#121219}
+#gamehost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+#gamehost>[data-dirplayer-mount],#gamehost>[data-dirplayer-mount]>div{width:100%;height:100%}
+</style>
+<script>
+const report=(event,detail='')=>window.webkit?.messageHandlers.player.postMessage({event,detail});
+let failed=false,ready=false;
+window.shockwaveErrors=[];
+window.shockwaveDiagnostics=[];
+function fail(message){
+  if(window.shockwaveErrors.length<10)window.shockwaveErrors.push(String(message).slice(0,1500));
+  if(failed)return;
+  failed=true;
+  try{window.__vm?.stop();window.getAudioContext?.().suspend();}catch{}
+  report('error',String(message).slice(0,1000));
+}
+window.addEventListener('error',e=>fail(e.message));
+window.addEventListener('unhandledrejection',e=>fail(e.reason));
+const nativeAlert=window.alert.bind(window);
+window.alert=message=>String(message).startsWith('Script error:')?fail(message):nativeAlert(String(message));
+const originalError=console.error;
+console.error=(...args)=>{
+  originalError(...args);
+  const message=args.map(String).join(' ');
+  if(window.shockwaveDiagnostics.length<10)window.shockwaveDiagnostics.push(message.slice(0,1500));
+  // DirPlayer also logs recoverable asset/audio failures. Only a fatal startup
+  // failure belongs here; Lingo failures arrive through its Script error alert.
+  if(/^(Failed to (initialize VM|load movie)|\[!!\] play failed|panicked at )/.test(message))fail(message);
+};
+</script>
+<script src="/shockwave/dirplayer-polyfill.js" data-manual-init></script>
+</head><body><div id="gamehost"></div><script>
+let lastSize='';
+function fit(){
+  const host=document.getElementById('gamehost');
+  const canvas=document.querySelector('#stage_canvas_container canvas');
+  if(!canvas?.width||!canvas?.height)return false;
+  const width=canvas.width,height=canvas.height;
+  host.style.width=width+'px';host.style.height=height+'px';
+  if(lastSize!==`${width}x${height}`){
+    lastSize=`${width}x${height}`;
+    window.webkit?.messageHandlers.player.postMessage({event:'stageSize',width,height});
+  }
+  return true;
+}
+window.addEventListener('resize',fit);
+function startGame(options){
+  try{
+    const host=document.getElementById('gamehost');
+    host.style.width='640px';host.style.height='480px';
+    const embed=document.createElement('object');
+    embed.type='application/x-director';
+    const parameters={...options.parameters,src:options.url};
+    for(const [name,value] of Object.entries(parameters)){
+      if(name.toLowerCase()==='src' && name!=='src')continue;
+      const param=document.createElement('param');
+      param.name=name;param.value=String(value);embed.appendChild(param);
+    }
+    embed.setAttribute('width','100%');embed.setAttribute('height','100%');
+    host.appendChild(embed);
+    DirPlayer.init();
+    const check=setInterval(()=>{
+      if(failed){clearInterval(check);return;}
+      try{
+        if(!window.__vm)return;
+        const state=JSON.parse(__vm.mcp_get_execution_state());
+        if(state.movie_loaded && state.is_playing && fit() && !ready){
+          ready=true;
+          document.querySelector('#stage_canvas_container')?.closest('[tabindex]')?.focus();
+          // The native host permits autoplay; initialize the bundled audio backend.
+          document.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+          report('ready');
+        }
+      }catch(e){fail(e);}
+    },250);
+  }catch(e){fail(e);}
+}
+report('boot');
+</script></body></html>

@@ -1,0 +1,9 @@
+{
+  "date": "2026-09-10",
+  "result": "PASS",
+  "scope": "File integrity, catalog links, entry paths, probe JSON syntax; no gameplay run",
+  "corpus_games": 105,
+  "library_entries": 173,
+  "library_files_verified": 1207,
+  "local_links_verified": 417
+}

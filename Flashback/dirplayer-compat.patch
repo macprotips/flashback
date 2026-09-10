@@ -1,0 +1,2432 @@
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/polyfill/src/core.tsx b/polyfill/src/core.tsx
+--- a/polyfill/src/core.tsx
++++ b/polyfill/src/core.tsx
+@@ -329,13 +329,8 @@
+     if (value == null) {
+       continue;
+     }
+-    // `src` is the movie URL (handled separately by replaceDirObject); every
+-    // other <param> tag is a plugin parameter the movie may read via
+-    // externalParamValue() — forward them all, not just sw*-prefixed ones,
+-    // so `_runMode`, bgColor, PlayerVersion, etc. reach the movie.
+-    if (name.toLowerCase() === 'src') {
+-      continue;
+-    }
++    // Director also exposes src through externalParamValue("src"). Preserve
++    // the authored URL alongside the remaining plug-in parameters.
+     externalParams[name] = value;
+   }
+   return externalParams;
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/src/services/flashPlayerManager.ts b/src/services/flashPlayerManager.ts
+--- a/src/services/flashPlayerManager.ts
++++ b/src/services/flashPlayerManager.ts
+@@ -979,6 +979,11 @@
+     registerFSCommandHandler(player, castLib, castMember);
+   }
+ 
++  // Deliver beginSprite's queued setup before waiting for ActionScript.
++  // Replaying these writes after initialization can reset a loader's completed
++  // flag to its initial value after its timeline has already stopped.
++  flushPendingGoto(spriteNum);
++
+   // Find the internal canvas element that Ruffle renders to
+   await new Promise<void>((resolve) => {
+     setTimeout(() => {
+@@ -1868,6 +1873,14 @@
+   }
+ }
+ 
++// Director resolves unqualified movie-clip targets from the Flash root.
++// Ruffle's external variable activation requires that root to be explicit.
++function flashPropertyPath(target: string, property: string): string {
++  const rooted = !target ? '/' : /^(?:\/|_root(?:[.:/]|$)|_level\d+(?:[.:/]|$)|_global(?:[.:/]|$)|this(?:[.:/]|$))/.test(target)
++    ? target : `_root.${target}`;
++  return `${translateLevel0(rooted)}:${property}`;
++}
++
+ /**
+  * Get a Flash property by property number (matching Director's getFlashProperty).
+  * Property numbers follow the original Flash Player property indices.
+@@ -1891,7 +1904,7 @@
+   if (!propName) return null;
+ 
+   try {
+-    const path = target ? `${target}:${propName}` : `/:${propName}`;
++    const path = flashPropertyPath(target, propName);
+     return playerGetVar(instance, path)?.toString() ?? null;
+   } catch (e) {
+     return null;
+@@ -1902,22 +1915,18 @@
+  * Set a Flash property by property number.
+  */
+ function setFlashProperty(spriteNum: number, target: string, propNum: number, value: string): void {
+-  const key = instanceKey(spriteNum);
+-  const instance = instances.get(key);
+-  if (!instance) return;
+-
+   const propMap: Record<number, string> = {
+     0: '_x', 1: '_y', 2: '_xscale', 3: '_yscale',
+     6: '_alpha', 7: '_visible', 10: '_rotation', 13: '_name',
+-    16: '_highquality', 18: '_soundbuftime',
++    16: '_highquality', 17: '_focusrect', 18: '_soundbuftime',
+   };
+ 
+   const propName = propMap[propNum];
+   if (!propName) return;
+ 
+   try {
+-    const path = target ? `${target}:${propName}` : `/:${propName}`;
+-    playerExec(instance, 'SetVariable', [path, value]);
++    const path = flashPropertyPath(target, propName);
++    setVariable(spriteNum, path, value);
+   } catch (e) {
+     console.warn(`ruffleSetFlashProperty error:`, e);
+   }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/src/views/Stage/index.tsx b/src/views/Stage/index.tsx
+--- a/src/views/Stage/index.tsx
++++ b/src/views/Stage/index.tsx
+@@ -464,6 +464,18 @@
+   }
+ 
+   function outerToCanvas(p: Pt): Pt {
++    // Page zoom can change devicePixelRatio without changing React's scale
++    // state. Map against the displayed canvas so cached pan/scale values do
++    // not move the click away from the artwork after a native window resize.
++    const canvas = stageEl.current?.querySelector('canvas');
++    const outer = outerRef.current?.getBoundingClientRect();
++    const bounds = canvas?.getBoundingClientRect();
++    if (canvas && outer && bounds && bounds.width > 0 && bounds.height > 0) {
++      return {
++        x: (p.x + outer.left - bounds.left) * canvas.width / bounds.width,
++        y: (p.y + outer.top - bounds.top) * canvas.height / bounds.height,
++      };
++    }
+     return {
+       x: (p.x - panRef.current.x) / effectiveScaleRef.current,
+       y: (p.y - panRef.current.y) / effectiveScaleRef.current,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/examples/inspect_scripts.rs b/vm-rust/examples/inspect_scripts.rs
+--- a/vm-rust/examples/inspect_scripts.rs
++++ b/vm-rust/examples/inspect_scripts.rs
+@@ -0,0 +1,27 @@
++// SPDX-License-Identifier: GPL-3.0-only
++// Read-only script inventory and decompilation, without starting the player.
++use serde_json::json;
++use vm_rust::director::{file::{read_director_file_bytes, get_variable_multiplier}, lingo::decompiler::decompile_handler};
++
++fn main() {
++    let path = std::env::args().nth(1).expect("usage: inspect_scripts MOVIE");
++    let bytes = std::fs::read(&path).expect("read movie");
++    let file = read_director_file_bytes(&bytes, &path, "file:///").expect("parse movie");
++    let mut scripts = Vec::new();
++    for cast in &file.casts {
++        let Some(ctx) = &cast.lctx else { continue };
++        let mut chunks: Vec<_> = ctx.scripts.iter().collect();
++        chunks.sort_by_key(|(id, _)| **id);
++        for (id, chunk) in chunks {
++            let member = cast.members.iter().find(|(_, m)| m.chunk.member_info.as_ref().is_some_and(|i| i.header.script_id == *id));
++            for handler in &chunk.handlers {
++                let result = decompile_handler(handler, chunk, ctx, cast.dir_version, get_variable_multiplier(cast.capital_x, cast.dir_version));
++                scripts.push(json!({"cast": cast.id, "cast_name": cast.name, "script_id": id,
++                    "member": member.map(|(n,_)| n), "script": member.and_then(|(_,m)| m.chunk.member_info.as_ref().map(|i| &i.name)),
++                    "handler": result.name, "arguments": result.arguments,
++                    "source": result.lines.iter().map(|l| format!("{}{}", "  ".repeat(l.indent as usize), l.text)).collect::<Vec<_>>().join("\n")}));
++            }
++        }
++    }
++    println!("{}", serde_json::to_string_pretty(&json!({"file":path,"scripts":scripts})).unwrap());
++}
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/director/chunks/score.rs b/vm-rust/src/director/chunks/score.rs
+--- a/vm-rust/src/director/chunks/score.rs
++++ b/vm-rust/src/director/chunks/score.rs
+@@ -1142,6 +1142,25 @@
+     pub key_frames: Vec<u32>,
+ }
+ 
++/// Does this entry's first 20 bytes read as a real sprite-span header?
++///
++/// 40/44/48-byte entries used to be accepted on size alone. Some scores hold a
++/// 40/48-byte entry whose bytes are text rather than a span: Doomsday's
++/// end_frame read back as 0x6c756769 ("lugi") and Donkey Konk's as 0x526f6c6c
++/// ("Roll"). A single bad span raises the movie's `frame_count` to ~1.8
++/// billion, so `get_next_frame` never loops the playhead back to frame 1 and it
++/// runs on into empty frames — a stalled, black stage rather than a visible
++/// error. The 52+ branch keeps its own tighter start_frame bound.
++fn primary_header_plausible(entry: &[u8]) -> bool {
++    if entry.len() < 20 {
++        return false;
++    }
++    let start_frame = u32::from_be_bytes([entry[0], entry[1], entry[2], entry[3]]);
++    let end_frame = u32::from_be_bytes([entry[4], entry[5], entry[6], entry[7]]);
++    let channel_index = u32::from_be_bytes([entry[16], entry[17], entry[18], entry[19]]);
++    start_frame >= 1 && end_frame >= start_frame && end_frame <= 100000 && channel_index < 512
++}
++
+ impl FrameIntervalPrimary {
+     pub fn read(reader: &mut BinaryReader) -> Result<FrameIntervalPrimary, String> {
+         let start_frame = reader.read_u32()
+@@ -1885,7 +1904,7 @@
+             // — which reliably rejects the behavior/initializer chunks (their
+             // first u32s are cast ids or ASCII, far outside these ranges).
+             let n = entry_bytes.len();
+-            let size_accepted = matches!(n, 40 | 44 | 48)
++            let size_accepted = (matches!(n, 40 | 44 | 48) && primary_header_plausible(entry_bytes))
+                 || (n >= 52 && n % 4 == 0 && {
+                     let b = entry_bytes;
+                     let sf = u32::from_be_bytes([b[0], b[1], b[2], b[3]]);
+@@ -2178,6 +2197,45 @@
+ mod tests {
+     use super::*;
+     use binary_reader::{BinaryReader, Endian};
++
++    fn entry_with(start_frame: u32, end_frame: u32, channel_index: u32, len: usize) -> Vec<u8> {
++        let mut entry = vec![0u8; len];
++        entry[0..4].copy_from_slice(&start_frame.to_be_bytes());
++        entry[4..8].copy_from_slice(&end_frame.to_be_bytes());
++        entry[16..20].copy_from_slice(&channel_index.to_be_bytes());
++        entry
++    }
++
++    /// A real 40/44/48-byte sprite span still parses.
++    #[test]
++    fn plausible_primary_header_is_accepted() {
++        for len in [40usize, 44, 48] {
++            assert!(primary_header_plausible(&entry_with(1, 85, 6, len)), "{len}");
++        }
++        // A one-frame span in the highest ordinary channel is still a span.
++        assert!(primary_header_plausible(&entry_with(220, 220, 511, 40)));
++    }
++
++    /// Text-carrying entries of the same sizes are not spans. These are the
++    /// actual values observed in the collection: one of them alone pushed the
++    /// movie's frame_count past a billion and stopped it from looping.
++    #[test]
++    fn text_entry_is_not_a_primary_header() {
++        for (start_frame, end_frame) in [
++            (0x6c6c6f52u32, 0x526f6c6cu32), // Donkey Konk — "Roll"
++            (0x69677536, 0x6c756769),       // Doomsday — "lugi"
++            (0x203a7475, 0x75743a20),       // Excitebike — "ut: "
++            (0x4d437478, 0x7874434d),       // F-Zero X Academy Garage — "xtCM"
++        ] {
++            assert!(!primary_header_plausible(&entry_with(start_frame, end_frame, 6, 48)));
++        }
++        // Rejected on each field independently.
++        assert!(!primary_header_plausible(&entry_with(0, 85, 6, 40)), "start_frame 0");
++        assert!(!primary_header_plausible(&entry_with(90, 85, 6, 40)), "end before start");
++        assert!(!primary_header_plausible(&entry_with(1, 100001, 6, 40)), "end_frame too high");
++        assert!(!primary_header_plausible(&entry_with(1, 85, 512, 40)), "channel out of range");
++        assert!(!primary_header_plausible(&[0u8; 19]), "short entry");
++    }
+ 
+     /// Real sprite channel 0 from thead.dir (a Director 4.0.4 movie), frame 0.
+     /// Decoded from the VWSC delta stream. With the correct D4 layout this is
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/director/chunks/w3d/parser.rs b/vm-rust/src/director/chunks/w3d/parser.rs
+--- a/vm-rust/src/director/chunks/w3d/parser.rs
++++ b/vm-rust/src/director/chunks/w3d/parser.rs
+@@ -87,7 +87,7 @@
+             }
+ 
+             if let Err(e) = self.parse_block(&block) {
+-                log(&format!("Block {} parse error: {}", block_index, e));
++                crate::console_warn!("[W3D-PARSER] block {} ({}) parse error: {}", block_index, name, e);
+             }
+ 
+             // Align to 4 bytes
+@@ -879,11 +879,13 @@
+     fn parse_bones_block(&mut self, r: &mut W3dBlockReader) -> Result<(), String> {
+         let skel_name = Symbol::from_str(&r.read_ifx_string()?);
+         let num_bones = r.read_u32()?;
++        if num_bones as usize > r.remaining() / 42 {
++            return Err("Truncated W3D skeleton".into());
++        }
+ 
+         let mut skeleton = W3dSkeleton { name: skel_name, bones: Vec::with_capacity(num_bones as usize) };
+ 
+         for _ in 0..num_bones {
+-            if r.remaining() < 2 { break; }
+             let bone_name = Symbol::from_str(&r.read_ifx_string()?);
+             let parent_idx = r.read_u32()?;
+             let length = r.read_f32()?;
+@@ -896,6 +898,16 @@
+             let qy = r.read_f32()?;
+             let qz = r.read_f32()?;
+             let bone_attrs = r.read_u32()?;
++            // IFX stores a min/max pair for each rotation axis that is both
++            // active (bits 0..2) and limited (bits 3..5). Omitting these optional
++            // floats misreads the next bone name and drops the entire skeleton.
++            // Monster Bash's 109-bone rig contains 29 such pairs.
++            for axis in 0..3 {
++                if bone_attrs & (1 << axis) != 0 && bone_attrs & (1 << (axis + 3)) != 0 {
++                    let _minimum = r.read_f32()?;
++                    let _maximum = r.read_f32()?;
++                }
++            }
+ 
+             skeleton.bones.push(W3dBone {
+                 name: bone_name,
+@@ -1238,4 +1250,49 @@
+         1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+     ];
+     m.iter().zip(I.iter()).all(|(a, b)| (a - b).abs() < 1e-6)
++}
++
++#[cfg(test)]
++mod skeleton_tests {
++    use super::*;
++
++    #[test]
++    fn constrained_large_skeleton_preserves_every_bone() {
++        crate::player::symbols::symbol_table::init_symbol_table();
++        fn string(bytes: &mut Vec<u8>, value: &str) {
++            bytes.extend_from_slice(&(value.len() as u16).to_le_bytes());
++            bytes.extend_from_slice(value.as_bytes());
++        }
++        let mut bytes = Vec::new();
++        string(&mut bytes, "rig");
++        bytes.extend_from_slice(&110u32.to_le_bytes());
++        // Active-only and limit-only flags carry no pair; each combined axis
++        // carries two floats. A following named bone detects byte misalignment.
++        let cases = [(0u32, 0), (1, 0), (8, 0), (9, 1), (18, 1), (36, 1), (63, 3)];
++        for i in 0..110 {
++            string(&mut bytes, &format!("bone{i}"));
++            bytes.extend_from_slice(&if i == 0 { u32::MAX } else { i as u32 - 1 }.to_le_bytes());
++            for value in [1.0f32, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0] {
++                bytes.extend_from_slice(&value.to_le_bytes());
++            }
++            let (flags, pairs) = cases[i % cases.len()];
++            bytes.extend_from_slice(&flags.to_le_bytes());
++            for _ in 0..pairs {
++                bytes.extend_from_slice(&(-0.5f32).to_le_bytes());
++                bytes.extend_from_slice(&0.5f32.to_le_bytes());
++            }
++        }
++        let mut parser = W3dFileParser::new(vec![]);
++        let mut reader = W3dBlockReader::new(&bytes);
++        parser.parse_bones_block(&mut reader).unwrap();
++        assert_eq!(reader.remaining(), 0);
++        let skeleton = &parser.scene.skeletons[0];
++        assert_eq!(skeleton.bones.len(), 110);
++        assert_eq!(skeleton.bones[109].name.as_str(), "bone109");
++        assert_eq!(skeleton.bones[109].parent_index, 108);
++        assert_eq!(super::super::skeleton::build_bone_matrices(skeleton, None, 0.0).len(), 110);
++        let mut truncated = W3dFileParser::new(vec![]);
++        assert!(truncated.parse_bones_block(&mut W3dBlockReader::new(&bytes[..bytes.len()-1])).is_err());
++        assert!(truncated.scene.skeletons.is_empty());
++    }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/lib.rs b/vm-rust/src/lib.rs
+--- a/vm-rust/src/lib.rs
++++ b/vm-rust/src/lib.rs
+@@ -2314,6 +2314,40 @@
+     })
+ }
+ 
++/// Read-only animation diagnostics for one model. Mesh and motion arrays are
++/// summarized to keep captures bounded even for large game worlds.
++#[wasm_bindgen]
++pub fn mcp_inspect_3d_model(cast_lib: i32, cast_member: i32, model_name: String) -> String {
++    reserve_player_ref(|player| {
++        use serde_json::json;
++        let member_ref = CastMemberRef { cast_lib, cast_member };
++        let Some(w3d) = player.movie.cast_manager.find_member_by_ref(&member_ref)
++            .and_then(|member| member.member_type.as_shockwave3d()) else {
++            return json!({"error":"Not a Shockwave3D member"}).to_string();
++        };
++        let Some(scene) = &w3d.parsed_scene else {
++            return json!({"error":"Scene not loaded"}).to_string();
++        };
++        let name = Symbol::from_str(&model_name);
++        let Some(node) = scene.nodes.iter().find(|node| node.name == name) else {
++            return json!({"error":"Model not found"}).to_string();
++        };
++        let resource = if node.model_resource_name.is_empty() { node.resource_name } else { node.model_resource_name };
++        let skeleton = scene.skeletons.iter().find(|skeleton| skeleton.name == resource);
++        let bp = w3d.runtime_state.bones_player(name);
++        let motion = bp.and_then(|bp| bp.current_motion)
++            .and_then(|name| scene.motions.iter().find(|motion| motion.name == name));
++        json!({
++            "model":node.name.as_str(), "resource":resource.as_str(),
++            "skeletons":scene.skeletons.iter().take(128).map(|s| json!({"name":s.name.as_str(),"bones":s.bones.len()})).collect::<Vec<_>>(),
++            "bones":skeleton.map(|s| s.bones.iter().take(128).map(|b| json!({"name":b.name.as_str(),"parent":b.parent_index})).collect::<Vec<_>>()),
++            "motion":motion.map(|m| json!({"name":m.name.as_str(),"duration":m.duration(),"tracks":m.tracks.iter().take(128).map(|t| json!({"name":t.bone_name.as_str(),"keys":t.keyframes.len(),"first":t.keyframes.first().map(|k| k.time),"last":t.keyframes.last().map(|k| k.time)})).collect::<Vec<_>>() })),
++            "player":bp.map(|bp| json!({"time":bp.animation_time,"playing":bp.animation_playing,"ended":bp.motion_ended,"queue":bp.motion_queue.iter().take(32).map(|q| q.name.as_str()).collect::<Vec<_>>()})),
++            "meshes":scene.clod_meshes.get(&resource).map(|meshes| meshes.iter().take(32).map(|mesh| json!({"vertices":mesh.positions.len(),"weighted_vertices":mesh.bone_weights.len(),"indexed_vertices":mesh.bone_indices.len(),"first_indices":mesh.bone_indices.iter().take(4).collect::<Vec<_>>(),"first_weights":mesh.bone_weights.iter().take(4).collect::<Vec<_>>() })).collect::<Vec<_>>()),
++        }).to_string()
++    })
++}
++
+ #[wasm_bindgen]
+ pub fn mcp_get_call_stack(depth: i32, include_locals: bool) -> String {
+     reserve_player_ref(|player| {
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/bytecode/handler_manager.rs b/vm-rust/src/player/bytecode/handler_manager.rs
+--- a/vm-rust/src/player/bytecode/handler_manager.rs
++++ b/vm-rust/src/player/bytecode/handler_manager.rs
+@@ -251,6 +251,7 @@
+             OpCode::Get => GetSetBytecodeHandler::get(ctx),
+             OpCode::Mod => ArithmeticsBytecodeHandler::mod_handler(ctx),
+             OpCode::GetChunk => StringBytecodeHandler::get_chunk(ctx),
++            OpCode::HiliteChunk => StringBytecodeHandler::hilite_chunk(ctx),
+             OpCode::Put => StringBytecodeHandler::put(ctx),
+             OpCode::Or => CompareBytecodeHandler::or(ctx),
+             OpCode::Inv => ArithmeticsBytecodeHandler::inv(ctx),
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/bytecode/string.rs b/vm-rust/src/player/bytecode/string.rs
+--- a/vm-rust/src/player/bytecode/string.rs
++++ b/vm-rust/src/player/bytecode/string.rs
+@@ -263,6 +263,18 @@
+         }
+     }
+ 
++    fn decode_char_chunk(start: i32, end: i32, item_delimiter: char) -> StringChunkExpr {
++        // Director encodes `delete the last item` in the character operand
++        // using -30002. Galidor uses it for both .cst and _bkg suffixes.
++        // Ordinary `last char` remains -30000 in this same operand.
++        let (chunk_type, start) = if start == -30002 && end == 0 {
++            (StringChunkType::Item, -30000)
++        } else {
++            (StringChunkType::Char, start)
++        };
++        StringChunkExpr { chunk_type, start, end, item_delimiter }
++    }
++
+     fn read_single_chunk_ref(player: &mut DirPlayer, ctx: &BytecodeHandlerContext) -> Result<StringChunkExpr, ScriptError> {
+         // Pop the eight chunk operands WITHOUT materializing them. `stack.pop()`
+         // runs `into_ref()`, which allocates an arena datum for an inline
+@@ -315,12 +327,7 @@
+                 item_delimiter: player.movie.item_delimiter.to_owned(),
+             })
+         } else if first_char != 0 || last_char != 0 {
+-            Ok(StringChunkExpr {
+-                chunk_type: StringChunkType::Char,
+-                start: first_char,
+-                end: last_char,
+-                item_delimiter: player.movie.item_delimiter.to_owned(),
+-            })
++            Ok(Self::decode_char_chunk(first_char, last_char, player.movie.item_delimiter))
+         } else {
+             Err(ScriptError::new("getChunk: invalid chunk range".to_string()))
+         }
+@@ -384,12 +391,7 @@
+             });
+         }
+         if first_char != 0 || last_char != 0 {
+-            chunks.push(StringChunkExpr {
+-                chunk_type: StringChunkType::Char,
+-                start: first_char,
+-                end: last_char,
+-                item_delimiter: player.movie.item_delimiter.to_owned(),
+-            });
++            chunks.push(Self::decode_char_chunk(first_char, last_char, player.movie.item_delimiter));
+         }
+         
+         if chunks.is_empty() {
+@@ -459,6 +461,27 @@
+         })
+     }
+ 
++    pub fn hilite_chunk(ctx: &BytecodeHandlerContext) -> Result<HandlerExecutionResult, ScriptError> {
++        // The legacy opcode carries a field identifier followed by the same
++        // eight range operands as getChunk. Reuse chunk selection and hilite.
++        let args = reserve_player_mut(|player| {
++            let (id, cast) = read_context_var_args(player, 0x6, ctx.scope_ref);
++            let mut args = vec![id];
++            if let Some(cast) = cast { args.push(cast); }
++            args
++        });
++        let member = crate::player::handlers::movie::MovieHandlers::member(&args)?;
++        reserve_player_mut(|player| player.scopes[ctx.scope_ref].stack.push(member));
++        Self::get_chunk(ctx)?;
++        let chunk = reserve_player_mut(|player| player.scopes[ctx.scope_ref].stack.pop().unwrap());
++        crate::player::handlers::datum_handlers::string_chunk::StringChunkHandlers::call(
++            &chunk,
++            crate::player::symbols::symbol::Symbol::builtin(crate::player::symbols::builtin::BuiltInSymbol::Hilite),
++            &vec![],
++        )?;
++        Ok(HandlerExecutionResult::Advance)
++    }
++
+     pub fn delete_chunk(
+         ctx: &BytecodeHandlerContext,
+     ) -> Result<HandlerExecutionResult, ScriptError> {
+@@ -635,5 +658,20 @@
+             
+             Ok(HandlerExecutionResult::Advance)
+         })
++    }
++}
++
++#[cfg(test)]
++mod last_item_tests {
++    use super::*;
++
++    #[test]
++    fn compiled_last_item_removes_the_delimited_suffix() {
++        for (source, delimiter, expected) in [("zones2.cct", '.', "zones2"), ("zone_1_bkg", '_', "zone_1")] {
++            let chunk = StringBytecodeHandler::decode_char_chunk(-30002, 0, delimiter);
++            assert_eq!(StringChunkUtils::string_by_deleting_chunk(source, &chunk).unwrap(), expected);
++        }
++        let chunk = StringBytecodeHandler::decode_char_chunk(-30000, 0, '.');
++        assert_eq!(StringChunkUtils::string_by_deleting_chunk("zones2", &chunk).unwrap(), "zones");
+     }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/cast_lib.rs b/vm-rust/src/player/cast_lib.rs
+--- a/vm-rust/src/player/cast_lib.rs
++++ b/vm-rust/src/player/cast_lib.rs
+@@ -99,7 +99,11 @@
+     /// the hard bound here is the 16 bits `get_cast_slot_number` has for the
+     /// member index, so scan the whole encodable range.
+     pub fn first_free_member_id(&self) -> u32 {
+-        for i in 1..=0xFFFFu32 {
++        self.first_free_member_from(1)
++    }
++
++    pub fn first_free_member_from(&self, start: u32) -> u32 {
++        for i in start.max(1)..=0xFFFFu32 {
+             if !self.members.contains_key(&i) {
+                 return i;
+             }
+@@ -818,6 +822,19 @@
+         let mut m = CastMember::new(number, CastMemberType::Field(FieldMember::new()));
+         m.name = name.to_string();
+         m
++    }
++
++    #[test]
++    fn free_slot_search_includes_members_created_after_loading() {
++        let mut cast = empty_cast();
++        for slot in 1..=300 {
++            assert_eq!(cast.first_free_member_from(1), slot);
++            cast.insert_member(slot, field_member(slot, ""));
++        }
++        assert_eq!(cast.first_free_member_from(54), 301);
++        cast.members.remove(&57);
++        assert_eq!(cast.first_free_member_from(54), 57);
++        assert_eq!(cast.first_free_member_from(58), 301);
+     }
+ 
+     #[test]
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/cast_manager.rs b/vm-rust/src/player/cast_manager.rs
+--- a/vm-rust/src/player/cast_manager.rs
++++ b/vm-rust/src/player/cast_manager.rs
+@@ -506,7 +506,7 @@
+         };
+ 
+         let member_ref = match (&member_name_or_num, cast_lib.as_ref()) {
+-            (Datum::String(name), Some(cast_lib)) => {
++            (Datum::String(name) | Datum::StringChunk(_, _, name), Some(cast_lib)) => {
+                 cast_lib.find_member_by_name(name).map(|member| {
+                     Ok(Some(CastMemberRef {
+                         cast_lib: cast_lib.number as i32,
+@@ -514,7 +514,7 @@
+                     }))
+                 })
+             }
+-            (Datum::String(name), None) => self
++            (Datum::String(name) | Datum::StringChunk(_, _, name), None) => self
+                 .find_member_ref_by_name(name)
+                 .map(|member_ref| Ok(Some(member_ref))),
+             (Datum::Int(num), Some(cast_lib)) => {
+@@ -774,16 +774,12 @@
+                 crate::player::symbols::symbol::Symbol,
+                 crate::player::script::ScriptHandlerRef,
+             > = FxHashMap::default();
+-            // Build in the same order get_movie_scripts produces (cast/member
+-            // order); first writer wins so the lowest-numbered script holding a
+-            // duplicate name takes precedence.
+-            for cast in &self.casts {
+-                for script in cast.scripts.values() {
+-                    if let ScriptType::Movie = script.script_type {
+-                        for handler_name in script.handlers.keys() {
+-                            map.entry(*handler_name)
+-                                .or_insert_with(|| (script.member_ref.clone(), *handler_name));
+-                        }
++            // Use the same ordered script list as event dispatch and lookup.
++            if let Some(scripts) = self.get_movie_scripts().as_ref() {
++                for script in scripts {
++                    for handler_name in script.handlers.keys() {
++                        map.entry(*handler_name)
++                            .or_insert_with(|| (script.member_ref.clone(), *handler_name));
+                     }
+                 }
+             }
+@@ -839,6 +835,10 @@
+                     }
+                 }
+             }
++            // Director searches movie scripts in ascending cast-member order.
++            // Iterating the cast's hash map picked Galidor's unused duplicate
++            // getRemoteLoader instead of the earlier handler in startstop.
++            result.sort_by_key(|s| (s.member_ref.cast_lib, s.member_ref.cast_member));
+             self.movie_script_cache.replace(Some(result));
+         }
+         let cell = self.movie_script_cache.borrow();
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/cast_member.rs b/vm-rust/src/player/cast_member.rs
+--- a/vm-rust/src/player/cast_member.rs
++++ b/vm-rust/src/player/cast_member.rs
+@@ -1281,6 +1281,7 @@
+     pub root_lock: bool,
+     pub animation_scale: f32,
+     pub motion_ended: bool,
++    pub animation_started: bool,
+     pub previous_motion: Option<Symbol>,
+     pub blend_weight: f32,
+     pub blend_duration: f32,
+@@ -1302,6 +1303,7 @@
+             root_lock: false,
+             animation_scale: 1.0,
+             motion_ended: false,
++            animation_started: false,
+             previous_motion: None,
+             blend_weight: 1.0,
+             blend_duration: 0.0,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/datum_formatting.rs b/vm-rust/src/player/datum_formatting.rs
+--- a/vm-rust/src/player/datum_formatting.rs
++++ b/vm-rust/src/player/datum_formatting.rs
+@@ -48,15 +48,14 @@
+         }
+         Datum::ScriptInstanceRef(instance_ref) => {
+             let instance = player.allocator.get_script_instance(instance_ref);
+-            if let Some(script) = player
+-                .movie
+-                .cast_manager
+-                .get_script_by_ref(&instance.script)
+-            {
+-                format!("<offspring {} {} _>", script.name, instance_ref)
+-            } else {
+-                format!("<offspring {} {} _>", "(stale)", instance_ref)
+-            }
++            let script_name = player.movie.cast_manager.get_script_by_ref(&instance.script)
++                .map(|script| script.name.as_str()).unwrap_or("(stale)");
++            // Director exposes a quoted script name, reference count and stable
++            // object identity. Games parse the last token to key object maps.
++            let references = player.allocator.get_script_instance_entry(instance_ref.id())
++                .map(|entry| unsafe { *entry.ref_count.get() }).unwrap_or(0);
++            format!("<offspring \"{}\" {} {:x}>", script_name, references, instance_ref.id())
++
+         }
+         Datum::CastMember(member_ref) => {
+             format!(
+@@ -325,4 +324,63 @@
+     let _ = js_sys::Reflect::set(&o, &"month".into(), &"2-digit".into());
+     let _ = js_sys::Reflect::set(&o, &"year".into(), &"numeric".into());
+     o
++}
++
++#[cfg(all(test, not(target_arch = "wasm32")))]
++mod object_identity_tests {
++    use super::*;
++    use crate::player::{
++        cast_lib::CastMemberRef, handlers::types::TypeUtils,
++        reserve_player_mut, reserve_player_ref, script::ScriptInstance,
++        symbols::{builtin::BuiltInSymbol, symbol::Symbol, symbol_table::init_symbol_table},
++        testing::{run_test, TestPlayer},
++    };
++
++    #[test]
++    fn object_strings_keep_unique_ids_when_references_change() {
++        init_symbol_table();
++        run_test(async {
++            let _player = TestPlayer::new();
++            let (first, second) = reserve_player_mut(|player| {
++                let mut make = || {
++                    let instance = ScriptInstance {
++                        instance_id: player.allocator.get_free_script_instance_id(),
++                        script: CastMemberRef { cast_lib: 1, cast_member: 99 },
++                        ancestor: None, properties: Default::default(), begin_sprite_called: false,
++                    };
++                    Datum::ScriptInstanceRef(player.allocator.alloc_script_instance(instance))
++                };
++                (make(), make())
++            });
++            let before = reserve_player_ref(|player| format_concrete_datum(&first, player));
++            let copy = first.clone();
++            let (after, other) = reserve_player_ref(|player| (
++                format_concrete_datum(&copy, player), format_concrete_datum(&second, player)
++            ));
++            // These are the fields parsed by legacy object registries.
++            assert_eq!(before.split('"').nth(1), Some("(stale)"));
++            assert_eq!(before.split_whitespace().last(), after.split_whitespace().last());
++            assert_ne!(before.split_whitespace().last(), other.split_whitespace().last());
++            assert_ne!(before, after); // The reference count changed, the ID did not.
++            assert_eq!(TypeUtils::get_datum_ilk(&first).unwrap(), BuiltInSymbol::Instance);
++            assert!(TypeUtils::is_datum_ilk(&first, Symbol::from_str("object")).unwrap());
++        });
++    }
++
++    #[test]
++    fn object_alias_preserves_primary_types_and_rejects_values() {
++        let _global = crate::player::testing::lock_global_state();
++        init_symbol_table();
++        for (datum, primary) in [(Datum::SpriteRef(1), BuiltInSymbol::Sprite),
++            (Datum::CastLib(1), BuiltInSymbol::CastLib),
++            (Datum::CastMember(CastMemberRef { cast_lib: 1, cast_member: 1 }), BuiltInSymbol::Member)] {
++            let kinds = TypeUtils::get_datum_ilks(&datum).unwrap();
++            assert_eq!(kinds[0], primary);
++            assert!(TypeUtils::is_datum_ilk(&datum, Symbol::from_str("object")).unwrap());
++        }
++        for datum in [Datum::Void, Datum::Int(1), Datum::String("object".into()),
++            Datum::CastMember(CastMemberRef { cast_lib: -1, cast_member: -1 })] {
++            assert!(!TypeUtils::is_datum_ilk(&datum, Symbol::from_str("object")).unwrap());
++        }
++    }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/eval.rs b/vm-rust/src/player/eval.rs
+--- a/vm-rust/src/player/eval.rs
++++ b/vm-rust/src/player/eval.rs
+@@ -370,52 +370,9 @@
+                 None
+             };
+ 
+-            reserve_player_mut(|player| {
+-                let member_id_datum = player.get_datum(&member_id_ref).clone();
+-
+-                // Get cast lib datum if specified
+-                let cast_lib_datum = cast_lib_ref.as_ref().map(|r| player.get_datum(r).clone());
+-
+-                // Use find_member_ref_by_identifiers for proper member lookup
+-                // This handles both string names and numeric member IDs
+-                let member_result = player.movie.cast_manager.find_member_ref_by_identifiers(
+-                    &member_id_datum,
+-                    cast_lib_datum.as_ref(),
+-                    &player.allocator,
+-                )?;
+-
+-                let member_ref = match member_result {
+-                    Some(r) => r,
+-                    None => {
+-                        // If cast_lib was specified, create a ref with the specified values
+-                        // Otherwise return invalid ref
+-                        if let Some(cast_datum) = cast_lib_datum {
+-                            let cast_lib_num = match &cast_datum {
+-                                Datum::Int(num) => *num,
+-                                Datum::CastLib(num) => *num as i32,
+-                                Datum::String(name) => {
+-                                    player.movie.cast_manager.get_cast_by_name(name)
+-                                        .map(|c| c.number as i32)
+-                                        .unwrap_or(0)
+-                                }
+-                                _ => return Err(ScriptError::new(format!(
+-                                    "Expected int, string, or castLib, got {:?}",
+-                                    cast_datum.type_enum()
+-                                ))),
+-                            };
+-                            let member_num = member_id_datum.int_value().unwrap_or(0);
+-                            super::cast_lib::CastMemberRef {
+-                                cast_lib: cast_lib_num,
+-                                cast_member: member_num,
+-                            }
+-                        } else {
+-                            INVALID_CAST_MEMBER_REF
+-                        }
+-                    }
+-                };
+-
+-                Ok(player.alloc_datum(Datum::CastMember(member_ref)))
+-            })
++            let mut args = vec![member_id_ref];
++            if let Some(cast_lib_ref) = cast_lib_ref { args.push(cast_lib_ref); }
++            crate::player::handlers::movie::MovieHandlers::member(&args)
+         }
+         Rule::castlib_ref => {
+             let mut inner = pair.into_inner();
+@@ -572,6 +529,31 @@
+     }
+ }
+ 
++// `do` executes in its caller's scope. Resolve declared locals and arguments
++// before receiver properties/globals, just as identifier reads do.
++fn set_do_local_or_arg(player: &mut DirPlayer, name: &str, value: &DatumRef) -> bool {
++    let Some(last) = player.scope_count.checked_sub(1) else { return false; };
++    let idx = if player.current_breakpoint.is_some() {
++        player.eval_scope_index.unwrap_or(last)
++    } else { last } as usize;
++    let Some(scope) = player.scopes.get(idx) else { return false; };
++    let Some(script) = player.movie.cast_manager.get_script_by_ref(&scope.script_ref) else { return false; };
++    let Some(handler) = script.get_own_handler_by_local_name_id(scope.handler_name_id) else { return false; };
++    let Some(lctx) = get_lctx_for_script(player, &script) else { return false; };
++    let Some(name_id) = lctx.names.iter().position(|n| n.eq_ignore_ascii_case(name)) else { return false; };
++    if let Some(slot) = handler.local_name_ids.iter().position(|&id| id as usize == name_id) {
++        player.scopes[idx].set_local(slot, crate::player::scope::StackDatum::Ref(value.clone()));
++        return true;
++    }
++    if let Some(slot) = handler.argument_name_ids.iter().position(|&id| id as usize == name_id) {
++        let args = &mut player.scopes[idx].args;
++        args.resize(args.len().max(slot + 1), DatumRef::Void);
++        args[slot] = value.clone();
++        return true;
++    }
++    false
++}
++
+ /// For a bare-identifier assignment executed via `do`/eval, return the current
+ /// scope's receiver instance IF it declares `ident_name` as a property — so the
+ /// assignment lands on the behavior's property rather than a global (Director
+@@ -1983,53 +1965,9 @@
+                 None
+             };
+ 
+-            reserve_player_mut(|player| {
+-                let member_id_datum = player.get_datum(&member_id_ref).clone();
+-
+-                // Get cast lib datum if specified
+-                let cast_lib_datum = cast_lib_ref.as_ref().map(|r| player.get_datum(r).clone());
+-
+-                // Use find_member_ref_by_identifiers for proper member lookup
+-                // This handles both string names and numeric member IDs
+-                let member_result = player.movie.cast_manager.find_member_ref_by_identifiers(
+-                    &member_id_datum,
+-                    cast_lib_datum.as_ref(),
+-                    &player.allocator,
+-                )?;
+-
+-                let member_ref = match member_result {
+-                    Some(r) => r,
+-                    None => {
+-                        // If cast_lib was specified, create a ref with member 0
+-                        // Otherwise return invalid ref
+-                        if let Some(cast_datum) = cast_lib_datum {
+-                            let cast_lib_num = match &cast_datum {
+-                                Datum::Int(num) => *num,
+-                                Datum::CastLib(num) => *num as i32,
+-                                Datum::String(name) => {
+-                                    player.movie.cast_manager.get_cast_by_name(name)
+-                                        .map(|c| c.number as i32)
+-                                        .unwrap_or(0)
+-                                }
+-                                _ => return Err(ScriptError::new(format!(
+-                                    "Expected int, string, or castLib, got {:?}",
+-                                    cast_datum.type_enum()
+-                                ))),
+-                            };
+-                            // Try to get member number for explicit reference
+-                            let member_num = member_id_datum.int_value().unwrap_or(0);
+-                            super::cast_lib::CastMemberRef {
+-                                cast_lib: cast_lib_num,
+-                                cast_member: member_num,
+-                            }
+-                        } else {
+-                            super::cast_lib::INVALID_CAST_MEMBER_REF
+-                        }
+-                    }
+-                };
+-
+-                Ok(player.alloc_datum(Datum::CastMember(member_ref)))
+-            })
++            let mut args = vec![member_id_ref];
++            if let Some(cast_lib_ref) = cast_lib_ref { args.push(cast_lib_ref); }
++            crate::player::handlers::movie::MovieHandlers::member(&args)
+         }
+         LingoExpr::Identifier(ident_name) => {
+             reserve_player_mut(|player| get_eval_top_level_prop(player, ident_name))
+@@ -2054,6 +1992,9 @@
+                         player.set_movie_prop(Symbol::from_str(prop_name), right_datum_value)?;
+                         Ok(right_datum)
+                     } else {
++                        if set_do_local_or_arg(player, ident_name, &right_datum) {
++                            return Ok(right_datum);
++                        }
+                         // Director scoping for `do`/eval: a bare-identifier
+                         // assignment targets the current handler's receiver
+                         // PROPERTY when one is declared, and only otherwise a
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/events.rs b/vm-rust/src/player/events.rs
+--- a/vm-rust/src/player/events.rs
++++ b/vm-rust/src/player/events.rs
+@@ -108,19 +108,21 @@
+ /// so with mouseWithin only on movement, a click on a stationary cursor was
+ /// never seen.
+ ///
+-/// Only the front-most sprite under the pointer is hovered, as in Director,
+-/// where these events follow `the rollover`: a sprite covered by another does
+-/// not see the pointer at all. Sending them to every overlapping sprite that
+-/// had a handler let a lower sprite's mouseEnter run after the front-most
+-/// sprite's and undo it (Matematik i Maaneby's map: a ground patch carrying
+-/// one house's behaviour sits under another house, and a pointer landing on
+-/// the house lit it and then unlit it in the same event).
++/// Hover the front-most interactive sprite. Decorative artwork over a button
++/// must not swallow its events (Merlin 1's Start label overlays its behavior).
++/// A second interactive sprite behind it must not receive a second rollover.
++/// This follows Director's active-sprite event routing, also implemented by
++/// ScummVM's Score::getMouseSpriteIDFromPos / Sprite::respondsToMouse.
+ pub fn dispatch_rollover_events() {
+     let (now_hovered, prev_hovered) = reserve_player_mut(|player| {
+         let (x, y) = player.mouse_loc;
+         let prev_hovered = std::mem::take(&mut player.hovered_sprites);
+-        let now_hovered: Vec<i16> = crate::player::score::get_sprites_at(player, x, y)
+-            .first()
++        let hits = crate::player::score::get_sprites_at(player, x, y);
++        let now_hovered: Vec<i16> = hits.iter()
++            .find(|num| player.movie.score.get_sprite(**num as i16)
++                .map(|sprite| crate::player::score::is_active_sprite(player, sprite))
++                .unwrap_or(false))
++            .or_else(|| hits.first())
+             .map(|num| *num as i16)
+             .into_iter()
+             .collect();
+@@ -606,9 +608,8 @@
+ /// type (always 0), delta (ms since the last fire), time (ms since the
+ /// first fire), duration (total ms over all repetitions, or 0 for
+ /// infinite), and systemTime (absolute ms). Other event types
+-/// (#collideAny / #collideWith / #animationStarted / #animationEnded)
+-/// are stored by registerForEvent but not fired here — their producers
+-/// aren't wired up yet.
++/// are handled by their own producers. Animation notifications are dispatched
++/// by tick_w3d_animations; collision notifications remain unsupported.
+ pub async fn dispatch_w3d_timer_events() {
+     use crate::player::cast_member::CastMemberType;
+ 
+@@ -638,7 +639,7 @@
+                 .unwrap_or_default();
+             for member_num in member_numbers {
+                 let member_ref = crate::player::cast_lib::CastMemberRef {
+-                    cast_lib: cast_idx as i32,
++                    cast_lib: cast_idx as i32 + 1,
+                     cast_member: member_num as i32,
+                 };
+                 let Some(member) = player.movie.cast_manager.find_mut_member_by_ref(&member_ref)
+@@ -741,7 +742,8 @@
+         // Cap at 100ms to avoid catastrophic jumps after a tab-pause.
+         ((now_ms.saturating_sub(last)) as f32 / 1000.0).min(0.1)
+     };
+-    reserve_player_mut(|player| {
++    let fires = reserve_player_mut(|player| {
++        let mut fires = Vec::new();
+         for cast in player.movie.cast_manager.casts.iter_mut() {
+             for (_, member) in cast.members.iter_mut() {
+                 if let CastMemberType::Shockwave3d(w3d) = &mut member.member_type {
+@@ -758,8 +760,15 @@
+                         let nl = name.to_ascii_lowercase();
+                         motion_durations.iter().find(|(n, _)| *n == nl).map(|(_, d)| *d).unwrap_or(0.0)
+                     };
++                    let mut notifications = Vec::new();
+                     for bp in w3d.runtime_state.bones_players.values_mut() {
+                         if !bp.animation_playing || bp.motion_ended { continue; }
++                        if !bp.animation_started {
++                            if let Some(motion) = bp.current_motion {
++                                notifications.push((Symbol::from_str("animationStarted"), motion, bp.animation_time));
++                                bp.animation_started = true;
++                            }
++                        }
+                         bp.animation_time += dt_seconds * bp.play_rate * bp.animation_scale;
+                         if bp.blend_weight < 1.0 && bp.blend_duration > 0.0 {
+                             bp.blend_elapsed += dt_seconds;
+@@ -773,6 +782,7 @@
+                                     bp.animation_end_time.min(duration)
+                                 } else { duration };
+                                 if eff_end > 0.0 && bp.animation_time >= eff_end {
++                                    notifications.push((Symbol::from_str("animationEnded"), cur, eff_end));
+                                     if !bp.motion_queue.is_empty() {
+                                         let q = bp.motion_queue.remove(0);
+                                         bp.current_motion = Some(Symbol::from_str(&q.name.to_string()));
+@@ -782,6 +792,8 @@
+                                         bp.animation_scale = q.scale;
+                                         bp.animation_time = if q.offset >= 0.0 { q.offset } else { q.start_time };
+                                         bp.motion_ended = false;
++                                        bp.animation_started = true;
++                                        notifications.push((Symbol::from_str("animationStarted"), q.name, bp.animation_time));
+                                         bp.previous_motion = None;
+                                         bp.blend_weight = 1.0;
+                                     } else {
+@@ -793,6 +805,14 @@
+                         }
+                     }
+ 
++                    for (event_name, motion, time) in notifications {
++                        for event in &w3d.runtime_state.registered_events {
++                            if event.event_name == event_name {
++                                fires.push((event.clone(), event_name, motion, time));
++                            }
++                        }
++                    }
++
+                     // ── Legacy member clock (keyframe / motion_transforms path) ──
+                     if w3d.runtime_state.animation_playing {
+                         let rate = w3d.runtime_state.play_rate;
+@@ -807,7 +827,23 @@
+                 }
+             }
+         }
++        fires
+     });
++    // Call Lingo after releasing the player borrow; callbacks may queue another
++    // motion, register timers, or change the world.
++    for (event, event_name, motion, time) in fires {
++        player_wait_available().await;
++        let args = reserve_player_mut(|player| vec![
++            player.alloc_datum(Datum::Symbol(event_name)),
++            player.alloc_datum(Datum::String(motion.to_string())),
++            player.alloc_datum(Datum::Float(time as f64 * 1000.0)),
++        ]);
++        if let Some(instance) = event.script_instance {
++            let _ = player_invoke_event_to_instances(event.handler_name, &args, &vec![instance]).await;
++        } else {
++            let _ = player_invoke_static_event(event.handler_name, &args).await;
++        }
++    }
+ }
+ 
+ /// Advance every W3D member's #particle systems once per frame. Separate from
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/cast.rs b/vm-rust/src/player/handlers/cast.rs
+--- a/vm-rust/src/player/handlers/cast.rs
++++ b/vm-rust/src/player/handlers/cast.rs
+@@ -26,11 +26,6 @@
+         reserve_player_mut(|player| {
+             let member_ref = player.get_datum(&args[0]).to_member_ref()?;
+ 
+-            let (c_start, c_end) = match &player.movie.file {
+-                Some(file) => (file.config.min_member as u32, file.config.max_member as u32),
+-                None => return Err(ScriptError::new("findEmpty: no movie file loaded".to_string())),
+-            };
+-
+             let cast_lib = if member_ref.cast_lib > 0 {
+                 member_ref.cast_lib as u32
+             } else {
+@@ -38,18 +33,10 @@
+             };
+             let cast = player.movie.cast_manager.get_cast(cast_lib)?;
+ 
+-            let member_num = member_ref.cast_member as u32;
+-            if member_num > c_end {
+-                return Ok(player.alloc_datum(Datum::Int(member_num as i32)));
+-            }
+-
+-            let start = if member_num > c_start { member_num } else { c_start };
+-            for slot in start..=c_end {
+-                if !cast.members.contains_key(&slot) {
+-                    return Ok(player.alloc_datum(Datum::Int(slot as i32)));
+-                }
+-            }
+-            Ok(player.alloc_datum(Datum::Int(c_end as i32 + 1)))
++            // Runtime-created members can extend beyond the authored movie's
++            // max_member. Search the live cast or later pools overwrite them.
++            let slot = cast.first_free_member_from(member_ref.cast_member.max(1) as u32);
++            Ok(player.alloc_datum(Datum::Int(slot as i32)))
+         })
+     }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/cast_lib.rs b/vm-rust/src/player/handlers/datum_handlers/cast_lib.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/cast_lib.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/cast_lib.rs
+@@ -131,29 +131,14 @@
+                 }
+             };
+ 
+-            let (c_start, c_end) = match &player.movie.file {
+-                Some(file) => (file.config.min_member as u32, file.config.max_member as u32),
+-                None => return Err(ScriptError::new("findEmpty: no movie file loaded".to_string())),
+-            };
+-
+-            let start = if !args.is_empty() {
+-                let member_ref = player.get_datum(&args[0]).to_member_ref()?;
+-                let member_num = member_ref.cast_member as u32;
+-                if member_num > c_end {
+-                    return Ok(player.alloc_datum(Datum::Int(member_num as i32)));
+-                }
+-                if member_num > c_start { member_num } else { c_start }
++            let start = if let Some(arg) = args.first() {
++                player.get_datum(arg).to_member_ref()?.cast_member.max(1) as u32
+             } else {
+-                c_start
++                1
+             };
+-
+             let cast = player.movie.cast_manager.get_cast(cast_lib_num)?;
+-            for slot in start..=c_end {
+-                if !cast.members.contains_key(&slot) {
+-                    return Ok(player.alloc_datum(Datum::Int(slot as i32)));
+-                }
+-            }
+-            Ok(player.alloc_datum(Datum::Int(c_end as i32 + 1)))
++            let slot = cast.first_free_member_from(start);
++            Ok(player.alloc_datum(Datum::Int(slot as i32)))
+         })
+     }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/cast_member/shockwave3d.rs b/vm-rust/src/player/handlers/datum_handlers/cast_member/shockwave3d.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/cast_member/shockwave3d.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/cast_member/shockwave3d.rs
+@@ -1251,8 +1251,8 @@
+                     if handler_name_builtin == BuiltInSymbol::RegisterForEvent || handler_name_builtin == BuiltInSymbol::RegisterScript {
+                         // member.registerForEvent(eventName, handlerName, scriptObject {, begin, period, repetitions})
+                         // For #timeMS this drives the dispatcher in `dispatch_w3d_timer_events`.
+-                        // Other event names are stored but never fired (their producers —
+-                        // collision callbacks, animation start/end notifications — aren't wired).
++                        // Animation start/end notifications come from tick_w3d_animations.
++                        // Collision registrations are retained but not dispatched yet.
+                         let event_name = args.get(0)
+                             .map(|a| {
+                                 let d = player.get_datum(a);
+@@ -1286,7 +1286,7 @@
+                         let now_ms = crate::player::testing_shared::now_ms();
+                         let event = crate::player::cast_member::RegisteredW3dEvent {
+                             event_name,
+-                            handler_name,
++                            handler_name: handler_sym,
+                             script_instance,
+                             begin_ms,
+                             period_ms,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/cast_member_ref.rs b/vm-rust/src/player/handlers/datum_handlers/cast_member_ref.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/cast_member_ref.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/cast_member_ref.rs
+@@ -916,7 +916,7 @@
+                         };
+                         Ok(Datum::Symbol(Symbol::from_str(symbol)))
+                     }
+-                    Some(BuiltInSymbol::Ilk) => Ok(Datum::Symbol(Symbol::from_str("script"))),
++                    Some(BuiltInSymbol::Ilk) => Ok(Datum::Symbol(Symbol::from_str("member"))),
+                     _ => Err(ScriptError::new(format!("Script members don't support property {}", prop))),
+                 }
+             }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/mod.rs b/vm-rust/src/player/handlers/datum_handlers/mod.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/mod.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/mod.rs
+@@ -350,15 +350,29 @@
+                         // the <_movie> wording) — callers use that code to decide
+                         // whether to keep searching; a genuine failure *inside* a
+                         // known handler must keep its own error.
+-                        BuiltInHandlerManager::call_handler(handler_name, &args).map_err(|e| {
+-                            if e.message.starts_with("No built-in handler:") {
+-                                ScriptError::new_code(
+-                                    ScriptErrorCode::HandlerNotFound,
+-                                    format!("No handler {handler_name} for datum <_movie>"),
+-                                )
+-                            } else {
+-                                e
++                        BuiltInHandlerManager::call_handler(handler_name, &args).or_else(|e| {
++                            if !e.message.starts_with("No built-in handler:") {
++                                return Err(e);
+                             }
++                            // Director reads a movie PROPERTY through call syntax
++                            // too: Redline Rumble Revolution's `[M] Misc.goto` uses
++                            // `_movie.markerlist().count` and `_movie.markerlist()[i]`,
++                            // parentheses and all, so the name arrives here as a
++                            // handler rather than through the GetProp path above.
++                            // Only a bare `receiver()` call can be a property read —
++                            // anything carrying arguments is a real method call and
++                            // keeps its HandlerNotFound.
++                            if args.len() == 1 {
++                                if let Ok(value) =
++                                    reserve_player_mut(|player| player.get_movie_prop(handler_name))
++                                {
++                                    return Ok(value);
++                                }
++                            }
++                            Err(ScriptError::new_code(
++                                ScriptErrorCode::HandlerNotFound,
++                                format!("No handler {handler_name} for datum <_movie>"),
++                            ))
+                         })
+                     }
+                 }
+@@ -376,8 +390,9 @@
+                     reserve_player_mut(|player| {
+                         use crate::director::lingo::datum::Datum;
+                         let prop_name = player.get_datum(&args[0]).symbol_value()?;
+-                        let prop_datum = crate::player::stage::get_stage_prop(player, prop_name)?;
++                        let prop_ref = crate::player::stage::get_stage_prop(player, prop_name)?;
+                         if args.len() > 1 {
++                            let prop_datum = player.get_datum(&prop_ref).clone();
+                             let index = player.get_datum(&args[1]).int_value()?;
+                             let idx = (index as usize).saturating_sub(1);
+                             match prop_datum {
+@@ -395,7 +410,7 @@
+                                 other => Ok(player.alloc_datum(other)),
+                             }
+                         } else {
+-                            Ok(player.alloc_datum(prop_datum))
++                            Ok(prop_ref)
+                         }
+                     })
+                 }
+@@ -403,7 +418,7 @@
+                     // Bare property/method access: try get_stage_prop, else VOID.
+                     reserve_player_mut(|player| {
+                         match crate::player::stage::get_stage_prop(player, handler_name) {
+-                            Ok(d) => Ok(player.alloc_datum(d)),
++                            Ok(d) => Ok(d),
+                             Err(_) => Ok(DatumRef::Void),
+                         }
+                     })
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/script_instance.rs b/vm-rust/src/player/handlers/datum_handlers/script_instance.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/script_instance.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/script_instance.rs
+@@ -169,34 +169,7 @@
+                 ))
+             }
+         };
+-        match key.as_lower_str() {
+-            "ancestor" => {
+-                let value_datum = player.get_datum(value).to_owned();
+-                match value_datum {
+-                    Datum::Void => {
+-                        // No-op — see the matching arm in script.rs::script_set_prop.
+-                        // Habbo v7's Thread Manager assigns VOID mid-chain and
+-                        // relies on the previously-set ancestor surviving.
+-                        Ok(())
+-                    }
+-                    Datum::ScriptInstanceRef(ancestor_instance_id) => {
+-                        let script_instance =
+-                            player.allocator.get_script_instance_mut(&self_instance_id);
+-                        script_instance.ancestor = Some(ancestor_instance_id);
+-                        Ok(())
+-                    }
+-                    // For non-ScriptInstanceRef ancestors (like TimeoutInstance),
+-                    // store in properties map so method calls can be delegated
+-                    _ => {
+-                        let script_instance =
+-                            player.allocator.get_script_instance_mut(&self_instance_id);
+-                        script_instance.properties.insert(Symbol::builtin(BuiltInSymbol::Ancestor), value.clone());
+-                        Ok(())
+-                    }
+-                }
+-            }
+-            _ => script_set_prop(player, &self_instance_id, key, value, false),
+-        }
++        script_set_prop(player, &self_instance_id, key, value, false)
+     }
+ }
+ 
+@@ -264,6 +237,9 @@
+             // Check if there's a non-ScriptInstance ancestor that might handle this
+             if let Some(ancestor_ref) = Self::find_non_script_ancestor(datum, player) {
+                 let ancestor_datum = player.get_datum(&ancestor_ref);
++                if matches!(ancestor_datum, Datum::SpriteRef(_)) {
++                    return super::sprite::SpriteDatumHandlers::has_async_handler(&ancestor_ref, name.as_str());
++                }
+                 // For TimeoutInstance, check if the method is a timeout method
+                 if let Datum::TimeoutInstance(_) = ancestor_datum {
+                     if name.eq_builtin(BuiltInSymbol::Forget) || name.eq_builtin(BuiltInSymbol::New) {
+@@ -341,6 +317,9 @@
+                 use super::timeout::TimeoutDatumHandlers;
+ 
+                 match ancestor_type {
++                    DatumType::SpriteRef => {
++                        return Box::pin(super::sprite::SpriteDatumHandlers::call_async(ancestor_ref, handler_name, args)).await;
++                    }
+                     DatumType::TimeoutRef | DatumType::TimeoutInstance | DatumType::TimeoutFactory => {
+                         // For timeouts, use the sync call handler which handles forget
+                         // We avoid call_async to prevent async recursion issues
+@@ -619,6 +598,9 @@
+                     use super::timeout::TimeoutDatumHandlers;
+ 
+                     match ancestor_type {
++                        DatumType::SpriteRef => {
++                            return super::sprite::SpriteDatumHandlers::call(&ancestor_ref, handler_name.as_str(), args);
++                        }
+                         DatumType::TimeoutRef | DatumType::TimeoutInstance | DatumType::TimeoutFactory => {
+                             return TimeoutDatumHandlers::call(&ancestor_ref, handler_name, args);
+                         }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/shockwave3d_object.rs b/vm-rust/src/player/handlers/datum_handlers/shockwave3d_object.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/shockwave3d_object.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/shockwave3d_object.rs
+@@ -3124,6 +3124,7 @@
+                                     bp.animation_end_time = end_time_ms as f32 / 1000.0;
+                                     bp.animation_scale = scale as f32;
+                                     bp.motion_ended = false;
++                                    bp.animation_started = false;
+ 
+                                     // Determine initial animation time from offset
+                                     if offset_ms == f64::NEG_INFINITY {
+@@ -3164,6 +3165,7 @@
+                                         bp.animation_scale = q.scale;
+                                         bp.animation_time = if q.offset >= 0.0 { q.offset } else { q.start_time };
+                                         bp.motion_ended = false;
++                                    bp.animation_started = false;
+                                         bp.previous_motion = None;
+                                         bp.blend_weight = 1.0;
+                                     }
+@@ -3200,7 +3202,20 @@
+                         let model_name = s3d_ref.name.clone();
+                         if let Some(member) = player.movie.cast_manager.find_mut_member_by_ref(&member_ref) {
+                             if let Some(w3d) = member.member_type.as_shockwave3d_mut() {
+-                                w3d.runtime_state.bones_player_mut(model_name).motion_queue.push(queued);
++                                let bp = w3d.runtime_state.bones_player_mut(model_name);
++                                if bp.current_motion.is_none() || bp.motion_ended {
++                                    bp.current_motion = Some(queued.name);
++                                    bp.animation_loop = queued.looped;
++                                    bp.animation_start_time = queued.start_time;
++                                    bp.animation_end_time = queued.end_time;
++                                    bp.animation_scale = queued.scale;
++                                    bp.animation_time = if queued.offset >= 0.0 { queued.offset } else { queued.start_time };
++                                    bp.animation_playing = true;
++                                    bp.motion_ended = false;
++                                    bp.animation_started = false;
++                                } else {
++                                    bp.motion_queue.push(queued);
++                                }
+                                 w3d.runtime_state.sync_legacy_from_bones_player(model_name);
+                             }
+                         }
+@@ -3240,6 +3255,7 @@
+                                 rs.animation_time = if q.offset >= 0.0 { q.offset } else { q.start_time };
+                                 rs.animation_playing = true;
+                                 rs.motion_ended = false;
++                                rs.animation_started = false;
+                             } else {
+                                 // Nothing left to play.
+                                 rs.current_motion = None;
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/sprite.rs b/vm-rust/src/player/handlers/datum_handlers/sprite.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/sprite.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/sprite.rs
+@@ -143,6 +143,21 @@
+     }
+ }
+ 
++// Director names these properties with symbols; numeric Flash indices remain
++// accepted for existing callers. A symbol's generic int_value() is always zero.
++pub(crate) fn flash_property_index(property: &Datum) -> Result<i32, ScriptError> {
++    let Datum::Symbol(name) = property else { return property.int_value(); };
++    let index = match name.as_str().to_ascii_lowercase().as_str() {
++        "posx" => 0, "posy" => 1, "scalex" => 2, "scaley" => 3,
++        "currentframe" => 4, "totalframes" => 5, "alpha" => 6, "visible" => 7,
++        "width" => 8, "height" => 9, "rotate" => 10, "target" => 11,
++        "lastframeloaded" => 12, "name" => 13, "droptarget" => 14, "url" => 15,
++        "focusrect" => 17, "spritesoundbuffertime" => 18,
++        _ => return Err(ScriptError::new(format!("Unsupported Flash property #{}", name))),
++    };
++    Ok(index)
++}
++
+ /// Root a bare Flash variable/function path.
+ ///
+ /// The Ruffle fork's GetVariable/SetVariable/CallFunction run on a
+@@ -280,6 +295,7 @@
+         if matches!(
+             name_lower.as_str(),
+             "getvariable" | "setvariable" | "callfunction" | "setcallback"
++                | "getflashproperty" | "setflashproperty"
+         ) {
+             let ready = reserve_player_ref(|player| {
+                 match player.get_datum(datum).to_sprite_ref() {
+@@ -998,26 +1014,16 @@
+ 
+                 match ruffle_get_variable(sn as i32, &root_flash_path(&path)) {
+                     Ok(val) => {
+-                        // Convert the AS value to a Lingo datum. GetVariable's
+-                        // value form (2nd arg non-zero) isn't string-only — an AS
+-                        // number or boolean must come back as a comparable value,
+-                        // not VOID. Neopets DGS state 81 polls
+-                        // `getVariable("preloaderTranslationSuccess", 1) = 1`,
+-                        // where the AS var is a Number/Boolean; returning VOID for
+-                        // those (`as_string()` is None) made the comparison never
+-                        // true and stalled the loader. Bools → Int(0/1), integral
+-                        // Numbers → Int, else Float, matching the callFunction
+-                        // converter that already let `includeIsLoaded() = 1` work.
++                        // Director's default/TRUE form returns a STRING (MX 2004
++                        // Scripting Reference, getVariable). In particular an AS
++                        // boolean must become "true", not the Lingo integer 1:
++                        // Miniclip's loader compares the result with "true".
+                         let datum = if let Some(s) = val.as_string() {
+                             Datum::String(s)
+                         } else if let Some(b) = val.as_bool() {
+-                            Datum::Int(if b { 1 } else { 0 })
++                            Datum::String(b.to_string())
+                         } else if let Some(n) = val.as_f64() {
+-                            if n.fract() == 0.0 && n.abs() < i32::MAX as f64 {
+-                                Datum::Int(n as i32)
+-                            } else {
+-                                Datum::Float(n)
+-                            }
++                            Datum::String(n.to_string())
+                         } else {
+                             Datum::Void
+                         };
+@@ -1108,7 +1114,7 @@
+             "getflashproperty" => {
+                 if let Some((sn, _cl, _cm)) = Self::resolve_sprite_flash_member(datum)? {
+                     let target = reserve_player_ref(|player| player.get_datum(&args[0]).string_value())?;
+-                    let prop_num = reserve_player_ref(|player| player.get_datum(&args[1]).int_value())?;
++                    let prop_num = reserve_player_ref(|player| flash_property_index(player.get_datum(&args[1])))?;
+                     match ruffle_get_flash_property(sn, &target, prop_num) {
+                         Ok(val) => {
+                             if let Some(s) = val.as_string() {
+@@ -1125,7 +1131,7 @@
+             "setflashproperty" => {
+                 if let Some((sn, _cl, _cm)) = Self::resolve_sprite_flash_member(datum)? {
+                     let target = reserve_player_ref(|player| player.get_datum(&args[0]).string_value())?;
+-                    let prop_num = reserve_player_ref(|player| player.get_datum(&args[1]).int_value())?;
++                    let prop_num = reserve_player_ref(|player| flash_property_index(player.get_datum(&args[1])))?;
+                     let value = reserve_player_ref(|player| player.get_datum(&args[2]).string_value())?;
+                     ruffle_set_flash_property(sn, &target, prop_num, &value);
+                 }
+@@ -1519,6 +1525,7 @@
+         if matches!(
+             name_lower.as_str(),
+             "getvariable" | "setvariable" | "callfunction" | "setcallback"
++                | "getflashproperty" | "setflashproperty"
+         ) {
+             // Reached only for a sprite NOT yet whitelisted (has_async_handler
+             // routes whitelisted sprites straight to the sync path). If its
+@@ -1621,5 +1628,24 @@
+         // In Director, calling a handler on a sprite that doesn't handle it
+         // is silently ignored and returns void.
+         Ok(DatumRef::Void)
++    }
++}
++
++#[cfg(test)]
++mod flash_property_tests {
++    use super::*;
++
++    #[test]
++    fn named_flash_properties_preserve_distinct_axes_and_properties() {
++        let properties = [("posX", 0), ("POSY", 1), ("scaleX", 2), ("scaleY", 3),
++            ("currentFrame", 4), ("totalFrames", 5), ("alpha", 6), ("visible", 7),
++            ("width", 8), ("height", 9), ("rotate", 10), ("target", 11),
++            ("lastFrameLoaded", 12), ("name", 13), ("dropTarget", 14), ("url", 15),
++            ("focusRect", 17), ("spriteSoundBufferTime", 18)];
++        for (name, expected) in properties {
++            assert_eq!(flash_property_index(&Datum::Symbol(Symbol::from_str(name))).unwrap(), expected);
++        }
++        assert_eq!(flash_property_index(&Datum::Int(1)).unwrap(), 1);
++        assert!(flash_property_index(&Datum::Symbol(Symbol::from_str("unknown"))).is_err());
+     }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/string.rs b/vm-rust/src/player/handlers/datum_handlers/string.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/string.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/string.rs
+@@ -51,9 +51,20 @@
+         }
+     }
+ 
++    /// Director stops a multi-character symbol at its first non-identifier
++    /// character. Event data such as "TILE=15,2" deliberately converts to #TILE.
++    pub fn symbol_from_string(value: &str) -> Symbol {
++        let value = if value == " " { "" } else if value.chars().count() > 1 {
++            let end = value.find(|c: char| !c.is_ascii_alphanumeric() && c != '_').unwrap_or(value.len());
++            &value[..end]
++        } else { value };
++        Symbol::from_str(value)
++    }
++
+     pub fn get_built_in_prop(value: &str, prop_name: Symbol) -> Result<Datum, ScriptError> {
+         match prop_name.into_builtin() {
+             Some(BuiltInSymbol::Length) => Ok(Datum::Int(value.chars().count() as i32)),
++            Some(BuiltInSymbol::Symbol) => Ok(Datum::Symbol(Self::symbol_from_string(value))),
+             Some(BuiltInSymbol::Ilk) => Ok(Datum::Symbol(Symbol::builtin(BuiltInSymbol::String))),
+             // `.text` yields the textual content. For a plain string (and for
+             // a resolved string chunk falling through here) it's the string
+@@ -461,4 +472,18 @@
+         }
+     }
+     result
++}
++
++#[cfg(test)]
++mod symbol_conversion_tests {
++    use super::*;
++    #[test]
++    fn symbol_conversion_ends_at_punctuation() {
++        crate::player::symbols::symbol_table::init_symbol_table();
++        for (text, expected) in [("TILE=15,2", "TILE"), ("FLAG=tut_all_clear", "FLAG"),
++            ("dog_food.img", "dog_food"), ("dog_food", "dog_food"), ("two words", "two"),
++            (" ", ""), ("", ""), ("#", "#"), ("#name", "")] {
++            assert_eq!(StringDatumUtils::symbol_from_string(text), Symbol::from_str(expected));
++        }
++    }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/symbol.rs b/vm-rust/src/player/handlers/datum_handlers/symbol.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/symbol.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/symbol.rs
+@@ -19,10 +19,11 @@
+ 
+     pub fn get_prop(
+         player: &mut DirPlayer,
+-        _: &DatumRef,
++        datum: &DatumRef,
+         prop: Symbol,
+     ) -> Result<DatumRef, ScriptError> {
+         match prop.as_lower_str() {
++            "symbol" => Ok(datum.clone()),
+             "ilk" => Ok(player.alloc_datum(Datum::Symbol(Symbol::from_str("symbol")))),
+             _ => Err(ScriptError::new(format!(
+                 "Cannot get symbol property {}",
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/transform3d.rs b/vm-rust/src/player/handlers/datum_handlers/transform3d.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/transform3d.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/transform3d.rs
+@@ -205,6 +205,30 @@
+             "interpolateto" => Self::interpolate_to(datum, args),
+             "getat" => Self::get_at(datum, args),
+             "setat" => Self::set_at(datum, args),
++            "setprop" => reserve_player_mut(|player| {
++                if !(2..=3).contains(&args.len()) {
++                    return Err(ScriptError::new("transform.setProp: expected property, [index,] value".into()));
++                }
++                let prop = player.get_datum(&args[0]).symbol_value()?;
++                let value = if args.len() == 3 {
++                    let index = player.get_datum(&args[1]).int_value()?;
++                    let mut property = Self::get_prop(player, datum, prop)?;
++                    match &mut property {
++                        Datum::Vector(v) if (1..=3).contains(&index) => {
++                            v[(index - 1) as usize] = player.get_datum(&args[2]).to_float()?;
++                        }
++                        Datum::List(_, items, _) if index > 0 && index as usize <= items.len() => {
++                            items[(index - 1) as usize] = args[2].clone();
++                        }
++                        _ => return Err(ScriptError::new("transform.setProp: invalid property index".into())),
++                    }
++                    player.alloc_datum(property)
++                } else {
++                    args[1].clone()
++                };
++                Self::set_prop(player, datum, prop, &value)?;
++                Ok(DatumRef::Void)
++            }),
+             "getprop" | "getpropref" => {
+                 // transform.rotation[3] → getProp(#rotation, 3)
+                 reserve_player_mut(|player| {
+@@ -756,4 +780,35 @@
+         t*x*z + s*y,  t*y*z - s*x,  t*z*z + c,    0.0,
+         0.0,          0.0,          0.0,           1.0,
+     ]
++}
++
++#[cfg(test)]
++mod indexed_property_tests {
++    use super::*;
++    use crate::player::testing::{run_test, TestPlayer};
++
++    #[test]
++    fn indexed_position_and_axis_angle_writes_update_the_transform() {
++        crate::player::symbols::symbol_table::init_symbol_table();
++        run_test(async {
++            let _player = TestPlayer::new();
++            let (transform, position, angle, index, value) = reserve_player_mut(|p| {
++                (p.alloc_datum(Datum::transform3d(axis_angle_to_matrix(&[0.0, 0.0, 1.0], 45.0))),
++                 p.alloc_datum(Datum::Symbol(Symbol::from_str("position"))),
++                 p.alloc_datum(Datum::Symbol(Symbol::from_str("axisAngle"))),
++                 p.alloc_datum(Datum::Int(2)), p.alloc_datum(Datum::Float(90.0)))
++            });
++            for prop in [position, angle] {
++                Transform3dDatumHandlers::call(&transform, Symbol::from_str("setProp"),
++                    &[prop, index.clone(), value.clone()]).unwrap();
++            }
++            reserve_player_mut(|p| {
++                let Datum::Transform3d(m) = p.get_datum(&transform) else { panic!() };
++                assert!((m[13] - 90.0).abs() < 1e-8);
++                assert!(m[0].abs() < 1e-8);
++                assert!((m[1].abs() - 1.0).abs() < 1e-8);
++            });
++            assert!(take_dirty_ids().contains(&transform.unwrap()));
++        });
++    }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/manager.rs b/vm-rust/src/player/handlers/manager.rs
+--- a/vm-rust/src/player/handlers/manager.rs
++++ b/vm-rust/src/player/handlers/manager.rs
+@@ -1131,6 +1131,12 @@
+             Some(BuiltInSymbol::CastLib) => CastHandlers::cast_lib(args),
+             Some(BuiltInSymbol::FindEmpty) => CastHandlers::find_empty(args),
+             Some(BuiltInSymbol::PreloadNetThing) => NetHandlers::preload_net_thing(args),
++            // Legacy preloaders discard preloadNetThing's return value and
++            // retrieve the same operation ID with this compatibility function.
++            Some(BuiltInSymbol::GetLatestNetID) => reserve_player_mut(|player| {
++                let id = player.net_manager.get_last_task_id().unwrap_or(0);
++                Ok(player.alloc_datum(Datum::Int(id as i32)))
++            }),
+             Some(BuiltInSymbol::NetDone) => NetHandlers::net_done(args),
+             Some(BuiltInSymbol::NetAbort) => NetHandlers::net_abort(args),
+             // Cast/movie preload + unload commands: dirplayer loads everything
+@@ -1577,7 +1583,7 @@
+                         player.get_datum(&args[1]).string_value()
+                     })?;
+                     let prop_num = reserve_player_ref(|player| {
+-                        player.get_datum(&args[2]).int_value()
++                        super::datum_handlers::sprite::flash_property_index(player.get_datum(&args[2]))
+                     })?;
+                     if let Some((sn, _cl, _cm)) = member_ref {
+                         match ruffle_get_flash_property(sn, &target, prop_num) {
+@@ -1601,7 +1607,7 @@
+                         player.get_datum(&args[1]).string_value()
+                     })?;
+                     let prop_num = reserve_player_ref(|player| {
+-                        player.get_datum(&args[2]).int_value()
++                        super::datum_handlers::sprite::flash_property_index(player.get_datum(&args[2]))
+                     })?;
+                     let value = reserve_player_ref(|player| {
+                         player.get_datum(&args[3]).string_value()
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/movie.rs b/vm-rust/src/player/handlers/movie.rs
+--- a/vm-rust/src/player/handlers/movie.rs
++++ b/vm-rust/src/player/handlers/movie.rs
+@@ -74,6 +74,11 @@
+             if let Some(member) = member {
+                 Ok(player.alloc_datum(Datum::CastMember(member.to_owned())))
+             } else if let Some(cast_datum) = cast_name_or_num {
++                // A numeric-looking name remains a name. A miss for "001"
++                // must not select slot 1 and hide a later cast's named member.
++                if !member_name_or_num.is_number() {
++                    return Ok(player.alloc_datum(Datum::CastMember(INVALID_CAST_MEMBER_REF)));
++                }
+                 // Director returns a valid ref for member(N, castLib) even if the
+                 // member slot is empty (used by getDynamicSlot pattern).
+                 // Only for positive member numbers — negative/zero are invalid refs.
+@@ -887,7 +892,8 @@
+             let datum = player.get_datum(&args[0]);
+ 
+             // Case 1: argument is a string (lookup by name, case-insensitive)
+-            if let Ok(key) = datum.string_value() {
++            if datum.is_string() || datum.is_symbol() {
++                let key = datum.string_value()?;
+                 if player
+                     .external_params
+                     .keys()
+@@ -920,7 +926,8 @@
+             let datum = player.get_datum(&args[0]);
+ 
+             // Case 1: argument is a string (lookup by name)
+-            if let Ok(key) = datum.string_value() {
++            if datum.is_string() || datum.is_symbol() {
++                let key = datum.string_value()?;
+                 if let Some((_k, value)) = player
+                     .external_params
+                     .iter()
+@@ -1524,5 +1531,53 @@
+             player.is_playing = false;
+             Ok(DatumRef::Void)
+         })
++    }
++}
++
++#[cfg(all(test, not(target_arch = "wasm32")))]
++mod member_name_tests {
++    use super::*;
++    use crate::player::symbols::symbol_table::init_symbol_table;
++    use crate::player::testing::{run_test, TestPlayer};
++
++    #[test]
++    fn missing_numeric_name_does_not_become_a_numbered_slot() {
++        init_symbol_table();
++        run_test(async {
++            let _player = TestPlayer::new();
++            let (name, number, cast) = reserve_player_mut(|player| (
++                player.alloc_datum(Datum::String("001".to_owned())),
++                player.alloc_datum(Datum::Int(1)),
++                player.alloc_datum(Datum::Int(1)),
++            ));
++            let named = MovieHandlers::member(&vec![name, cast.clone()]).unwrap();
++            let numbered = MovieHandlers::member(&vec![number, cast]).unwrap();
++            reserve_player_ref(|player| {
++                assert_eq!(player.get_datum(&named).to_member_ref().unwrap(), INVALID_CAST_MEMBER_REF);
++                assert_eq!(player.get_datum(&numbered).to_member_ref().unwrap(), CastMemberRef { cast_lib: 1, cast_member: 1 });
++            });
++        });
++    }
++
++    #[test]
++    fn external_parameters_distinguish_indices_from_numeric_names() {
++        init_symbol_table();
++        run_test(async {
++            let _player = TestPlayer::new();
++            let (index, name) = reserve_player_mut(|player| {
++                player.external_params.clear();
++                player.external_params.insert("sw1".into(), "game.dcr".into());
++                player.external_params.insert("1".into(), "named value".into());
++                (player.alloc_datum(Datum::Int(1)), player.alloc_datum(Datum::String("1".into())))
++            });
++            let key = MovieHandlers::external_param_name(&vec![index.clone()]).unwrap();
++            let indexed = MovieHandlers::external_param_value(&vec![index]).unwrap();
++            let named = MovieHandlers::external_param_value(&vec![name]).unwrap();
++            reserve_player_ref(|player| {
++                assert_eq!(player.get_datum(&key).string_value().unwrap(), "sw1");
++                assert_eq!(player.get_datum(&indexed).string_value().unwrap(), "game.dcr");
++                assert_eq!(player.get_datum(&named).string_value().unwrap(), "named value");
++            });
++        });
+     }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/types.rs b/vm-rust/src/player/handlers/types.rs
+--- a/vm-rust/src/player/handlers/types.rs
++++ b/vm-rust/src/player/handlers/types.rs
+@@ -93,7 +93,17 @@
+         Ok(*Self::get_datum_ilks(datum)?.get(0).unwrap())
+     }
+ 
+-    fn is_datum_ilk(datum: &Datum, ilk: Symbol) -> Result<bool, ScriptError> {
++    pub(crate) fn is_datum_ilk(datum: &Datum, ilk: Symbol) -> Result<bool, ScriptError> {
++        // The two-argument form accepts #object for Director object references,
++        // while the one-argument form retains their specific type (#instance, etc.).
++        if ilk.as_str().eq_ignore_ascii_case("object") {
++            return Ok(matches!(datum,
++                Datum::ScriptInstanceRef(..) | Datum::ScriptRef(..) |
++                Datum::Xtra(..) | Datum::XtraInstance(..) | Datum::CastLib(..) |
++                Datum::SpriteRef(..) | Datum::Stage | Datum::TimeoutRef(..) |
++                Datum::TimeoutInstance(..) | Datum::BitmapRef(..) | Datum::Matte(..)
++            ) || matches!(datum, Datum::CastMember(member) if member.is_valid()));
++        }
+         Ok(Self::get_datum_ilks(datum)?
+             .iter()
+             .any(|x| Symbol::builtin(*x) == ilk))
+@@ -294,6 +304,19 @@
+                     player.alloc_datum(Datum::Void)
+                 }
+             }
++            // Director 11.5 Scripting Dictionary, "vector": a vector's three
++            // components are also reachable by index, `vec[1]`/`[2]`/`[3]`
++            // being x/y/z. American Football's opening play reads its
++            // positions that way and stopped with "Cannot get sub-prop `1`
++            // from prop of type vector". Out-of-range stays VOID, matching the
++            // list rule directly above.
++            Datum::Vector(components) => {
++                let index = prop_key.int_value()?;
++                match components.get((index - 1) as usize) {
++                    Some(component) => player.alloc_datum(Datum::Float(*component)),
++                    None => player.alloc_datum(Datum::Void),
++                }
++            }
+             // Subscripting a VOID value yields VOID in Director — it never
+             // raises. g349's `on particle` does `g.particles[g.cparticle]`;
+             // before `g.particles` is populated (or after teardown) it is VOID,
+@@ -831,15 +854,7 @@
+                 Datum::Symbol(Symbol::builtin(BuiltInSymbol::Void))
+             } else if symbol_name.is_string() {
+                 let str_value = symbol_name.string_value()?;
+-                // Director's symbol() trims whitespace from the input string
+-                let trimmed = str_value.trim();
+-                if trimmed.is_empty() {
+-                    Datum::Symbol(Symbol::builtin(BuiltInSymbol::EmptyString))
+-                } else if trimmed.starts_with("#") {
+-                    Datum::Symbol(Symbol::from_str(&trimmed[1..]))
+-                } else {
+-                    Datum::Symbol(Symbol::from_str(trimmed))
+-                }
++                Datum::Symbol(crate::player::handlers::datum_handlers::string::StringDatumUtils::symbol_from_string(&str_value))
+             } else {
+                 return Err(ScriptError::new(format!(
+                     "Cannot convert datum of type {} to symbol",
+@@ -2498,3 +2513,39 @@
+     false
+ }
+ 
++
++#[cfg(test)]
++mod vector_subscript_tests {
++    use super::*;
++    use crate::player::{
++        reserve_player_mut,
++        symbols::symbol_table::init_symbol_table,
++        testing::{run_test, TestPlayer},
++    };
++
++    /// Director 11.5 exposes a vector's components by index as well as by name;
++    /// American Football's opening play reads `vec[1]`. Out-of-range subscripts
++    /// read VOID rather than raising, matching Lingo's list behaviour.
++    #[test]
++    fn vector_components_read_by_index() {
++        init_symbol_table();
++        run_test(async {
++            let _player = TestPlayer::new();
++            reserve_player_mut(|player| {
++                let vector = player.alloc_datum(Datum::Vector([1.5, -2.5, 7.0]));
++                for (index, expected) in [(1, 1.5f64), (2, -2.5), (3, 7.0)] {
++                    let key = player.alloc_datum(Datum::Int(index));
++                    let component = TypeUtils::get_sub_prop(&vector, &key, player).unwrap();
++                    assert_eq!(player.get_datum(&component).to_float().unwrap(), expected);
++                }
++                for index in [0, 4, -1] {
++                    let key = player.alloc_datum(Datum::Int(index));
++                    let component = TypeUtils::get_sub_prop(&vector, &key, player).unwrap();
++                    assert!(matches!(player.get_datum(&component), Datum::Void), "{index}");
++                }
++                Ok::<(), ScriptError>(())
++            })
++            .unwrap();
++        });
++    }
++}
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/mcp.rs b/vm-rust/src/player/mcp.rs
+--- a/vm-rust/src/player/mcp.rs
++++ b/vm-rust/src/player/mcp.rs
+@@ -105,6 +105,8 @@
+     #[serde(skip_serializing_if = "Option::is_none")]
+     pub args: Option<Vec<McpDatumValue>>,
+     pub stack_depth: usize,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub operand_stack: Option<Vec<McpDatumValue>>,
+ }
+ 
+ #[derive(Serialize)]
+@@ -615,6 +617,7 @@
+     let valid_scopes: Vec<_> = player
+         .scopes
+         .iter()
++        .take(player.scope_count as usize)
+         .enumerate()
+         .filter(|(_, scope)| scope.script_ref.cast_lib != 0 || scope.script_ref.cast_member != 0)
+         .collect();
+@@ -686,6 +689,8 @@
+                     None
+                 },
+                 stack_depth: scope.stack.len(),
++                operand_stack: include_locals.then(|| scope.stack.iter()
++                    .map(|v| datum_to_mcp_value_compact(player, v)).collect()),
+             }
+         })
+         .collect();
+@@ -702,6 +707,7 @@
+     let valid_scopes: Vec<_> = player
+         .scopes
+         .iter()
++        .take(player.scope_count as usize)
+         .enumerate()
+         .filter(|(_, scope)| scope.script_ref.cast_lib != 0 || scope.script_ref.cast_member != 0)
+         .collect();
+@@ -774,7 +780,7 @@
+ 
+ /// Get locals for a specific scope
+ pub fn mcp_get_locals(player: &DirPlayer, scope_index: Option<usize>) -> String {
+-    let index = scope_index.unwrap_or_else(|| player.scopes.len().saturating_sub(1));
++    let index = scope_index.unwrap_or_else(|| (player.scope_count as usize).saturating_sub(1));
+ 
+     let scope = match player.scopes.get(index) {
+         Some(s) => s,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/mod.rs b/vm-rust/src/player/mod.rs
+--- a/vm-rust/src/player/mod.rs
++++ b/vm-rust/src/player/mod.rs
+@@ -2867,6 +2867,7 @@
+                 Ok(self.alloc_datum(Datum::DateRef(date_id)))
+             },
+             BuiltInSymbol::Stage => Ok(self.alloc_datum(Datum::Stage)),
++            BuiltInSymbol::PauseState => Ok(self.alloc_datum(datum_bool(self.is_script_paused))),
+             BuiltInSymbol::Globals => {
+                 // Director 11.5 Scripting Dictionary — `the globals`:
+                 // a special property list of every current global variable
+@@ -3521,6 +3522,7 @@
+                     .max(0.0) as i32;
+                 Ok(Datum::Int(lapsed))
+             }
++            BuiltInSymbol::SoundKeepDevice => self.movie.get_prop(Symbol::builtin(prop_name)),
+             BuiltInSymbol::SoundEnabled => Ok(Datum::Int(1)),
+             BuiltInSymbol::SoundLevel => Ok(Datum::Int(7)), // max volume
+             BuiltInSymbol::BeepOn | BuiltInSymbol::FixStageSize => Ok(Datum::Int(0)),
+@@ -3548,7 +3550,7 @@
+             )),
+             BuiltInSymbol::SwitchColorDepth | BuiltInSymbol::ImageDirect | BuiltInSymbol::ColorQD | BuiltInSymbol::QuickTimePresent
+             | BuiltInSymbol::VideoForWindowsPresent | BuiltInSymbol::NetPresent
+-            | BuiltInSymbol::SoundKeepDevice | BuiltInSymbol::SoundMixMedia | BuiltInSymbol::PreLoadRAM
++            | BuiltInSymbol::SoundMixMedia | BuiltInSymbol::PreLoadRAM
+             | BuiltInSymbol::ButtonStyle | BuiltInSymbol::CheckBoxAccess | BuiltInSymbol::CheckBoxType => Ok(Datum::Int(0)),
+             _ => Err(ScriptError::new(format!("Unknown anim prop {}", prop_name))),
+         }
+@@ -3624,6 +3626,10 @@
+                 }
+                 Ok(())
+             },
++            // With only the Stage open, clearing Director's MIAW list leaves
++            // it empty. Legacy reset handlers assign [] before initialization.
++            Some(BuiltInSymbol::WindowList)
++                if matches!(&value, Datum::List(_, items, _) if items.is_empty()) => Ok(()),
+             Some(BuiltInSymbol::KeyboardFocusSprite) => {
+                 // TODO switch focus
+                 self.keyboard_focus_sprite = value.int_value()? as i16;
+@@ -6896,14 +6902,36 @@
+     }
+ }
+ 
+-/// Wait until `deadline_ms`, with the 1 ms floor the browser event loop needs.
++async fn dispatch_idle_if_due() {
++    let now = bench_now_ms();
++    let due = reserve_player_mut(|player| {
++        let period = player.movie.idle_handler_period.max(0) as f64 * (1000.0 / 60.0);
++        if !player.is_playing || player.is_script_paused || player.pending_movie_init
++            || now - player.movie.idle_last_dispatch_ms < period { return false; }
++        player.movie.idle_last_dispatch_ms = now;
++        true
++    });
++    if due {
++        if let Err(err) = player_invoke_frame_and_movie_scripts(Symbol::from_str("idle"), &vec![]).await {
++            warn!("idle dispatch failed: {}", err.message);
++        }
++    }
++}
++
++/// Idle events continue between score frames at the authored period (ticks).
++/// Zero means as often as the browser's event loop permits, with a 1 ms yield.
+ async fn wait_until_deadline(deadline_ms: f64) {
+-    let remaining_ms = (deadline_ms - bench_now_ms()).max(1.0);
+-    let _ = timeout(
+-        Duration::from_millis(remaining_ms.ceil() as u64),
+-        future::pending::<()>(),
+-    )
+-    .await;
++    loop {
++        let now = bench_now_ms();
++        let idle_delay = reserve_player_ref(|player| {
++            player.movie.idle_last_dispatch_ms
++                + player.movie.idle_handler_period.max(0) as f64 * (1000.0 / 60.0) - now
++        });
++        let delay = (deadline_ms - now).min(idle_delay).max(1.0);
++        let _ = timeout(Duration::from_millis(delay.ceil() as u64), future::pending::<()>()).await;
++        dispatch_idle_if_due().await;
++        if bench_now_ms() >= deadline_ms || reserve_player_ref(|p| !p.is_playing || p.pending_movie_init) { break; }
++    }
+ }
+ 
+ pub async fn run_frame_loop() {
+@@ -7017,16 +7045,7 @@
+         // (stepping sprite castNums each tick). Without it nothing animates.
+         // Goes to the frame script + movie scripts (Director's idle hierarchy);
+         // a no-op for movies that define no `idle` handler.
+-        {
+-            let active = reserve_player_ref(|player| {
+-                player.is_playing && !player.is_script_paused && !player.pending_movie_init
+-            });
+-            if active {
+-                if let Err(err) = player_invoke_frame_and_movie_scripts(Symbol::from_str("idle"), &vec![]).await {
+-                    warn!("idle dispatch failed: {}", err.message);
+-                }
+-            }
+-        }
++        dispatch_idle_if_due().await;
+ 
+         // Tick the sound manager so per-channel fade-in / fade-out
+         // progress. Without this, Lingo's `sound fadeIn` sets the
+@@ -8108,6 +8127,38 @@
+ mod handler_gap_tests {
+     use super::*;
+     use crate::player::testing::{run_test, TestPlayer};
++
++    #[test]
++    fn sound_device_preference_round_trips_through_classic_and_named_properties() {
++        init_symbol_table();
++        run_test(async {
++            let _p = TestPlayer::new();
++            reserve_player_mut(|p| {
++                let prop = Symbol::from_str("soundKeepDevice");
++                for value in [1, 0, 1] {
++                    p.set_movie_prop(prop, Datum::Int(value)).unwrap();
++                    let got = p.get_movie_prop(prop).unwrap();
++                    assert_eq!(p.get_datum(&got).int_value().unwrap(), value);
++                    assert_eq!(p.get_anim_prop(39).unwrap().int_value().unwrap(), value);
++                }
++            });
++        });
++    }
++
++    #[test]
++    fn movie_pause_state_reads_the_player_pause_state() {
++        init_symbol_table();
++        run_test(async {
++            let _p = TestPlayer::new();
++            reserve_player_mut(|p| {
++                for paused in [false, true] {
++                    p.is_script_paused = paused;
++                    let value = p.get_movie_prop(Symbol::from_str("pauseState")).unwrap();
++                    assert_eq!(p.get_datum(&value).int_value().unwrap(), paused as i32);
++                }
++            });
++        });
++    }
+ 
+     #[test]
+     fn input_waits_until_the_frame_handler_returns() {
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/movie.rs b/vm-rust/src/player/movie.rs
+--- a/vm-rust/src/player/movie.rs
++++ b/vm-rust/src/player/movie.rs
+@@ -11,7 +11,7 @@
+ 
+ use super::{
+     allocator::DatumAllocator, bitmap::manager::BitmapManager, cast_manager::CastManager,
+-    geometry::IntRect, net_manager::NetManager, score::Score, ScriptError, ScriptReceiver,
++    geometry::IntRect, net_manager::NetManager, score::Score, ScriptError, ScriptReceiver, DatumRef,
+ };
+ 
+ pub struct Movie {
+@@ -47,6 +47,12 @@
+     /// Wall-clock ms of the last idle-counter reset (input activity or a fire).
+     /// `the timeoutLapsed` is derived from this.
+     pub timeout_last_reset_ms: f64,
++    pub idle_handler_period: i32,
++    pub idle_last_dispatch_ms: f64,
++    // The embedding host owns its window and transport UI. Preserve the
++    // authored flags for readback without changing the host's controls.
++    pub host_controls: HashMap<BuiltInSymbol, bool>,
++    pub host_window_options: HashMap<BuiltInSymbol, DatumRef>,
+     pub allow_custom_caching: bool,
+     pub trace_script: bool,
+     pub trace_log_file: String,
+@@ -125,6 +131,10 @@
+             timeout_mouse: true,
+             timeout_keydown: true,
+             timeout_last_reset_ms: 0.0,
++            idle_handler_period: 1,
++            idle_last_dispatch_ms: 0.0,
++            host_controls: HashMap::new(),
++            host_window_options: HashMap::new(),
+             allow_custom_caching: false,
+             trace_script: false,
+             trace_log_file: String::new(),
+@@ -264,6 +274,13 @@
+                 }
+             },
+             BuiltInSymbol::AllowCustomCaching => Ok(datum_bool(self.allow_custom_caching)),
++            BuiltInSymbol::IdleHandlerPeriod => Ok(Datum::Int(self.idle_handler_period)),
++            // Web Audio owns the device; retain Director's ownership preference
++            // so zone transitions can toggle it and read it back.
++            BuiltInSymbol::SoundKeepDevice => Ok(datum_bool(*self.host_controls.get(&builtin_prop).unwrap_or(&false))),
++            BuiltInSymbol::AllowGraphicMenu | BuiltInSymbol::AllowTransportControl
++            | BuiltInSymbol::AllowVolumeControl | BuiltInSymbol::AllowZooming
++            | BuiltInSymbol::AllowSaveLocal => Ok(datum_bool(*self.host_controls.get(&builtin_prop).unwrap_or(&true))),
+             BuiltInSymbol::Timer => {
+                 reserve_player_ref(|player| {
+                     // Utc: identical difference, without re-resolving the local
+@@ -568,7 +585,17 @@
+                 self.puppet_tempo = value.int_value()? as u32;
+                 Ok(())
+             },
+-            BuiltInSymbol::ColorDepth | BuiltInSymbol::UseFastQuads | BuiltInSymbol::RomanLingo | BuiltInSymbol::AllowSaveLocal | BuiltInSymbol::CpuHogTicks
++            BuiltInSymbol::IdleHandlerPeriod => {
++                self.idle_handler_period = value.int_value()?.max(0);
++                Ok(())
++            },
++            BuiltInSymbol::AllowGraphicMenu | BuiltInSymbol::AllowTransportControl
++            | BuiltInSymbol::AllowVolumeControl | BuiltInSymbol::AllowZooming
++            | BuiltInSymbol::AllowSaveLocal | BuiltInSymbol::SoundKeepDevice => {
++                self.host_controls.insert(builtin_prop, value.int_value()? != 0);
++                Ok(())
++            },
++            BuiltInSymbol::ColorDepth | BuiltInSymbol::UseFastQuads | BuiltInSymbol::RomanLingo | BuiltInSymbol::CpuHogTicks
+             | BuiltInSymbol::PreLoadEventAbort => {
+                 // Read-only / no-op in practice; ignore sets like Director does.
+                 // preLoadEventAbort gates whether a preload event handler may
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/scope.rs b/vm-rust/src/player/scope.rs
+--- a/vm-rust/src/player/scope.rs
++++ b/vm-rust/src/player/scope.rs
+@@ -78,14 +78,19 @@
+ /// the globally-mutable `PLAYER_OPT`, same pattern as the arena's ref-counts).
+ /// It presents the same `DatumRef`-based API the interpreter already used, so
+ /// the hundreds of existing push/pop/len/last/index call sites are unchanged.
+-#[derive(Default)]
+ pub struct OperandStack {
+     items: Vec<std::cell::UnsafeCell<StackDatum>>,
++    marker_display: DatumRef,
+ }
+ 
++impl Default for OperandStack {
++    fn default() -> Self { Self::new() }
++}
++
+ impl Clone for OperandStack {
+     fn clone(&self) -> Self {
+         OperandStack {
++            marker_display: DatumRef::Void,
+             items: self
+                 .items
+                 .iter()
+@@ -98,7 +103,7 @@
+ impl OperandStack {
+     #[inline]
+     pub fn new() -> Self {
+-        OperandStack { items: Vec::new() }
++        OperandStack { items: Vec::new(), marker_display: DatumRef::Void }
+     }
+ 
+     // --- DatumRef-facing API (unchanged for existing call sites) ---
+@@ -153,7 +158,8 @@
+         self.ensure_ref(i);
+         match self.items[i].get_mut() {
+             StackDatum::Ref(dr) => Some(dr),
+-            _ => unreachable!("ensure_ref guarantees Ref"),
++            StackDatum::ArgMarker { .. } => None,
++            _ => unreachable!("ensure_ref guarantees Ref for values"),
+         }
+     }
+     #[inline]
+@@ -240,6 +246,11 @@
+         let cell = &self.items[i];
+         unsafe {
+             let sd = &mut *cell.get();
++            // Debugger snapshots and root inspection must not consume a call's
++            // argument marker. The following call opcode still needs it.
++            if matches!(sd, StackDatum::ArgMarker { .. }) {
++                return &self.marker_display;
++            }
+             if !matches!(sd, StackDatum::Ref(_)) {
+                 let dr = std::mem::replace(sd, StackDatum::Void).into_ref();
+                 *sd = StackDatum::Ref(dr);
+@@ -426,5 +437,21 @@
+         self.stack.clear();
+         self.passed = false;
+         self.stop_requested = false;
++    }
++}
++
++#[cfg(test)]
++mod stack_inspection_tests {
++    use super::*;
++
++    #[test]
++    fn inspecting_a_paused_call_preserves_its_argument_marker() {
++        let mut stack = OperandStack::new();
++        stack.push_void();
++        stack.push_value(StackDatum::ArgMarker { count: 5, no_ret: true });
++        assert_eq!(stack.iter().count(), 2);
++        assert!(matches!(stack.last(), Some(DatumRef::Void)));
++        assert!(stack.last_mut().is_none());
++        assert!(matches!(stack.pop_value(), Some(StackDatum::ArgMarker { count: 5, no_ret: true })));
+     }
+ }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/script.rs b/vm-rust/src/player/script.rs
+--- a/vm-rust/src/player/script.rs
++++ b/vm-rust/src/player/script.rs
+@@ -154,7 +154,7 @@
+             if let Some(ancestor_id) = &script_instance.ancestor {
+                 return Some(player.alloc_datum(Datum::ScriptInstanceRef(ancestor_id.clone())));
+             } else {
+-                return Some(DatumRef::Void);
++                return Some(script_instance.properties.get(&prop_name).cloned().unwrap_or(DatumRef::Void));
+             }
+         }
+         Some(BuiltInSymbol::Script) => {
+@@ -180,6 +180,17 @@
+         }
+     }
+ 
++    // Sprite wrappers inherit the actual channel's properties. Courage's
++    // sprite.class sets ancestor = sprite(n), then uses wrapper.member/frame.
++    let native_ancestor = player.allocator.get_script_instance(script_instance_ref)
++        .properties.get(&Symbol::builtin(BuiltInSymbol::Ancestor)).cloned();
++    if let Some(ancestor) = native_ancestor {
++        if let Datum::SpriteRef(sprite_id) = player.get_datum(&ancestor) {
++            let value = sprite_get_prop(player, *sprite_id, prop_name).ok()?;
++            return Some(player.last_sprite_prop_ref.take().unwrap_or_else(|| player.alloc_datum(value)));
++        }
++    }
++
+     // Fall back to built-in properties if not found in instance or ancestors
+     if prop_name.eq_builtin(BuiltInSymbol::Class) || prop_name.eq_builtin(BuiltInSymbol::Script) {
+         let script_instance = player.allocator.get_script_instance(&script_instance_ref);
+@@ -352,6 +363,7 @@
+                     let script_instance = player
+                         .allocator
+                         .get_script_instance_mut(&script_instance_ref);
++                    script_instance.properties.remove(&Symbol::builtin(BuiltInSymbol::Ancestor));
+                     script_instance.ancestor = Some(ancestor_id);
+                     Ok(())
+                 }
+@@ -361,6 +373,7 @@
+                     let script_instance = player
+                         .allocator
+                         .get_script_instance_mut(&script_instance_ref);
++                    script_instance.ancestor = None;
+                     script_instance
+                         .properties
+                         .insert(Symbol::builtin(BuiltInSymbol::Ancestor), value_ref.clone());
+@@ -394,7 +407,13 @@
+             if let Some(ancestor_id) = &script_instance.ancestor {
+                 script_set_prop(player, &ancestor_id.clone(), prop_name, value_ref, true)
+             } else {
+-                Err(ScriptError::new("No ancestor found".to_string()))
++                let native = script_instance.properties.get(&Symbol::builtin(BuiltInSymbol::Ancestor))
++                    .map(|r| player.get_datum(r).clone());
++                if let Some(Datum::SpriteRef(sprite_id)) = native {
++                    sprite_set_prop(sprite_id, prop_name, player.get_datum(value_ref).clone())
++                } else {
++                    Err(ScriptError::new("No ancestor found".to_string()))
++                }
+             }
+         }
+     };
+@@ -723,10 +742,7 @@
+                 &player.allocator,
+             )?))
+         }
+-        Datum::Stage => {
+-            let result = get_stage_prop(player, prop_name)?;
+-            Ok(player.alloc_datum(result))
+-        }
++        Datum::Stage => get_stage_prop(player, prop_name),
+         Datum::Rect(..) => {
+             Ok(player.alloc_datum(RectDatumHandlers::get_prop(player, obj_ref, prop_name)?))
+         }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/stage.rs b/vm-rust/src/player/stage.rs
+--- a/vm-rust/src/player/stage.rs
++++ b/vm-rust/src/player/stage.rs
+@@ -194,7 +194,32 @@
+     }
+ }
+ 
+-pub fn get_stage_prop(player: &mut DirPlayer, prop: Symbol) -> Result<Datum, ScriptError> {
++/// Window option lists are mutable references: `.titlebarOptions.visible = 0`
++/// must remain visible to the next read. The embedding host owns its chrome.
++pub fn get_stage_prop(player: &mut DirPlayer, prop: Symbol) -> Result<DatumRef, ScriptError> {
++    if let Some(kind @ (BuiltInSymbol::TitlebarOptions | BuiltInSymbol::AppearanceOptions)) = prop.into_builtin() {
++        if let Some(value) = player.movie.host_window_options.get(&kind) { return Ok(value.clone()); }
++        let defaults = if kind == BuiltInSymbol::TitlebarOptions {
++            vec![("visible", Datum::Int(1)), ("closeBox", Datum::Int(1)),
++                 ("minimizeBox", Datum::Int(1)), ("maximizeBox", Datum::Int(1)),
++                 ("systemMenu", Datum::Int(1)), ("icon", Datum::Int(0)), ("sideTitlebar", Datum::Int(0))]
++        } else {
++            vec![("mask", Datum::Int(0)), ("border", Datum::Symbol(Symbol::from_str("line"))),
++                 ("metal", Datum::Int(0)), ("dragRegionMask", Datum::Int(0)),
++                 ("shadow", Datum::Int(1)), ("liveresize", Datum::Int(1))]
++        };
++        let properties = defaults.into_iter().map(|(name, value)| {
++            (player.alloc_datum(Datum::Symbol(Symbol::from_str(name))), player.alloc_datum(value))
++        }).collect();
++        let value = player.alloc_datum(Datum::PropList(properties, false));
++        player.movie.host_window_options.insert(kind, value.clone());
++        return Ok(value);
++    }
++    let value = get_stage_prop_value(player, prop)?;
++    Ok(player.alloc_datum(value))
++}
++
++fn get_stage_prop_value(player: &mut DirPlayer, prop: Symbol) -> Result<Datum, ScriptError> {
+     match prop.into_builtin() {
+         // A window's `movie` property is the Movie playing in it (Director 11.5
+         // Scripting Dictionary, Window object). The Stage is a window — see
+@@ -289,6 +314,8 @@
+             }
+         }
+         Some(BuiltInSymbol::Name) => Ok(Datum::String("stage".to_string())),
++        Some(BuiltInSymbol::Title) => Ok(Datum::String(player.title.clone())),
++        Some(BuiltInSymbol::Resizable) => Ok(Datum::Int(*player.movie.host_controls.get(&BuiltInSymbol::Resizable).unwrap_or(&false) as i32)),
+         _ => return Err(ScriptError::new(format!("Invalid stage property {}", prop))),
+     }
+ }
+@@ -299,6 +326,18 @@
+     value: &DatumRef,
+ ) -> Result<(), ScriptError> {
+     match prop.into_builtin() {
++        Some(kind @ (BuiltInSymbol::TitlebarOptions | BuiltInSymbol::AppearanceOptions)) => {
++            if !matches!(player.get_datum(value), Datum::PropList(..)) {
++                return Err(ScriptError::new(format!("Property list expected for stage {}", prop)));
++            }
++            player.movie.host_window_options.insert(kind, value.clone());
++            Ok(())
++        }
++        Some(BuiltInSymbol::Resizable) => {
++            let resizable = player.get_datum(value).int_value()? != 0;
++            player.movie.host_controls.insert(BuiltInSymbol::Resizable, resizable);
++            Ok(())
++        }
+         Some(BuiltInSymbol::Title) => {
+             let value = player.get_datum(value).clone();
+             player.title = value.string_value()?;
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/symbols/builtin.rs b/vm-rust/src/player/symbols/builtin.rs
+--- a/vm-rust/src/player/symbols/builtin.rs
++++ b/vm-rust/src/player/symbols/builtin.rs
+@@ -433,6 +433,7 @@
+     "castLib" => CastLib,
+     "findEmpty" => FindEmpty,
+     "preloadNetThing" => PreloadNetThing,
++    "getLatestNetID" => GetLatestNetID,
+     "netDone" => NetDone,
+     "moveToFront" => MoveToFront,
+     "preloadMember" => PreloadMember,
+@@ -1015,6 +1016,14 @@
+     "synchronized" => Synchronized,
+     "exponential" => Exponential,
+     "exponential2" => Exponential2,
++    "idleHandlerPeriod" => IdleHandlerPeriod,
++    "allowGraphicMenu" => AllowGraphicMenu,
++    "allowTransportControl" => AllowTransportControl,
++    "allowVolumeControl" => AllowVolumeControl,
++    "allowZooming" => AllowZooming,
++    "resizable" => Resizable,
++    "titlebarOptions" => TitlebarOptions,
++    "appearanceOptions" => AppearanceOptions,
+ }
+ 
+ impl Display for BuiltInSymbol {
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/testing.rs b/vm-rust/src/player/testing.rs
+--- a/vm-rust/src/player/testing.rs
++++ b/vm-rust/src/player/testing.rs
+@@ -19,6 +19,15 @@
+ /// The player uses global mutable statics, so tests must be serialized.
+ static TEST_LOCK: Mutex<()> = Mutex::new(());
+ 
++/// Take the same lock for a test that touches global VM state but does not
++/// need a whole player — interning a symbol writes to `static mut
++/// SYMBOL_TABLE`, so doing it off-lock races any test that holds the lock.
++/// That race made `object_identity_tests` fail only when the suite's thread
++/// scheduling happened to overlap them, which is worse than a steady failure.
++pub fn lock_global_state() -> std::sync::MutexGuard<'static, ()> {
++    TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner())
++}
++
+ /// Native test harness. Wraps the global DirPlayer for in-memory testing.
+ pub struct TestPlayer {
+     _tx: channel::Sender<PlayerVMExecutionItem>,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/rendering_gpu/webgl2/scene3d.rs b/vm-rust/src/rendering_gpu/webgl2/scene3d.rs
+--- a/vm-rust/src/rendering_gpu/webgl2/scene3d.rs
++++ b/vm-rust/src/rendering_gpu/webgl2/scene3d.rs
+@@ -114,7 +114,8 @@
+     u_wrap_transform: Option<WebGlUniformLocation>,
+     // Skeletal skinning
+     u_skinning_enabled: Option<WebGlUniformLocation>,
+-    u_bone_matrices: Option<WebGlUniformLocation>,
++    u_bone_texture: Option<WebGlUniformLocation>,
++    bone_texture: WebGlTexture,
+     // NPR/toon
+     u_shader_mode: Option<WebGlUniformLocation>,
+     u_toon_steps: Option<WebGlUniformLocation>,
+@@ -338,7 +339,15 @@
+ 
+ // Skeletal skinning
+ uniform int u_skinning_enabled;
+-uniform mat4 u_bone_matrices[48];
++uniform highp sampler2D u_bone_texture;
++mat4 bone_matrix(float index) {
++    int bone = int(index);
++    if (bone < 0 || bone >= textureSize(u_bone_texture, 0).y) return mat4(1.0);
++    return mat4(texelFetch(u_bone_texture, ivec2(0, bone), 0),
++                texelFetch(u_bone_texture, ivec2(1, bone), 0),
++                texelFetch(u_bone_texture, ivec2(2, bone), 0),
++                texelFetch(u_bone_texture, ivec2(3, bone), 0));
++}
+ 
+ // Texture coordinate transform (post-projection UV-space tweak)
+ uniform mat4 u_tex_transform;
+@@ -362,10 +371,10 @@
+     vec3 local_normal = a_normal;
+ 
+     if (u_skinning_enabled > 0) {
+-        mat4 skin_mat = a_bone_weights.x * u_bone_matrices[int(a_bone_indices.x)]
+-                      + a_bone_weights.y * u_bone_matrices[int(a_bone_indices.y)]
+-                      + a_bone_weights.z * u_bone_matrices[int(a_bone_indices.z)]
+-                      + a_bone_weights.w * u_bone_matrices[int(a_bone_indices.w)];
++        mat4 skin_mat = a_bone_weights.x * bone_matrix(a_bone_indices.x)
++                      + a_bone_weights.y * bone_matrix(a_bone_indices.y)
++                      + a_bone_weights.z * bone_matrix(a_bone_indices.z)
++                      + a_bone_weights.w * bone_matrix(a_bone_indices.w);
+         local_pos = skin_mat * local_pos;
+         local_normal = mat3(skin_mat) * local_normal;
+     }
+@@ -766,6 +775,23 @@
+         let gl = context.gl();
+         let u = |name: &str| gl.get_uniform_location(&program, name);
+ 
++        // A float texture avoids vertex-uniform limits and preserves every
++        // joint in rigs larger than 48 bones. WebGL2 supports RGBA32F sampling.
++        let bone_texture = gl.create_texture().ok_or_else(|| JsValue::from_str("Cannot create bone texture"))?;
++        gl.active_texture(WebGl2RenderingContext::TEXTURE0 + 15);
++        gl.bind_texture(WebGl2RenderingContext::TEXTURE_2D, Some(&bone_texture));
++        gl.tex_parameteri(WebGl2RenderingContext::TEXTURE_2D, WebGl2RenderingContext::TEXTURE_MIN_FILTER, WebGl2RenderingContext::NEAREST as i32);
++        gl.tex_parameteri(WebGl2RenderingContext::TEXTURE_2D, WebGl2RenderingContext::TEXTURE_MAG_FILTER, WebGl2RenderingContext::NEAREST as i32);
++        gl.tex_parameteri(WebGl2RenderingContext::TEXTURE_2D, WebGl2RenderingContext::TEXTURE_WRAP_S, WebGl2RenderingContext::CLAMP_TO_EDGE as i32);
++        gl.tex_parameteri(WebGl2RenderingContext::TEXTURE_2D, WebGl2RenderingContext::TEXTURE_WRAP_T, WebGl2RenderingContext::CLAMP_TO_EDGE as i32);
++        let identity = js_sys::Float32Array::from(IDENTITY_4X4.as_slice());
++        gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_array_buffer_view(
++            WebGl2RenderingContext::TEXTURE_2D, 0, WebGl2RenderingContext::RGBA32F as i32,
++            4, 1, 0, WebGl2RenderingContext::RGBA, WebGl2RenderingContext::FLOAT, Some(&identity))?;
++        gl.use_program(Some(&program));
++        gl.uniform1i(u("u_bone_texture").as_ref(), 15);
++        gl.active_texture(WebGl2RenderingContext::TEXTURE0);
++
+         self.shader = Some(Shader3d {
+             u_model: u("u_model"),
+             u_view: u("u_view"),
+@@ -797,7 +823,8 @@
+             u_uv_proj_mode: u("u_uv_proj_mode"),
+             u_wrap_transform: u("u_wrap_transform"),
+             u_skinning_enabled: u("u_skinning_enabled"),
+-            u_bone_matrices: u("u_bone_matrices[0]"),
++            u_bone_texture: u("u_bone_texture"),
++            bone_texture,
+             u_shader_mode: u("u_shader_mode"),
+             u_toon_steps: u("u_toon_steps"),
+             u_num_lights: u("u_num_lights"),
+@@ -2917,34 +2944,11 @@
+             );
+ 
+             let world_matrix = self.accumulate_transform_with_state(scene, model_node, runtime_state);
+-            if has_skeleton_data {
+-                let has_runtime_model_override = runtime_state
+-                    .map(|rs| rs.node_transforms.contains_key(&model_node.name))
+-                    .unwrap_or(false);
++            // Meshes, bones and cameras share the imported scene basis. The
++            // root COM is already paired with its inverse in the skin palette;
++            // rotating passive skinned models again lays Monster Bash sideways.
++            gl.uniform_matrix4fv_with_f32_array(shader.u_model.as_ref(), false, &world_matrix);
+ 
+-                if has_runtime_model_override {
+-                    // If Lingo is explicitly driving model.transform, use that
+-                    // authored transform directly. Applying the legacy skinned
+-                    // basis correction here would rotate the whole skeleton a
+-                    // second time for scripted movies like the dinosaur test.
+-                    gl.uniform_matrix4fv_with_f32_array(shader.u_model.as_ref(), false, &world_matrix);
+-                } else {
+-                    // Passive W3D skinned content still needs the historical
+-                    // Z-up -> render-basis correction.
+-                    let mut m = world_matrix;
+-                    for col in 0..3 {
+-                        let o = col * 4;
+-                        let r1 = m[o + 1];
+-                        let r2 = m[o + 2];
+-                        m[o + 1] = r2;
+-                        m[o + 2] = -r1;
+-                    }
+-                    gl.uniform_matrix4fv_with_f32_array(shader.u_model.as_ref(), false, &m);
+-                }
+-            } else {
+-                gl.uniform_matrix4fv_with_f32_array(shader.u_model.as_ref(), false, &world_matrix);
+-            }
+-
+             // Per-model visibility culling
+             // Only explicitly set #both or #back modes change GL state.
+             // Default (#front / no entry) keeps the global cull_face(FRONT).
+@@ -5008,17 +5012,8 @@
+             .or_else(|| runtime_state.and_then(|rs| rs.previous_motion.map(|s| s.as_str())));
+         let blending = blend_weight < 1.0 && prev_motion_name.is_some();
+ 
+-        let bone_count = skeleton.bones.len().min(48);
+-        // Initialize ALL 48 uniform slots to identity — bone indices can reference
+-        // any slot 0-47, even beyond the skeleton's actual bone count.
+-        let uniform_slots = 48;
+-        let mut skinning_matrices = vec![0.0f32; uniform_slots * 16];
+-        for i in 0..uniform_slots {
+-            skinning_matrices[i * 16]      = 1.0; // m[0][0]
+-            skinning_matrices[i * 16 + 5]  = 1.0; // m[1][1]
+-            skinning_matrices[i * 16 + 10] = 1.0; // m[2][2]
+-            skinning_matrices[i * 16 + 15] = 1.0; // m[3][3]
+-        }
++        let bone_count = skeleton.bones.len();
++        let mut skinning_matrices = vec![0.0f32; bone_count * 16];
+ 
+         if blending {
+             let prev_motion = prev_motion_name.and_then(|n| scene.motions.iter().find(|m| m.name == n));
+@@ -5044,12 +5039,15 @@
+             }
+         }
+ 
+-        gl.uniform_matrix4fv_with_f32_array(
+-            shader.u_bone_matrices.as_ref(),
+-            false,
+-            &skinning_matrices,
+-        );
+-        true
++        gl.active_texture(WebGl2RenderingContext::TEXTURE0 + 15);
++        gl.bind_texture(WebGl2RenderingContext::TEXTURE_2D, Some(&shader.bone_texture));
++        let matrices = js_sys::Float32Array::from(skinning_matrices.as_slice());
++        let uploaded = gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_array_buffer_view(
++            WebGl2RenderingContext::TEXTURE_2D, 0, WebGl2RenderingContext::RGBA32F as i32,
++            4, bone_count as i32, 0, WebGl2RenderingContext::RGBA, WebGl2RenderingContext::FLOAT, Some(&matrices)).is_ok();
++        gl.uniform1i(shader.u_bone_texture.as_ref(), 15);
++        gl.active_texture(WebGl2RenderingContext::TEXTURE0);
++        uploaded
+     }
+ 
+     fn bind_default_material(&self, gl: &WebGl2RenderingContext, shader: &Shader3d, scene: &W3dScene) {
+@@ -5727,7 +5725,7 @@
+         let mut idx4 = [0.0f32; 4];
+         let mut wgt4 = [0.0f32; 4];
+         for (k, &(b, w)) in pairs.iter().enumerate() {
+-            idx4[k] = (b as f32).min(47.0); // clamp to bone uniform array size
++            idx4[k] = b as f32;
+             wgt4[k] = w;
+         }
+         let sum: f32 = wgt4.iter().sum();
+@@ -6038,3 +6036,15 @@
+     r
+ }
+ 
++
++#[cfg(test)]
++mod skin_palette_tests {
++    #[test]
++    fn weights_keep_high_bone_indices() {
++        let (indices, weights) = super::pack_bone_influences_sorted(
++            &[vec![1, 48, 80, 108, 109]], &[vec![0.05, 0.1, 0.15, 0.3, 0.4]]);
++        assert_eq!(indices[0], [109.0, 108.0, 80.0, 48.0]);
++        assert!((weights[0].iter().sum::<f32>() - 1.0).abs() < 0.00001);
++        assert!(weights[0][0] > weights[0][1]);
++    }
++}

@@ -1,0 +1,3163 @@
+[
+  {
+    "id": "air-show",
+    "title": "Air Show",
+    "package": "Air Show - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Air Show - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Air Show - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Air Show - Silent Bay Studios/air_show.dcr",
+      "Games/Air Show - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "746e435033d5b894aad1863b7b118d7a973734968dc265032f9ada6646927717",
+    "bytes": 7739,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; recorded opening gameplay passed.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Air Show - Silent Bay Studios.zip",
+      "archive_sha256": "cc078c81159de68137f73b4901dbf2736a19c36ec77a5259d8596dfa8654293d",
+      "member": "air-show.exe",
+      "offset": 9275434,
+      "size": 7739,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "american-football",
+    "title": "American Football",
+    "package": "American Football - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/American Football - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/American Football - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/American Football - Silent Bay Studios/american_football.dcr",
+      "Games/American Football - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "ca1ff36bf1d62f26bcf52cc7492bee4c6c5425f9a20542e69808aab5568f3e4c",
+    "bytes": 7775,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "American Football - Silent Bay Studios.zip",
+      "archive_sha256": "dba8b6d9c5a551d92ce90e61b583f181df0c0e85d922ea39b6a888ab0d3b4b99",
+      "member": "american-football.exe",
+      "offset": 10307050,
+      "size": 7775,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "banjo-kazooie-memory-game",
+    "title": "Banjo-Kazooie Memory Game",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "6d3005e18fb484a0e8e2bb1409317fb0a8099b1f0d4b2b3358af04d43a1b3982",
+    "bytes": 375824,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "basketball-jam",
+    "title": "Basketball Jam",
+    "package": "Basketball Jam - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Basketball Jam - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Basketball Jam - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Basketball Jam - Silent Bay Studios/basketball_jam.dcr",
+      "Games/Basketball Jam - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "6a8ae54fca46e7f24262f0487e8bba91d77583a34aee4a98ac0103443ec1e7a0",
+    "bytes": 7741,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Basketball Jam - Silent Bay Studios.zip",
+      "archive_sha256": "9de8c54cc666b725b7351d7ea77b798bf0143ec3fcc2b1a0a13961f2df8f0337",
+      "member": "basketball-jam.exe",
+      "offset": 9275434,
+      "size": 7741,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "basketball-slam",
+    "title": "Basketball Slam",
+    "package": "Basketball Slam - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Basketball Slam - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Basketball Slam - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Basketball Slam - Silent Bay Studios/basketball_slam.dcr",
+      "Games/Basketball Slam - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "2e347d137b7f95e1ed0080005586516bb9d4caa81104f6a728cef40c3938ca6e",
+    "bytes": 7740,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Basketball Slam - Silent Bay Studios.zip",
+      "archive_sha256": "d35fed29abb7361cc3d6a0f55ebd2af19338c771da2033fecb0dad16059233d4",
+      "member": "basketball-slam.exe",
+      "offset": 9275434,
+      "size": 7740,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "battle-wheels",
+    "title": "Battle Wheels",
+    "package": "Battle Wheels",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Battle Wheels/bww.dcr",
+    "entry_relative_to_import_folder": "bww.dcr",
+    "import_folder": "Games/Battle Wheels",
+    "alternate_movies": [
+      "Games/Battle Wheels/gameloader.dcr",
+      "Games/Battle Wheels/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "5987da34868fedf86a822b03dc80ae3cbb4ce57b0a2851f674cb50d89c7043ee",
+    "bytes": 2939696,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "beach-soccer",
+    "title": "Beach Soccer",
+    "package": "Beach Soccer - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Beach Soccer - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Beach Soccer - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Beach Soccer - Silent Bay Studios/beach_soccer.dcr",
+      "Games/Beach Soccer - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "662e8780060a4940495307f9fbdacf069a4e9970f943cfc78abad6bdb5264295",
+    "bytes": 7770,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Beach Soccer - Silent Bay Studios.zip",
+      "archive_sha256": "82e8825f77dc79b26d240218a369f73c5e2a0f3c906a1905015aa96942bd5f52",
+      "member": "beach-soccer.exe",
+      "offset": 10307050,
+      "size": 7770,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "blues-bikers",
+    "title": "Blues Bikers",
+    "package": "Blues Bikers",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Blues Bikers/blues_bikers.dcr",
+    "entry_relative_to_import_folder": "blues_bikers.dcr",
+    "import_folder": "Games/Blues Bikers",
+    "alternate_movies": [
+      "Games/Blues Bikers/ProjectorStretch.dir",
+      "Games/Blues Bikers/gameloader.dcr",
+      "Games/Blues Bikers/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "044349c1d60ff6c9c8a6fe4620532bf46066cdfdfa563ff73a3a837e895379fb",
+    "bytes": 2987124,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 1,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 98
+    }
+  },
+  {
+    "id": "breakout-lite",
+    "title": "Breakout Lite",
+    "package": "Breakout Lite",
+    "source_page": "https://themetalbox.com/index.php?page=breakout_lite",
+    "entry": "Games/Breakout Lite/BreakoutLite.dcr",
+    "entry_relative_to_import_folder": "BreakoutLite.dcr",
+    "import_folder": "Games/Breakout Lite",
+    "alternate_movies": [],
+    "sha256": "ebb2f1f59d3bbc9a940c0de62cb9ff4695ccc5f1399a86bebe790a28ceda7e1a",
+    "bytes": 31397,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    },
+    "existing_probe": "Probes/breakout-lite/Probe.json",
+    "existing_probe_case": "BreakoutLite",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "opening gameplay assertion"
+  },
+  {
+    "id": "cartoon-network-smash-tennis-extreme-pong",
+    "title": "Cartoon Network Smash Tennis - Extreme Pong",
+    "package": "Cartoon Network Smash Tennis - Extreme Pong",
+    "source_page": "https://archive.org/details/extreme_pong",
+    "entry": "Games/Cartoon Network Smash Tennis - Extreme Pong/extreme_pong.dcr",
+    "entry_relative_to_import_folder": "extreme_pong.dcr",
+    "import_folder": "Games/Cartoon Network Smash Tennis - Extreme Pong",
+    "alternate_movies": [],
+    "sha256": "5a71741dd6fbecc15ef01f465a31619ea00ea3f9265ca646b1114b695f5cc9d1",
+    "bytes": 108939,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    }
+  },
+  {
+    "id": "catdog-fistful-of-mail",
+    "title": "CatDog Fistful of Mail",
+    "package": "CatDog Fistful of Mail",
+    "source_page": "https://archive.org/details/fistful_dcr",
+    "entry": "Games/CatDog Fistful of Mail/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/CatDog Fistful of Mail",
+    "alternate_movies": [],
+    "sha256": "fdd1eeb8d95f679a62b37b1a2a662613a1538d09cf1f17682060bfc14f740e48",
+    "bytes": 349115,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "catdog-granny-invaders",
+    "title": "CatDog Granny Invaders",
+    "package": "CatDog Granny Invaders",
+    "source_page": "https://archive.org/details/granny_dcr",
+    "entry": "Games/CatDog Granny Invaders/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/CatDog Granny Invaders",
+    "alternate_movies": [],
+    "sha256": "683597db4d7b91d948568aa15047e3c9064d890b4e9284d430842d5d66d58171",
+    "bytes": 335588,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "catdog-pool-pong",
+    "title": "CatDog Pool Pong",
+    "package": "CatDog Pool Pong",
+    "source_page": "https://archive.org/details/poolpong",
+    "entry": "Games/CatDog Pool Pong/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/CatDog Pool Pong",
+    "alternate_movies": [],
+    "sha256": "db90a19c1ed4fa504ed9324429be3153a7add15c4f4a854fddebb65583c84734",
+    "bytes": 156465,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "centipede",
+    "title": "Centipede",
+    "package": "Hasbro Interactive Shockwave Games",
+    "source_page": "https://archive.org/details/hasbrointeractive",
+    "entry": "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/centipede.dcr",
+    "entry_relative_to_import_folder": "Hasbro Interactive Shockwave Games/Games/centipede.dcr",
+    "import_folder": "Games/Hasbro Interactive Shockwave Games",
+    "alternate_movies": [
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/frogger.dcr",
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/missilecommand.dcr",
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/superbreakout.dcr"
+    ],
+    "sha256": "a4a8e95b7c4c4058e8eafc740eedb098e612f8edc11afbdc9a392bcb48dc894b",
+    "bytes": 153588,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    },
+    "existing_probe": "Probes/centipede/Probe.json",
+    "existing_probe_case": "Centipede",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "opening gameplay assertion"
+  },
+  {
+    "id": "centre-court-tennis",
+    "title": "Centre Court Tennis",
+    "package": "Centre Court Tennis - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Centre Court Tennis - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Centre Court Tennis - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Centre Court Tennis - Silent Bay Studios/centre_court_tennis.dcr",
+      "Games/Centre Court Tennis - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "e8215b4beb14faea67eeee14a4cf38914dc6deabc9f4143c6bf4985a797e4365",
+    "bytes": 7745,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Centre Court Tennis - Silent Bay Studios.zip",
+      "archive_sha256": "48b0a0e8dc58b7dff13dffeed4d00dfcd4877cc22e53db683cd8496c1a308adb",
+      "member": "centre-court-tennis.exe",
+      "offset": 9275434,
+      "size": 7745,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "commandos-2-target-practice",
+    "title": "Commandos 2 Target Practice",
+    "package": "Eidos Shockwave Webgames",
+    "source_page": "https://archive.org/details/eidos-shockwave-webgames",
+    "entry": "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Commandos 2 Target Practice.dcr",
+    "entry_relative_to_import_folder": "Eidos Shockwave Webgames/Games/Commandos 2 Target Practice.dcr",
+    "import_folder": "Games/Eidos Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Fear Effect 2 Retro Helix.dcr",
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Great Firework Race.dcr",
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Tomb Raider.dcr"
+    ],
+    "sha256": "432295f1cc9ad3ce950db77be705ffec7888fd0d3758f3543351468952f3be18",
+    "bytes": 115320,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "courage-in-creep-tv",
+    "title": "Courage in Creep TV",
+    "package": "Courage in Creep TV",
+    "source_page": "https://archive.org/details/courage-in-creepy-tv",
+    "entry": "Games/Courage in Creep TV/game.dcr",
+    "entry_relative_to_import_folder": "game.dcr",
+    "import_folder": "Games/Courage in Creep TV",
+    "alternate_movies": [],
+    "sha256": "61e6cc9a74cf0887d3c5691339ff414d278bfbe7e1e0dea16b4749bcce6a85d8",
+    "bytes": 905845,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    }
+  },
+  {
+    "id": "crash-car-combat",
+    "title": "Crash Car Combat",
+    "package": "Crash Car Combat",
+    "source_page": "https://archive.org/details/crash-car-combat",
+    "entry": "Games/Crash Car Combat/crash-car-combat/game_name.dcr",
+    "entry_relative_to_import_folder": "crash-car-combat/game_name.dcr",
+    "import_folder": "Games/Crash Car Combat",
+    "alternate_movies": [
+      "Games/Crash Car Combat/crash-car-combat/gameloader.dcr",
+      "Games/Crash Car Combat/crash-car-combat/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "85946d9fedae8deea6381a8f3cfa8dbf2f98a6926b91e5ecd36cc60235f019fb",
+    "bytes": 1791387,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 104
+    }
+  },
+  {
+    "id": "crazy-counting",
+    "title": "Crazy Counting",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "0bfdc299e34e923484708015cc5397d0bbb4e721e1438f77164f9175f8063e29",
+    "bytes": 204578,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "creepy-pong",
+    "title": "Creepy Pong",
+    "package": "Creepy Pong - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Creepy Pong - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Creepy Pong - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Creepy Pong - Silent Bay Studios/creepy_pong.dcr",
+      "Games/Creepy Pong - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "6d9041916d5651721d051eec07297e449ae06a4143111c83fbcaba99ea6e94c1",
+    "bytes": 7344,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; recorded opening gameplay passed.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "existing_probe": "Probes/creepy-pong/Probe.json",
+    "existing_probe_case": "CreepyPong",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "diagnostic capture; no gameplay assertion",
+    "projector_provenance": {
+      "archive": "Creepy Pong - Silent Bay Studios.zip",
+      "archive_sha256": "ef234de6ab12280e8baeb41e5b8a05193cc3839dcb6d3019878192589acae77f",
+      "member": "creepy-pong.exe",
+      "offset": 9275434,
+      "size": 7344,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "delta-force-operation-fire-shield",
+    "title": "Delta Force Operation Fire Shield",
+    "package": "Delta Force Operation Fire Shield",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Delta Force Operation Fire Shield/delta_force.dcr",
+    "entry_relative_to_import_folder": "delta_force.dcr",
+    "import_folder": "Games/Delta Force Operation Fire Shield",
+    "alternate_movies": [
+      "Games/Delta Force Operation Fire Shield/gameloader.dcr",
+      "Games/Delta Force Operation Fire Shield/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "0f3854463a16cb8b166c7d2e74b2ee07bea06821450108ba924fd2c6fd2e57b4",
+    "bytes": 4612015,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 10,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 110
+    }
+  },
+  {
+    "id": "dinky-rinky",
+    "title": "Dinky Rinky",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "fea05df1d236f634bba130126bc5d584fa9eb5d66f18611e4932b2b8758ea1c5",
+    "bytes": 272369,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "donkey-kong-64-lore-quiz",
+    "title": "Donkey Kong 64 Lore Quiz",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "f805bd0ce354712bafb02b5c07600c930ccc93d112fd9dcb6d629b291e6c3270",
+    "bytes": 566272,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "donkey-kong-country-barrel-maze",
+    "title": "Donkey Kong Country Barrel Maze",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr"
+    ],
+    "sha256": "d2719f263b0b6d4146c1310f283202d427e39ff5113cbe3452e266b31b9cee31",
+    "bytes": 51943,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "donkey-konk",
+    "title": "Donkey Konk",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "a233782ac538e95aa79d83b88d3d7ec2b58835de41c01a8a866185f4f42c32c0",
+    "bytes": 255774,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "doomsday",
+    "title": "Doomsday",
+    "package": "Doomsday (2008 Shockwave Game)",
+    "source_page": "https://archive.org/details/doomsday_shockwave",
+    "entry": "Games/Doomsday (2008 Shockwave Game)/doomsday/game.dcr",
+    "entry_relative_to_import_folder": "doomsday/game.dcr",
+    "import_folder": "Games/Doomsday (2008 Shockwave Game)",
+    "alternate_movies": [
+      "Games/Doomsday (2008 Shockwave Game)/doomsday/gamewrapper.dir"
+    ],
+    "sha256": "ef2df56a8bc1fa70d04d7fc00e7b358ca532167b63d5f4a126d6854ecd37203c",
+    "bytes": 4036790,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 83
+    }
+  },
+  {
+    "id": "drift-trike",
+    "title": "Drift Trike",
+    "package": "Drift Trike",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Drift Trike/drift_trike.dcr",
+    "entry_relative_to_import_folder": "drift_trike.dcr",
+    "import_folder": "Games/Drift Trike",
+    "alternate_movies": [
+      "Games/Drift Trike/gameloader.dcr",
+      "Games/Drift Trike/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "dc7c3c11c823925bea8332937e8e0dd533ac737749cbcb61c3bf15e4fb765fa9",
+    "bytes": 3291092,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "european-soccer-champions",
+    "title": "European Soccer Champions",
+    "package": "European Soccer Champions - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/European Soccer Champions - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/European Soccer Champions - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/European Soccer Champions - Silent Bay Studios/european_soccer_champions.dcr",
+      "Games/European Soccer Champions - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "027606ed7bb414d03a4c36d705584889d5f80dcc9086fd7ef79caf1375e04a5e",
+    "bytes": 7787,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "European Soccer Champions - Silent Bay Studios.zip",
+      "archive_sha256": "4b88f442db25657ca780e5c97dc1436f5a98fb046f6281b66f942cf6f3df601d",
+      "member": "european-soccer-champions.exe",
+      "offset": 10307050,
+      "size": 7787,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "excitebike",
+    "title": "Excitebike",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "5f6326af13995c2f2bbc8e6c292d6695f5dbd2d7490b9baf463b1b67758f4431",
+    "bytes": 279320,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "extreme-quad",
+    "title": "Extreme Quad",
+    "package": "Extreme Quad - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Extreme Quad - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Extreme Quad - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Extreme Quad - Silent Bay Studios/extreme_quad.dcr",
+      "Games/Extreme Quad - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "92526cac03152c255c59b7db0d3b00a28e2b4c0202c481f32151b413be21d7f4",
+    "bytes": 7773,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Extreme Quad - Silent Bay Studios.zip",
+      "archive_sha256": "692a78fb077d292fd7d9bbf87627e51f93cb8ecbec572eb7d2f38c440d2cc4df",
+      "member": "extreme-quad.exe",
+      "offset": 10307050,
+      "size": 7773,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "extreme-trial",
+    "title": "Extreme Trial",
+    "package": "Extreme Trial - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Extreme Trial - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Extreme Trial - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Extreme Trial - Silent Bay Studios/extreme_trial.dcr",
+      "Games/Extreme Trial - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "2c64ab5ee15bc3ecf72960fa888347d24fc5840d5d09f1a48ab8f649465aeaac",
+    "bytes": 7749,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 9,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Extreme Trial - Silent Bay Studios.zip",
+      "archive_sha256": "5980470b303dc92849bd7a115a135e8879393b2df4d871bc70ce9b60acea504e",
+      "member": "extreme-trial.exe",
+      "offset": 9547946,
+      "size": 7749,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "f-zero-x-academy-garage",
+    "title": "F-Zero X Academy Garage",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr"
+    ],
+    "sha256": "2b74688351de735db3110e1e60487fdbbba9819b6d938dfb9c59c7778c3986a5",
+    "bytes": 32184,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "fast-car-frenzy",
+    "title": "Fast Car Frenzy",
+    "package": "Fast Car Frenzy - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Fast Car Frenzy - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Fast Car Frenzy - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Fast Car Frenzy - Silent Bay Studios/fast_car_frenzy.dcr",
+      "Games/Fast Car Frenzy - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "0adc4c7ddfc9586c4fbb0a0dc3722caeb42383415f76a406a1f448c67d893d2d",
+    "bytes": 7780,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 3,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Fast Car Frenzy - Silent Bay Studios.zip",
+      "archive_sha256": "1ab4230eeab69047cc0b9c169d8c5ba0b40c9cb86749a9d4e610adc08305a37c",
+      "member": "fast-car-frenzy.exe",
+      "offset": 10307050,
+      "size": 7780,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "fear-effect-2-retro-helix",
+    "title": "Fear Effect 2 Retro Helix",
+    "package": "Eidos Shockwave Webgames",
+    "source_page": "https://archive.org/details/eidos-shockwave-webgames",
+    "entry": "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Fear Effect 2 Retro Helix.dcr",
+    "entry_relative_to_import_folder": "Eidos Shockwave Webgames/Games/Fear Effect 2 Retro Helix.dcr",
+    "import_folder": "Games/Eidos Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Commandos 2 Target Practice.dcr",
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Great Firework Race.dcr",
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Tomb Raider.dcr"
+    ],
+    "sha256": "0ec52f2eb3cac930ed8db221d72b5b8466c8e53194312defee3eaad1b8033c5f",
+    "bytes": 1795359,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "free-running",
+    "title": "Free Running",
+    "package": "Free Running - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Free Running - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Free Running - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Free Running - Silent Bay Studios/free_running.dcr",
+      "Games/Free Running - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "d3ac3ba9bdd8d123502712c9ec9b41769fb95fbd90ddaa0ffdb0c7317514a196",
+    "bytes": 7378,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Free Running - Silent Bay Studios.zip",
+      "archive_sha256": "3d37a257c9f98e59c3fab438919a1bfd9f0c6de1ecf5846cc584185d711876f9",
+      "member": "free-running.exe",
+      "offset": 10307050,
+      "size": 7378,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "free-wheels",
+    "title": "Free Wheels",
+    "package": "Free Wheels - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Free Wheels - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Free Wheels - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Free Wheels - Silent Bay Studios/free_wheels.dcr",
+      "Games/Free Wheels - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "9c4815810161aab0b9b4a1eb3e0c03424827ceec9ef7fb5c5b126ab6372a5e38",
+    "bytes": 7750,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 8,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Free Wheels - Silent Bay Studios.zip",
+      "archive_sha256": "609901323d9170266ca10e4ea1032cb6ed6ecf5075f2325bff528b1b70f8cb3f",
+      "member": "free-wheels.exe",
+      "offset": 9547946,
+      "size": 7750,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "frogger",
+    "title": "Frogger",
+    "package": "Hasbro Interactive Shockwave Games",
+    "source_page": "https://archive.org/details/hasbrointeractive",
+    "entry": "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/frogger.dcr",
+    "entry_relative_to_import_folder": "Hasbro Interactive Shockwave Games/Games/frogger.dcr",
+    "import_folder": "Games/Hasbro Interactive Shockwave Games",
+    "alternate_movies": [
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/centipede.dcr",
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/missilecommand.dcr",
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/superbreakout.dcr"
+    ],
+    "sha256": "4a3d04a1f8d1cfda9b3bbf83b331546324e50d8e6b44deb6f7b0398a0181c0da",
+    "bytes": 474083,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    },
+    "existing_probe": "Probes/frogger/Probe.json",
+    "existing_probe_case": "Frogger",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "opening gameplay assertion"
+  },
+  {
+    "id": "galidor-quest",
+    "title": "Galidor Quest",
+    "package": "galidor quest",
+    "source_page": "https://archive.org/details/galidor_quest",
+    "entry": "Games/galidor quest/galidorgame.dcr",
+    "entry_relative_to_import_folder": "galidorgame.dcr",
+    "import_folder": "Games/galidor quest",
+    "alternate_movies": [],
+    "sha256": "98cc74d40c28455c4d8d8b488ab098c2c91e0505bf4958785317055c759ad076",
+    "bytes": 102688,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 46,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    },
+    "expected_missing": [
+      "dummy.cct",
+      "game.asp"
+    ],
+    "expected_missing_note": "Archived placeholder cast and the obsolete online save service; neither is present in the original package. Matches the expectedMissing recorded by this title\u2019s gameplay case."
+  },
+  {
+    "id": "go-karts",
+    "title": "Go Karts",
+    "package": "Go Karts - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Go Karts - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Go Karts - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Go Karts - Silent Bay Studios/go_karts.dcr",
+      "Games/Go Karts - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "3414c7e224e70c310afc8e1958ba00555470e42655bfdb432f8d388ae5b4a237",
+    "bytes": 7752,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 4,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Go Karts - Silent Bay Studios.zip",
+      "archive_sha256": "1aee556cac4966b8d5bca612ee5cdbe975b692497ce1f35e7f2ec65b688233b1",
+      "member": "go-karts.exe",
+      "offset": 9547946,
+      "size": 7752,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "golf-ace",
+    "title": "Golf Ace",
+    "package": "Golf Ace - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Golf Ace - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Golf Ace - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Golf Ace - Silent Bay Studios/golf_ace.dcr",
+      "Games/Golf Ace - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "b83dc839ff3540f461d66baa27def4e41a76ae268382977c54f4e3e2019c09c2",
+    "bytes": 7358,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 9,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Golf Ace - Silent Bay Studios.zip",
+      "archive_sha256": "46d543d42ae644686b28d940991bbe4fb46a3bfd9bc6d08d220a4d35430283f1",
+      "member": "golf-ace.exe",
+      "offset": 9547946,
+      "size": 7358,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "goodness-rakes",
+    "title": "Goodness Rakes",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "8a9f986377c590c2b67716f6fc976d29faf87cdb24235d739b4b682b56640ea6",
+    "bytes": 313217,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "great-firework-race",
+    "title": "Great Firework Race",
+    "package": "Eidos Shockwave Webgames",
+    "source_page": "https://archive.org/details/eidos-shockwave-webgames",
+    "entry": "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Great Firework Race.dcr",
+    "entry_relative_to_import_folder": "Eidos Shockwave Webgames/Games/Great Firework Race.dcr",
+    "import_folder": "Games/Eidos Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Commandos 2 Target Practice.dcr",
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Fear Effect 2 Retro Helix.dcr",
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Tomb Raider.dcr"
+    ],
+    "sha256": "e38d2ea8af2cf161b802841aa277c074fd3ae860abc267368b880404b5f2f429",
+    "bytes": 358841,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "guns-of-anarchy",
+    "title": "Guns of Anarchy",
+    "package": "Guns of Anarchy",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Guns of Anarchy/guns_of_anarchy.dcr",
+    "entry_relative_to_import_folder": "guns_of_anarchy.dcr",
+    "import_folder": "Games/Guns of Anarchy",
+    "alternate_movies": [
+      "Games/Guns of Anarchy/gameloader.dcr",
+      "Games/Guns of Anarchy/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "383fb87671efc3be24394b3715c77829ed5d9bb26dfcd8fa94201515f146240f",
+    "bytes": 5104029,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "hey-arnold-box-tops",
+    "title": "Hey Arnold! Box Tops",
+    "package": "Hey Arnold! Box Tops",
+    "source_page": "https://archive.org/details/boxtops_dcr",
+    "entry": "Games/Hey Arnold! Box Tops/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/Hey Arnold! Box Tops",
+    "alternate_movies": [],
+    "sha256": "96335d7364d394f8291d6739697e1fa03360baa5ebc3063a00330590e3a7ff88",
+    "bytes": 332714,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "hey-arnold-ice-hockey",
+    "title": "Hey Arnold! Ice Hockey",
+    "package": "Hey Arnold! Ice Hockey",
+    "source_page": "https://archive.org/details/hockey_dcr",
+    "entry": "Games/Hey Arnold! Ice Hockey/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/Hey Arnold! Ice Hockey",
+    "alternate_movies": [],
+    "sha256": "6dd506bfc0b7a3565f356e884e99d973c9271f10a8b231856980125be5879348",
+    "bytes": 345522,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "hey-arnold-pig-skins-r-us",
+    "title": "Hey Arnold! Pig Skins R Us",
+    "package": "Hey Arnold! Pig Skins R Us",
+    "source_page": "https://archive.org/details/pigskins",
+    "entry": "Games/Hey Arnold! Pig Skins R Us/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/Hey Arnold! Pig Skins R Us",
+    "alternate_movies": [],
+    "sha256": "75af41ff84de2db03e8e91a2c268943056ffc0ae4c65565936dab7ca76fba974",
+    "bytes": 259208,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "hey-arnold-sewer-king",
+    "title": "Hey Arnold! Sewer King",
+    "package": "Hey Arnold! Sewer King",
+    "source_page": "https://archive.org/details/sewer-game",
+    "entry": "Games/Hey Arnold! Sewer King/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/Hey Arnold! Sewer King",
+    "alternate_movies": [],
+    "sha256": "ce02d8ad106bd564e6028edb25f13c9185af1b6050b04c6171df84e21c60828f",
+    "bytes": 279269,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "hey-arnold-tour-de-pond",
+    "title": "Hey Arnold! Tour De Pond",
+    "package": "Hey Arnold! Tour De Pond",
+    "source_page": "https://archive.org/details/tourdepond",
+    "entry": "Games/Hey Arnold! Tour De Pond/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/Hey Arnold! Tour De Pond",
+    "alternate_movies": [],
+    "sha256": "522427e072033abfb7ac337e781a67659ee95229a3a9795b412cb6e8e09686a3",
+    "bytes": 328323,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "hot-rods",
+    "title": "Hot Rods",
+    "package": "HOT RODS",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/HOT RODS/GameData/www.miniclip.com/games/hot-rods/en/hot_rods.dcr",
+    "entry_relative_to_import_folder": "GameData/www.miniclip.com/games/hot-rods/en/hot_rods.dcr",
+    "import_folder": "Games/HOT RODS",
+    "alternate_movies": [
+      "Games/HOT RODS/GameData/www.miniclip.com/games/hot-rods/en/SPR.dir",
+      "Games/HOT RODS/GameData/www.miniclip.com/games/hot-rods/en/SPRD.dir",
+      "Games/HOT RODS/GameData/www.miniclip.com/games/hot-rods/en/SPRS.dir",
+      "Games/HOT RODS/GameData/www.miniclip.com/games/hot-rods/en/wrapper_redirector.dir",
+      "Games/HOT RODS/GameData/www.miniclip.com/games/hot-rods/en/wrapper_redirector_debug.dir",
+      "Games/HOT RODS/GameData/www.miniclip.com/games/hot-rods/en/wrapper_redirector_stretch.dir"
+    ],
+    "sha256": "f6ea1c5fca4e702d327426e818edcfaefdd95ce348d43177f2ada306f676d2b6",
+    "bytes": 1539531,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 8,
+      "swf_sidecars": 0,
+      "html_pages": 1,
+      "native_files_in_original_archive": 98
+    }
+  },
+  {
+    "id": "hot-wheels-ferrari-x-v-speed-trial",
+    "title": "Hot Wheels Ferrari X-V - Speed Trial",
+    "package": "Hot Wheels Ferrari X-V - Speed Trial",
+    "source_page": "https://archive.org/details/hwferrariswgame",
+    "entry": "Games/Hot Wheels Ferrari X-V - Speed Trial/hwferrari/game.dcr",
+    "entry_relative_to_import_folder": "hwferrari/game.dcr",
+    "import_folder": "Games/Hot Wheels Ferrari X-V - Speed Trial",
+    "alternate_movies": [
+      "Games/Hot Wheels Ferrari X-V - Speed Trial/hwferrari/gamewrapper.dir",
+      "Games/Hot Wheels Ferrari X-V - Speed Trial/hwferrari/mfhwmain.dcr"
+    ],
+    "sha256": "c40ddd936446384e52c487390e3bd5f48d0fc498045253bbcd8d389c7770b7d5",
+    "bytes": 109050,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 1,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 83
+    }
+  },
+  {
+    "id": "ice-racer",
+    "title": "Ice Racer",
+    "package": "Ice Racer - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Ice Racer - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Ice Racer - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Ice Racer - Silent Bay Studios/iceracer.dcr",
+      "Games/Ice Racer - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "b4f361a258c23427d652b5aab49ea19e0c860ac17fa2d35ccda89bb29ab77808",
+    "bytes": 7814,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Ice Racer - Silent Bay Studios.zip",
+      "archive_sha256": "dd3d6206ac822a5302aab3363ac08c5047f4d8abf4097ff28a7d7616425f7995",
+      "member": "ice-racer.exe",
+      "offset": 9275434,
+      "size": 7814,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "insane-ski-jump",
+    "title": "Insane Ski Jump",
+    "package": "Insane Ski Jump - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Insane Ski Jump - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Insane Ski Jump - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Insane Ski Jump - Silent Bay Studios/insane_ski_jump.dcr",
+      "Games/Insane Ski Jump - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "fe1daa34f3fcf35784a63d95537c1fa65bdda7b602074ca595653fbbfacf2158",
+    "bytes": 7367,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Insane Ski Jump - Silent Bay Studios.zip",
+      "archive_sha256": "6b40dff65a0519cbbea26ad2ea1c8fbeddc9bb0da670589dc0ae7acd3e13bf42",
+      "member": "insane-ski-jump.exe",
+      "offset": 9547946,
+      "size": 7367,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "jet-ski-racing",
+    "title": "Jet Ski Racing",
+    "package": "Jet Ski Racing - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Jet Ski Racing - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Jet Ski Racing - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Jet Ski Racing - Silent Bay Studios/jetski_racing.dcr",
+      "Games/Jet Ski Racing - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "f6ca7c350543d7368b5a48815ace4c4a472f2ecef1f56b3edbf5261199727240",
+    "bytes": 7858,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Jet Ski Racing - Silent Bay Studios.zip",
+      "archive_sha256": "6cf1f985340f74e278a12d899755535c40a81cdd40eae367c7e999bc91c9aa4b",
+      "member": "jet-ski-racing.exe",
+      "offset": 10307050,
+      "size": 7858,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "jousting",
+    "title": "Jousting",
+    "package": "Jousting - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Jousting - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Jousting - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Jousting - Silent Bay Studios/jousting.dcr",
+      "Games/Jousting - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "7b836a00f69b67bd2a16ca006d1ed6c749301dcc1ec5189b202fb8a03c436995",
+    "bytes": 8008,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Jousting - Silent Bay Studios.zip",
+      "archive_sha256": "771829bb4e703a75d54e24a46e55e3b76283562b3b5433bd5c246882934c0aa2",
+      "member": "jousting.exe",
+      "offset": 9592720,
+      "size": 8008,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "karate-king",
+    "title": "Karate King",
+    "package": "Karate King - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Karate King - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Karate King - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Karate King - Silent Bay Studios/karate_king.dcr",
+      "Games/Karate King - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "a2451cf596ae36129cddc71e88d1d00af4f8e7e8bfa06e3f4e029bff00e51335",
+    "bytes": 7357,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 12,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Karate King - Silent Bay Studios.zip",
+      "archive_sha256": "19caf7cb06fa17eb055866aea46f618275b45d710173953cc46cf9b7d1397c62",
+      "member": "karate-king.exe",
+      "offset": 9547902,
+      "size": 7357,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "kremling-krunch",
+    "title": "Kremling Krunch",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "eb8124b7c238835dc427d3c956333d80b3657240904fce8370f0c8554089f742",
+    "bytes": 229961,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "lego-studios-backlot",
+    "title": "LEGO Studios Backlot",
+    "package": "LEGO Studios Backlot",
+    "source_page": "https://archive.org/details/legostudiosbacklot",
+    "entry": "Games/LEGO Studios Backlot/LegoStudios.dcr",
+    "entry_relative_to_import_folder": "LegoStudios.dcr",
+    "import_folder": "Games/LEGO Studios Backlot",
+    "alternate_movies": [
+      "Games/LEGO Studios Backlot/LegoStudios_.dcr",
+      "Games/LEGO Studios Backlot/havokTeaser.dcr",
+      "Games/LEGO Studios Backlot/havokTeaser_.dcr",
+      "Games/LEGO Studios Backlot/start.dcr"
+    ],
+    "sha256": "1db8e5cb2242c2783c9eb09dce915c71fe47a62d9f150f9f4f2aea5f403df3da",
+    "bytes": 7619,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "LIMITED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 1,
+      "external_w3d_files": 17,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "existing_probe": "Probes/lego-studios-backlot/Probe.json",
+    "existing_probe_case": "Backlot",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "diagnostic capture; no gameplay assertion"
+  },
+  {
+    "id": "lego-world-builder",
+    "title": "LEGO World Builder",
+    "package": "Lego World Builder",
+    "source_page": "https://archive.org/details/lego-world-builder",
+    "entry": "Games/Lego World Builder/WorldBuilder/worldbuilder/worldbuilder.dcr",
+    "entry_relative_to_import_folder": "WorldBuilder/worldbuilder/worldbuilder.dcr",
+    "import_folder": "Games/Lego World Builder",
+    "alternate_movies": [],
+    "sha256": "8d3452e6627abb09b52910797059a0e75d5eb8962b84b416b8c7b7ce71a4c955",
+    "bytes": 1738048,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 11,
+      "native_files_in_original_archive": 4
+    },
+    "existing_probe": "Probes/lego-world-builder/Probe.json",
+    "existing_probe_case": "WorldBuilder",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "opening gameplay assertion"
+  },
+  {
+    "id": "mario-golf-power-meter",
+    "title": "Mario Golf Power Meter",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "286e739044a950b1b83c528ac9c7abd00e59e7be4728cc89aeb09dafefc90b9a",
+    "bytes": 81658,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "mario-s-memory-madness",
+    "title": "Mario's Memory Madness",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr"
+    ],
+    "sha256": "bd320db3a0d793ce9ea5700755100945a2ef09f3a3b5d5b9057e0f2dba7c8dce",
+    "bytes": 45709,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "melon-mayhem",
+    "title": "Melon Mayhem",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "b1a2466fc435bf6c5c086d00b4afc641d7e2515777d86823c9d8af14f44d6179",
+    "bytes": 212343,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "merlin-s-revenge-1",
+    "title": "Merlin's Revenge 1",
+    "package": "Merlins Revenge 1",
+    "source_page": "https://themetalbox.com/index.php?page=merlin_1",
+    "entry": "Games/Merlins Revenge 1/Merlin.dcr",
+    "entry_relative_to_import_folder": "Merlin.dcr",
+    "import_folder": "Games/Merlins Revenge 1",
+    "alternate_movies": [],
+    "sha256": "6929773973ad606e81c270c026d248dbdaef6813d8b19b045123b2354268d1cc",
+    "bytes": 678877,
+    "container": "MDGF",
+    "parameters": {
+      "sw1": "#metal",
+      "sw2": "",
+      "sw3": "",
+      "bgcolor": "#000000"
+    },
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    },
+    "generated_launch_descriptor": "Games/Merlins Revenge 1/launch.html",
+    "existing_core_check": "Flashback/check-shockwave.sh"
+  },
+  {
+    "id": "merlin-s-revenge-2",
+    "title": "Merlin's Revenge 2",
+    "package": "Merlins Revenge 2",
+    "source_page": "https://themetalbox.com/index.php?page=merlin_2",
+    "entry": "Games/Merlins Revenge 2/Merlin2.dcr",
+    "entry_relative_to_import_folder": "Merlin2.dcr",
+    "import_folder": "Games/Merlins Revenge 2",
+    "alternate_movies": [],
+    "sha256": "991eeae0326307f5846a5711c6aa98ce45aca75811d4e299b580a1cd77a5f630",
+    "bytes": 1409158,
+    "container": "MDGF",
+    "parameters": {
+      "sw1": "#metal",
+      "sw2": "",
+      "sw3": "",
+      "bgcolor": "#000000"
+    },
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    },
+    "generated_launch_descriptor": "Games/Merlins Revenge 2/launch.html",
+    "existing_probe": "Probes/merlin-s-revenge-2/Probe.json",
+    "existing_probe_case": "Merlin2",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "opening gameplay assertion"
+  },
+  {
+    "id": "merlin-s-revenge-3",
+    "title": "Merlin's Revenge 3",
+    "package": "Merlins Revenge 3",
+    "source_page": "https://themetalbox.com/index.php?page=merlin_3",
+    "entry": "Games/Merlins Revenge 3/merlin_3_open_065_importCreditsTxt.dir",
+    "entry_relative_to_import_folder": "merlin_3_open_065_importCreditsTxt.dir",
+    "import_folder": "Games/Merlins Revenge 3",
+    "alternate_movies": [],
+    "sha256": "9e31078ad9f34efc1f3a2c07f990505e8128cfeafdf93eb7598f70a4be5ed967",
+    "bytes": 30540752,
+    "container": "39VM",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    },
+    "existing_core_check": "Flashback/check-shockwave.sh"
+  },
+  {
+    "id": "missile-command",
+    "title": "Missile Command",
+    "package": "Hasbro Interactive Shockwave Games",
+    "source_page": "https://archive.org/details/hasbrointeractive",
+    "entry": "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/missilecommand.dcr",
+    "entry_relative_to_import_folder": "Hasbro Interactive Shockwave Games/Games/missilecommand.dcr",
+    "import_folder": "Games/Hasbro Interactive Shockwave Games",
+    "alternate_movies": [
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/centipede.dcr",
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/frogger.dcr",
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/superbreakout.dcr"
+    ],
+    "sha256": "b51bc07c3a5895c23f94ed0af05c59baa8d55f9f04b53e7b726cadd39522b723",
+    "bytes": 178867,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    },
+    "existing_probe": "Probes/missile-command/Probe.json",
+    "existing_probe_case": "MissileCommand",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "opening gameplay assertion"
+  },
+  {
+    "id": "monster-bash",
+    "title": "Monster Bash",
+    "package": "MONSTER BASH",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/MONSTER BASH/en/monster.dcr",
+    "entry_relative_to_import_folder": "en/monster.dcr",
+    "import_folder": "Games/MONSTER BASH",
+    "alternate_movies": [
+      "Games/MONSTER BASH/en/loader.dcr"
+    ],
+    "sha256": "5066656239c6f9226d1b986aaa045435ecacc864e7aa2cbb9fa32b1bd96ed217",
+    "bytes": 3638765,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "existing_probe": "Probes/monster-bash/Probe.json",
+    "existing_probe_case": "MonsterBash",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "diagnostic capture; no gameplay assertion"
+  },
+  {
+    "id": "motocross-country-fever",
+    "title": "Motocross Country Fever",
+    "package": "Motocross Country Fever",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Motocross Country Fever/motocross_country_fever.dcr",
+    "entry_relative_to_import_folder": "motocross_country_fever.dcr",
+    "import_folder": "Games/Motocross Country Fever",
+    "alternate_movies": [
+      "Games/Motocross Country Fever/gameloader.dcr",
+      "Games/Motocross Country Fever/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "111ad1c6dfa151eea01f7267c8d69300cd3304621398df3ee78e2ec6f65724d9",
+    "bytes": 1970558,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "motocross-urban-fever",
+    "title": "Motocross Urban Fever",
+    "package": "Motorcross Urban Fever",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Motorcross Urban Fever/motocross_urban_fever.dcr",
+    "entry_relative_to_import_folder": "motocross_urban_fever.dcr",
+    "import_folder": "Games/Motorcross Urban Fever",
+    "alternate_movies": [
+      "Games/Motorcross Urban Fever/gameloader.dcr",
+      "Games/Motorcross Urban Fever/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "7a294713076651d0f028540083e1585e9d980ddfc9910062f101bee22cd1ae8c",
+    "bytes": 1976335,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "nabisco-world-candystand-mini-golf",
+    "title": "Nabisco World Candystand Mini-Golf",
+    "package": "Nabisco World Candystand Mini-Golf",
+    "source_page": "https://archive.org/details/nwmgholes",
+    "entry": "Games/Nabisco World Candystand Mini-Golf/nwmgmain.dcr",
+    "entry_relative_to_import_folder": "nwmgmain.dcr",
+    "import_folder": "Games/Nabisco World Candystand Mini-Golf",
+    "alternate_movies": [],
+    "sha256": "893caea123c1aa8cfd8a5ea62c0d82e9c35e3ca3cbd5e1fa5a3834877ef386ab",
+    "bytes": 596909,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 1,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    }
+  },
+  {
+    "id": "nabiscoworld-oreo-adventure",
+    "title": "NabiscoWorld - Oreo Adventure",
+    "package": "NabiscoWorld - Oreo Adventure",
+    "source_page": "https://archive.org/details/naboreo",
+    "entry": "Games/NabiscoWorld - Oreo Adventure/oragmain.dcr",
+    "entry_relative_to_import_folder": "oragmain.dcr",
+    "import_folder": "Games/NabiscoWorld - Oreo Adventure",
+    "alternate_movies": [],
+    "sha256": "d9a9ae9c79a37aefe81083bccd540c8c75c68f27ca96ca0ba756df254fa30982",
+    "bytes": 1648315,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 1,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    }
+  },
+  {
+    "id": "nights-into-dreams-shockwave-game",
+    "title": "NiGHTS into Dreams Shockwave Game",
+    "package": "NiGHTS into Dreams Shockwave Game",
+    "source_page": "https://archive.org/details/nights-shockwave-game",
+    "entry": "Games/NiGHTS into Dreams Shockwave Game/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/NiGHTS into Dreams Shockwave Game",
+    "alternate_movies": [],
+    "sha256": "7f8e8887f206946be52b4cd6542b6693ab03d4028c71dc379297b9f798d8a1da",
+    "bytes": 263886,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "nomiss",
+    "title": "Nomiss",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Nomiss.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Banjo-Kazooie Memory Game.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong 64 Lore Quiz.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmload.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Kong Country Barrel Maze/dkbmmain.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Donkey Konk.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Excitebike.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/F_ZERO_X.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/F-Zero X Academy Garage/start.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Kremling Krunch.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Golf Power Meter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Crazy Counting.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Dinky Rinky.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Goodness Rakes.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party 2 webgames/Melon Mayhem.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/Memory.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Mario's Memory Madness/starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "16037127ff2ac87d11a9bca35f7be083dca5352518c93d9da6018d9d7bb02e15",
+    "bytes": 126032,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "on-the-run-2",
+    "title": "On The Run 2",
+    "package": "On The Run 2 - Miniclip",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/On The Run 2 - Miniclip/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/On The Run 2 - Miniclip",
+    "alternate_movies": [
+      "Games/On The Run 2 - Miniclip/otr.dcr",
+      "Games/On The Run 2 - Miniclip/gameloader.dcr"
+    ],
+    "sha256": "b091c1eca03f990647e77c389ffc7133ca131bc667193a59ddfec3970c80db6d",
+    "bytes": 6498,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "FAIL",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 2,
+      "swf_sidecars": 2,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "On The Run 2 - Miniclip.zip",
+      "archive_sha256": "b966c0761d93e1710980b1e5b49e616b374d003a06eba4501c29ae8c482bb3d1",
+      "member": "on-the-run-2.exe",
+      "offset": 10522074,
+      "size": 6498,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "operation-flashpoint-cold-war-crisis-helicopter-gunship",
+    "title": "Operation Flashpoint Cold War Crisis - Helicopter Gunship",
+    "package": "Operation Flashpoint Cold War Crisis - Helicopter Gunship",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Operation Flashpoint Cold War Crisis - Helicopter Gunship/opgold.dcr",
+    "entry_relative_to_import_folder": "opgold.dcr",
+    "import_folder": "Games/Operation Flashpoint Cold War Crisis - Helicopter Gunship",
+    "alternate_movies": [],
+    "sha256": "bb645c8416ac5088bbee92fcaf300e0ce16d610ea05b386cf9b20cd74130ad1d",
+    "bytes": 179333,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 108
+    }
+  },
+  {
+    "id": "pizza-hot",
+    "title": "Pizza Hot",
+    "package": "Pizza Hot",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Pizza Hot/pizza_hot.dcr",
+    "entry_relative_to_import_folder": "pizza_hot.dcr",
+    "import_folder": "Games/Pizza Hot",
+    "alternate_movies": [
+      "Games/Pizza Hot/gameloader.dcr",
+      "Games/Pizza Hot/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "02809f76eaf7cbb5198146bb21821d15a450c8af2e43a3662d6d8884d3d68a79",
+    "bytes": 2366025,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "power-boat",
+    "title": "Power Boat",
+    "package": "Power Boat - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Power Boat - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Power Boat - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Power Boat - Silent Bay Studios/powerboat.dcr",
+      "Games/Power Boat - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "43bf8d9cd5a986d0bdc730b21f3ad9b1e062912e8e20060ca5ef7444f1ae3d29",
+    "bytes": 7354,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Power Boat - Silent Bay Studios.zip",
+      "archive_sha256": "0db5a28eeaf1c40c8b8ddff75a2245adbfeb234229181e74a3e0d4e00d232eac",
+      "member": "power-boat.exe",
+      "offset": 9547902,
+      "size": 7354,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "power-rangers-in-space-red-ranger-to-the-rescue",
+    "title": "Power Rangers in Space - Red Ranger to the Rescue",
+    "package": "Power Rangers in Space - Red Ranger to the Rescue",
+    "source_page": "https://archive.org/details/redrangertotherescue",
+    "entry": "Games/Power Rangers in Space - Red Ranger to the Rescue/redranger/red_ranger.dir",
+    "entry_relative_to_import_folder": "redranger/red_ranger.dir",
+    "import_folder": "Games/Power Rangers in Space - Red Ranger to the Rescue",
+    "alternate_movies": [],
+    "sha256": "ac52fadffd52d2746e2d75e4a62d436c37cbdc77320d4678d880059972a117d7",
+    "bytes": 2133408,
+    "container": "39VM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 12,
+      "native_files_in_original_archive": 78
+    }
+  },
+  {
+    "id": "raceway-500",
+    "title": "Raceway 500",
+    "package": "Raceway 500 - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Raceway 500 - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Raceway 500 - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Raceway 500 - Silent Bay Studios/raceway500.dcr",
+      "Games/Raceway 500 - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "2e182cc6054b60d1205555b6d034be79aef26754504943f428acf455540b968b",
+    "bytes": 7849,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Raceway 500 - Silent Bay Studios.zip",
+      "archive_sha256": "feaddbb609ebdfa820218ce137567dee346dfc16011fb8ce34f195290ea8ff27",
+      "member": "raceway-500.exe",
+      "offset": 10307050,
+      "size": 7849,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "rapunzel-s-escape",
+    "title": "Rapunzel's Escape",
+    "package": "Rapunzels Escape",
+    "source_page": "https://themetalbox.com/index.php?page=rapunzel",
+    "entry": "Games/Rapunzels Escape/rapunzel_153_allInOne_original.dir",
+    "entry_relative_to_import_folder": "rapunzel_153_allInOne_original.dir",
+    "import_folder": "Games/Rapunzels Escape",
+    "alternate_movies": [],
+    "sha256": "02d6c6a92793b316a88ed6f9a87946e60d61724441140d1b4b23ce863b2bbb21",
+    "bytes": 4777590,
+    "container": "39VM",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    },
+    "existing_core_check": "Flashback/check-shockwave.sh"
+  },
+  {
+    "id": "redline-rumble-2-detonator",
+    "title": "Redline Rumble 2 Detonator",
+    "package": "Redline Rumble 2 Detonator",
+    "source_page": "https://archive.org/details/redline2detonator",
+    "entry": "Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+    "entry_relative_to_import_folder": "redline2detonator/game.dcr",
+    "import_folder": "Games/Redline Rumble 2 Detonator",
+    "alternate_movies": [
+      "Games/Redline Rumble 2 Detonator/redline2detonator/gamewrapper.dir"
+    ],
+    "sha256": "bad38b29b12350cbcb9f61b74a5275ac5638a449b4901ea8b5369c5f1224cf37",
+    "bytes": 1724103,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 85
+    }
+  },
+  {
+    "id": "redline-rumble-revolution",
+    "title": "Redline Rumble Revolution",
+    "package": "Redline Rumble Revolution Standalone",
+    "source_page": "https://archive.org/details/redline-rumble-revolution",
+    "entry": "Games/Redline Rumble Revolution Standalone/redline-rumble-revolution/xform/RedLineRumbleRevolution.dcr",
+    "entry_relative_to_import_folder": "redline-rumble-revolution/xform/RedLineRumbleRevolution.dcr",
+    "import_folder": "Games/Redline Rumble Revolution Standalone",
+    "alternate_movies": [
+      "Games/Redline Rumble Revolution Standalone/redline-rumble-revolution/xform/wrapper.dir"
+    ],
+    "sha256": "1bf9a7745b9cf2d3dab4c7f7bcec3556187969c996f268af35459ba0a815acc5",
+    "bytes": 133014,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 8,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 104
+    }
+  },
+  {
+    "id": "rifleman",
+    "title": "Rifleman",
+    "package": "Rifleman",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Rifleman/rifleman.dcr",
+    "entry_relative_to_import_folder": "rifleman.dcr",
+    "import_folder": "Games/Rifleman",
+    "alternate_movies": [
+      "Games/Rifleman/gameloader.dcr",
+      "Games/Rifleman/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "ccd15dda40c14d0979d58dabe0cffab6a0e754a0920e3336a45c264524b54fb5",
+    "bytes": 1886698,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 10,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 110
+    }
+  },
+  {
+    "id": "scooby-doo-in-the-attack-of-the-vampire-pumpkinheads",
+    "title": "Scooby-Doo in the Attack of the Vampire Pumpkinheads",
+    "package": "Scooby-Doo in the Attack of the Vampire Pumpkinheads",
+    "source_page": "https://archive.org/details/scooby-doo-in-the-attack-of-the-vampire-pumpkinheads_shockwave",
+    "entry": "Games/Scooby-Doo in the Attack of the Vampire Pumpkinheads/game.dcr",
+    "entry_relative_to_import_folder": "game.dcr",
+    "import_folder": "Games/Scooby-Doo in the Attack of the Vampire Pumpkinheads",
+    "alternate_movies": [],
+    "sha256": "739bd430a8f59482806a1aee86b6d42e84db024ea55583cc05309f1f706cea18",
+    "bytes": 315415,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    }
+  },
+  {
+    "id": "skyboard",
+    "title": "Skyboard",
+    "package": "Skyboard - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Skyboard - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Skyboard - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Skyboard - Silent Bay Studios/skyboard.dcr",
+      "Games/Skyboard - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "0fcab86ce0a2e92489f4574188a630fd473d95eb42d9097c6c8cd9951e6212ef",
+    "bytes": 7349,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Skyboard - Silent Bay Studios.zip",
+      "archive_sha256": "94d0a58af742d4cde1298847fa3cf88eeb09fdbc405148a280da42e56ff0d4b8",
+      "member": "skyboard.exe",
+      "offset": 9547902,
+      "size": 7349,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "snowboard-madness",
+    "title": "Snowboard Madness",
+    "package": "Snowboard Madness - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Snowboard Madness - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Snowboard Madness - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Snowboard Madness - Silent Bay Studios/snowboard_madness.dcr",
+      "Games/Snowboard Madness - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "557d877999551816970ca79be36dc1e26f30118f6c2fc1fd3b9564a87a44eab1",
+    "bytes": 7837,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 10,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Snowboard Madness - Silent Bay Studios.zip",
+      "archive_sha256": "89c2222cb244aa33b2e41d50fe5d33cc3101f0b704200fb99dd97f93447cab77",
+      "member": "snowboard-madness.exe",
+      "offset": 9547946,
+      "size": 7837,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "soccer-five",
+    "title": "Soccer Five",
+    "package": "Soccer Five - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Soccer Five - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Soccer Five - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Soccer Five - Silent Bay Studios/soccer_five.dcr",
+      "Games/Soccer Five - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "309cde1a65409f14a52ca0d60ab77e8a67418a16247d028c4ce07f54cbdf6dcb",
+    "bytes": 7829,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Soccer Five - Silent Bay Studios.zip",
+      "archive_sha256": "d2b619ae48ae9665756fc11c1f3b1177ab76f3433d60ef9356542a3fae2e25ec",
+      "member": "soccer-five.exe",
+      "offset": 9547946,
+      "size": 7829,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "spongebob-squarepants-boating-school",
+    "title": "SpongeBob Squarepants - Boating School",
+    "package": "SpongeBob Squarepants - Boating School",
+    "source_page": "https://archive.org/details/boating_dcr",
+    "entry": "Games/SpongeBob Squarepants - Boating School/DATA/MMK31.dcr",
+    "entry_relative_to_import_folder": "DATA/MMK31.dcr",
+    "import_folder": "Games/SpongeBob Squarepants - Boating School",
+    "alternate_movies": [],
+    "sha256": "c8322886f95265fb8863318dc374ad293b7aefee5e84dc3a02a50a5c4b8b368e",
+    "bytes": 451593,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 20
+    }
+  },
+  {
+    "id": "sportbike-sprint",
+    "title": "Sportbike Sprint",
+    "package": "Sportbike Sprint - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Sportbike Sprint - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Sportbike Sprint - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Sportbike Sprint - Silent Bay Studios/sportbike_sprint.dcr",
+      "Games/Sportbike Sprint - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "4cc2873365c4836b59d4477e6a53d16848a0e91e3a4259aa2e66a0b97c43a55c",
+    "bytes": 7836,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Sportbike Sprint - Silent Bay Studios.zip",
+      "archive_sha256": "cd512020b98d2281941d2ccff69fb69493f66c832fbf1935f1aec72c1201f268",
+      "member": "sportbike-sprint.exe",
+      "offset": 9547946,
+      "size": 7836,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "stunt-driver",
+    "title": "Stunt Driver",
+    "package": "Stunt Driver - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Stunt Driver - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Stunt Driver - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Stunt Driver - Silent Bay Studios/stunt_driver.dcr",
+      "Games/Stunt Driver - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "35c27fabb23c241dd72721ee4784d999a109b4be96ed3c1c4a615ab486a6e3be",
+    "bytes": 7834,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 9,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Stunt Driver - Silent Bay Studios.zip",
+      "archive_sha256": "c8411e1241d213d2793ddbfb1517d76823730131d8a74ca341a6eee01edb9abe",
+      "member": "stunt-driver.exe",
+      "offset": 9547946,
+      "size": 7834,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "stunt-sled",
+    "title": "Stunt Sled",
+    "package": "Stunt Sled (2006 Shockwave Game)",
+    "source_page": "https://archive.org/details/stunt_sled",
+    "entry": "Games/Stunt Sled (2006 Shockwave Game)/stuntsled/game.dxr",
+    "entry_relative_to_import_folder": "stuntsled/game.dxr",
+    "import_folder": "Games/Stunt Sled (2006 Shockwave Game)",
+    "alternate_movies": [
+      "Games/Stunt Sled (2006 Shockwave Game)/stuntsled/gamewrapper.dir"
+    ],
+    "sha256": "6562fd473d4fb2c8f1aa7a0a841bc3bd85695aeb9cee6c2d0d28e855263f57a0",
+    "bytes": 7680544,
+    "container": "39VM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 0,
+      "html_pages": 12,
+      "native_files_in_original_archive": 80
+    }
+  },
+  {
+    "id": "super-breakout",
+    "title": "Super Breakout",
+    "package": "Hasbro Interactive Shockwave Games",
+    "source_page": "https://archive.org/details/hasbrointeractive",
+    "entry": "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/superbreakout.dcr",
+    "entry_relative_to_import_folder": "Hasbro Interactive Shockwave Games/Games/superbreakout.dcr",
+    "import_folder": "Games/Hasbro Interactive Shockwave Games",
+    "alternate_movies": [
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/centipede.dcr",
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/frogger.dcr",
+      "Games/Hasbro Interactive Shockwave Games/Hasbro Interactive Shockwave Games/Games/missilecommand.dcr"
+    ],
+    "sha256": "cf02c05b8a33361454c424d5697b50a54dd2ede03772ae5d069139e0ba40e02b",
+    "bytes": 114802,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "PASS",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    },
+    "existing_probe": "Probes/super-breakout/Probe.json",
+    "existing_probe_case": "SuperBreakout",
+    "existing_probe_source": "Flashback/check-shockwave-corpus.py",
+    "existing_probe_kind": "opening gameplay assertion"
+  },
+  {
+    "id": "super-trucks",
+    "title": "Super Trucks",
+    "package": "Super Trucks - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Super Trucks - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Super Trucks - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Super Trucks - Silent Bay Studios/super_trucks.dcr",
+      "Games/Super Trucks - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "dda2e2a9e45f8fa5e2da50894d3d9268dd2d87c1400ca8e804aa5b1db85e1afb",
+    "bytes": 7832,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Super Trucks - Silent Bay Studios.zip",
+      "archive_sha256": "bc9c6e2427cb697ded4d12b5854bac3ed92cb374d9e3af5c59bdc22053e960fa",
+      "member": "super-trucks.exe",
+      "offset": 9547946,
+      "size": 7832,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "the-powerpuff-girls-pillow-fight",
+    "title": "The Powerpuff Girls Pillow Fight",
+    "package": "The Powerpuff Girls Pillow Fight",
+    "source_page": "https://archive.org/details/ppg_pillowfight",
+    "entry": "Games/The Powerpuff Girls Pillow Fight/ppg_pillowfight.dcr",
+    "entry_relative_to_import_folder": "ppg_pillowfight.dcr",
+    "import_folder": "Games/The Powerpuff Girls Pillow Fight",
+    "alternate_movies": [],
+    "sha256": "ec576eca990ccc67aa9c19ffee0ac982dc5ccc5f600fc58e8870f442ba5dcb49",
+    "bytes": 423891,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 0
+    }
+  },
+  {
+    "id": "tomb-raider",
+    "title": "Tomb Raider",
+    "package": "Eidos Shockwave Webgames",
+    "source_page": "https://archive.org/details/eidos-shockwave-webgames",
+    "entry": "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Tomb Raider.dcr",
+    "entry_relative_to_import_folder": "Eidos Shockwave Webgames/Games/Tomb Raider.dcr",
+    "import_folder": "Games/Eidos Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Commandos 2 Target Practice.dcr",
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Fear Effect 2 Retro Helix.dcr",
+      "Games/Eidos Shockwave Webgames/Eidos Shockwave Webgames/Games/Great Firework Race.dcr"
+    ],
+    "sha256": "f144023e3ed2a2be8344d87012d82b0083d2c308bac979e28822def18829a992",
+    "bytes": 531405,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "transformers-beast-hunters",
+    "title": "Transformers Beast Hunters",
+    "package": "Transformers Beast Hunters",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Transformers Beast Hunters/Transformers.dcr",
+    "entry_relative_to_import_folder": "Transformers.dcr",
+    "import_folder": "Games/Transformers Beast Hunters",
+    "alternate_movies": [
+      "Games/Transformers Beast Hunters/gameloader.dcr",
+      "Games/Transformers Beast Hunters/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "26764e11aecf3fb0ede87b554d6d013740181cdf1c6c28d492570e4a62040f68",
+    "bytes": 3590336,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 6,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 98
+    }
+  },
+  {
+    "id": "turbo-racing-2",
+    "title": "Turbo Racing 2",
+    "package": "Turbo Racing 2",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Turbo Racing 2/turbo.dcr",
+    "entry_relative_to_import_folder": "turbo.dcr",
+    "import_folder": "Games/Turbo Racing 2",
+    "alternate_movies": [
+      "Games/Turbo Racing 2/gameloader.dcr",
+      "Games/Turbo Racing 2/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "8a26acdbe797a65a27226611b50995dac6546d07635bee5fbc41eaecdabe42ff",
+    "bytes": 4923949,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "under-arms",
+    "title": "Under Arms",
+    "package": "Under Arms",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Under Arms/under_arms.dcr",
+    "entry_relative_to_import_folder": "under_arms.dcr",
+    "import_folder": "Games/Under Arms",
+    "alternate_movies": [
+      "Games/Under Arms/gameloader.dcr",
+      "Games/Under Arms/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "08ce7d6cc7c8c88551692f9273502b8496039607a67b5237fce146b36637e5ee",
+    "bytes": 3237083,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 12,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 110
+    }
+  },
+  {
+    "id": "upipe-skateboard",
+    "title": "Upipe Skateboard",
+    "package": "Upipe Skateboard - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Upipe Skateboard - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Upipe Skateboard - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Upipe Skateboard - Silent Bay Studios/u_pipe.dcr",
+      "Games/Upipe Skateboard - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "b55f70190586b11c3390b2d65509b070c6b040b455bf8e291e76c2bbd843c2a0",
+    "bytes": 7857,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Upipe Skateboard - Silent Bay Studios.zip",
+      "archive_sha256": "48900c90b661e0926932e734177f919abef5009d7334ff3266118f3d805a9dbb",
+      "member": "upipe-skateboard.exe",
+      "offset": 10307050,
+      "size": 7857,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "wakeboard-pro",
+    "title": "Wakeboard Pro",
+    "package": "Wakeboard Pro - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Wakeboard Pro - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Wakeboard Pro - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Wakeboard Pro - Silent Bay Studios/wakeboard_pro.dcr",
+      "Games/Wakeboard Pro - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "e8052d167e155a71cbdd3830c3c167c3023b56b2be286de98895a33e1426c10a",
+    "bytes": 7841,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 3,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Wakeboard Pro - Silent Bay Studios.zip",
+      "archive_sha256": "b66e34ec50c826f0450de7dd6e900567aab329364c847956910bb0f4ac959468",
+      "member": "wakeboard-pro.exe",
+      "offset": 9547946,
+      "size": 7841,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "war-copter",
+    "title": "War Copter",
+    "package": "War Copter",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/War Copter/war_copter.dcr",
+    "entry_relative_to_import_folder": "war_copter.dcr",
+    "import_folder": "Games/War Copter",
+    "alternate_movies": [
+      "Games/War Copter/gameloader.dcr",
+      "Games/War Copter/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "49c4492c36db1df32e66cd12588bba51efb39a691e08ccffa8267056aad65488",
+    "bytes": 3953286,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "wario-s-whack-attack",
+    "title": "Wario's Whack Attack",
+    "package": "Nintendo Shockwave Webgames",
+    "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
+    "entry": "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+    "entry_relative_to_import_folder": "Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Starter.dcr",
+    "import_folder": "Games/Nintendo Shockwave Webgames",
+    "alternate_movies": [
+      "Games/Nintendo Shockwave Webgames/Nintendo Shockwave Webgames/Games/Mario Party webgames/Wario's Whack Attack/Whack.dcr"
+    ],
+    "sha256": "96b907a6a9278f14a275d56baad990f9daae6f2814b93e4d2e32ebfec886645e",
+    "bytes": 46136,
+    "container": "FGDM",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 0,
+      "external_w3d_files": 0,
+      "swf_sidecars": 0,
+      "html_pages": 0,
+      "native_files_in_original_archive": 93
+    }
+  },
+  {
+    "id": "white-water-rafting",
+    "title": "White Water Rafting",
+    "package": "White Water Rafting",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/White Water Rafting/white_water_rafting.dcr",
+    "entry_relative_to_import_folder": "white_water_rafting.dcr",
+    "import_folder": "Games/White Water Rafting",
+    "alternate_movies": [
+      "Games/White Water Rafting/gameloader.dcr",
+      "Games/White Water Rafting/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "592fa240f654867aab6b551e454b05b33c215e6eac2f66178d07f273b90a0b91",
+    "bytes": 1924350,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 97
+    }
+  },
+  {
+    "id": "winter-games",
+    "title": "Winter Games",
+    "package": "Winter Games - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Winter Games - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/Winter Games - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/Winter Games - Silent Bay Studios/winter_games.dcr",
+      "Games/Winter Games - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "6ab373fc6314107a14b7d16875406f388dc900ad6ce0b430fe4aa7d5b5d59433",
+    "bytes": 8196,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 5,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "Winter Games - Silent Bay Studios.zip",
+      "archive_sha256": "a3f3c11d0599ca40ee20f679ffbfe3e18df70018cbc40dc05d2709c81b115f69",
+      "member": "winter-games.exe",
+      "offset": 10307042,
+      "size": 8196,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "world-rugby-2011",
+    "title": "World Rugby 2011",
+    "package": "World Rugby 2011 - Silent Bay Studios",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/World Rugby 2011 - Silent Bay Studios/projector-loader.dcr",
+    "entry_relative_to_import_folder": "projector-loader.dcr",
+    "import_folder": "Games/World Rugby 2011 - Silent Bay Studios",
+    "alternate_movies": [
+      "Games/World Rugby 2011 - Silent Bay Studios/world_rugby11.dcr",
+      "Games/World Rugby 2011 - Silent Bay Studios/gameloader.dcr"
+    ],
+    "sha256": "91d6d2a61b90b86137a40ff0d6bc25abe96e4293c03fc15721010443e1c21af8",
+    "bytes": 7384,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 1,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 1
+    },
+    "projector_provenance": {
+      "archive": "World Rugby 2011 - Silent Bay Studios.zip",
+      "archive_sha256": "d9c7af87617e5479a5d115bda65aa3b682e817a415b9efa9b11f117d91dc591f",
+      "member": "world-rugby-2011.exe",
+      "offset": 10307050,
+      "size": 7384,
+      "format": "MDGF"
+    }
+  },
+  {
+    "id": "zombie-big-trouble",
+    "title": "Zombie Big Trouble",
+    "package": "Zombie Big Trouble",
+    "source_page": "https://archive.org/details/miniclip_shockwave-games",
+    "entry": "Games/Zombie Big Trouble/zombie_big_trouble.dcr",
+    "entry_relative_to_import_folder": "zombie_big_trouble.dcr",
+    "import_folder": "Games/Zombie Big Trouble",
+    "alternate_movies": [
+      "Games/Zombie Big Trouble/gameloader.dcr",
+      "Games/Zombie Big Trouble/wrapper_silentbaystudios.dcr"
+    ],
+    "sha256": "3190fc4aebed5f7a5886639a4e5adb5a0662f3a90f57a364836899814c67e1de",
+    "bytes": 3049764,
+    "container": "MDGF",
+    "parameters": {},
+    "status": "OBSERVED",
+    "entry_selection": "Suggested from original package structure; opening gameplay not verified",
+    "package_evidence": {
+      "external_cast_files": 2,
+      "external_w3d_files": 10,
+      "swf_sidecars": 1,
+      "html_pages": 0,
+      "native_files_in_original_archive": 98
+    }
+  }
+]

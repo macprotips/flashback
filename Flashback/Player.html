@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' flashback: blob: data:; script-src 'self' flashback: 'unsafe-inline' 'unsafe-eval'; connect-src flashback: blob: data:; style-src 'unsafe-inline'; img-src flashback: data: blob:; media-src flashback: blob: data:; object-src 'none'">
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#121219}
+ruffle-player{display:block;width:100%;height:100%}
+</style>
+<script>window.RufflePlayer={config:{polyfills:false}};</script>
+<script src="/runtime/ruffle.js"></script>
+</head><body><script>
+const report = (event, detail='') => window.webkit?.messageHandlers.player.postMessage({event,detail});
+window.addEventListener('error', e => report('error', e.message));
+window.addEventListener('unhandledrejection', e => report('error', String(e.reason)));
+async function startGame(options) {
+  try {
+    if (options.webFiles) {
+      const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      options.urlRewriteRules = [...options.webFiles,
+        ...options.webOrigins.map(([from,to]) => [new RegExp('^'+escape(from)),to]),
+        [/^https?:\/\/(.*)/, options.webFallback+'$1']];
+    }
+    window.player = window.RufflePlayer.newest().createPlayer();
+    document.body.appendChild(player);
+    await player.ruffle().load({
+      ...options, autoplay:'on', unmuteOverlay:'hidden', splashScreen:false,
+      allowScriptAccess:false, openUrlMode:'deny', allowNetworking:'internal',
+      contextMenu:'off', showSwfDownload:false, letterbox:'on',
+      backgroundColor:'#121219', scale:'showAll', forceScale:true,
+      maxExecutionDuration:10, logLevel:'error',
+    });
+    player.focus();
+    const checkReady = () => {
+      const metadata = player.ruffle().metadata;
+      if (metadata) report('ready', JSON.stringify(metadata));
+      else setTimeout(checkReady, 100);
+    };
+    checkReady();
+  } catch(e) { report('error', String(e)); }
+}
+report('boot');
+</script></body></html>

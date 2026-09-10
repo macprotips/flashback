@@ -1,0 +1,237 @@
+[
+  {
+    "name": "Galidor/arbo_boges.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_boges.cct",
+    "sha256": "fd14f06e7aca1d84003b34ff034ffe9f352dd00e3ba01d22c8630159ccc2458e"
+  },
+  {
+    "name": "Galidor/arbo_caverns.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_caverns.cct",
+    "sha256": "1fa9bf246d53d423c4f900f21b4e12dcfb3f52523ed2082957abbf5da814d8c8"
+  },
+  {
+    "name": "Galidor/arbo_drakmeer.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_drakmeer.cct",
+    "sha256": "4b4da7a61af173cdfec0aa51d5a1915e801d8df91ef67a72bbfea873df8518dd"
+  },
+  {
+    "name": "Galidor/arbo_drakmeer_arena.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_drakmeer_arena.cct",
+    "sha256": "a2b88951909ef4722299a8697493775f3037f1a43a859866bbd1537f20a7da4d"
+  },
+  {
+    "name": "Galidor/arbo_euripides.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_euripides.cct",
+    "sha256": "2e92b52d84723a55df8c4f2fea0b69f3a70a17f7206ab2c537fe6f4c8ad39db3"
+  },
+  {
+    "name": "Galidor/arbo_jungle.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_jungle.cct",
+    "sha256": "6d6b19218a4d7b14fdb67ceb56e4b80cc580cc95749f2a0ae288aee7a1b2e12a"
+  },
+  {
+    "name": "Galidor/arbo_miningcamp.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_miningcamp.cct",
+    "sha256": "1a27ce02c930f71c6688b0447b9dbadb814d707c643ffaabd5eff83332c2aa3d"
+  },
+  {
+    "name": "Galidor/arbo_miningcamp_arena.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_miningcamp_arena.cct",
+    "sha256": "99aeca833e1412a7210aba689338f9e98cafb396d54111b8a723217bd4637c0f"
+  },
+  {
+    "name": "Galidor/arbo_quest_assignment.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_quest_assignment.cct",
+    "sha256": "80cc519f6e4549851ea1040e97c6165a8be6b01596060e82475d08d526d44177"
+  },
+  {
+    "name": "Galidor/arbo_slavecamp.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_slavecamp.cct",
+    "sha256": "78ca21a9af115872e4ff35b9ba10b4bda0c9df980ce8046e18f124a7698571cc"
+  },
+  {
+    "name": "Galidor/arbo_village.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_village.cct",
+    "sha256": "cf1aabfa46041525c1cba40e5f52549ec79a8021003cc67ad19ea379834e5a89"
+  },
+  {
+    "name": "Galidor/arbo_village_arena.cct",
+    "url": "https://archive.org/download/galidor_quest/arbo_village_arena.cct",
+    "sha256": "0fd954a1eecd4f7aaafdf71efe9e6a7f553a3ed540ef8cd5b9c0ac25639bba66"
+  },
+  {
+    "name": "Galidor/code.cct",
+    "url": "https://archive.org/download/galidor_quest/code.cct",
+    "sha256": "6fb8df413307fabcb1867116c44e7a5ddb9919620093f69cee36d5dd70033aec"
+  },
+  {
+    "name": "Galidor/common.cct",
+    "url": "https://archive.org/download/galidor_quest/common.cct",
+    "sha256": "847479680ab3cffc80a1af039e1e2208b9bb527453fe85376fd97c490f86bef7"
+  },
+  {
+    "name": "Galidor/common_arbo.cct",
+    "url": "https://archive.org/download/galidor_quest/common_arbo.cct",
+    "sha256": "9c8fa08e33cd70271f7cb4ecb91cd0b8262110797e6afcc465dd6a819c3183ab"
+  },
+  {
+    "name": "Galidor/common_dv.cct",
+    "url": "https://archive.org/download/galidor_quest/common_dv.cct",
+    "sha256": "279f790638451e879c5fe41bc47122b26533cb9c3adcac6f52a1bc78e911eec2"
+  },
+  {
+    "name": "Galidor/common_es.cct",
+    "url": "https://archive.org/download/galidor_quest/common_es.cct",
+    "sha256": "c507b6c21504e8a8dbee6a3c97b262abde83b9d673236e3cf10f918dc38883c6"
+  },
+  {
+    "name": "Galidor/common_kek.cct",
+    "url": "https://archive.org/download/galidor_quest/common_kek.cct",
+    "sha256": "531974a2790664e4e29fadc4acebc0e21a7a1646721a03184dac374de63775f6"
+  },
+  {
+    "name": "Galidor/config.cct",
+    "url": "https://archive.org/download/galidor_quest/config.cct",
+    "sha256": "2a5aa6a1016c96d76215ad49788561e417f30f55c942cb0cb706cf35cbc91eb8"
+  },
+  {
+    "name": "Galidor/dv_downtown.cct",
+    "url": "https://archive.org/download/galidor_quest/dv_downtown.cct",
+    "sha256": "7b7df34d5f97b379315fbb0d824388929f7c8e6c5b8f95dcf30484a1976de2f9"
+  },
+  {
+    "name": "Galidor/dv_downtown_charm_arena.cct",
+    "url": "https://archive.org/download/galidor_quest/dv_downtown_charm_arena.cct",
+    "sha256": "277032bc03c86dd348122de1c4a8287763990b05b8333b52feebea92f461de6a"
+  },
+  {
+    "name": "Galidor/dv_downtown_speed_arena.cct",
+    "url": "https://archive.org/download/galidor_quest/dv_downtown_speed_arena.cct",
+    "sha256": "e71c069105353cb9608441e98a9ba37389031966f49aca0e061ff7c693869318"
+  },
+  {
+    "name": "Galidor/dv_entrance.cct",
+    "url": "https://archive.org/download/galidor_quest/dv_entrance.cct",
+    "sha256": "c357e506ba54514953c130e2fe154412921c33278fe556369eb301823113be10"
+  },
+  {
+    "name": "Galidor/dv_institute.cct",
+    "url": "https://archive.org/download/galidor_quest/dv_institute.cct",
+    "sha256": "d5c1827a1fff5b7ff9ef2246e58814db539d85416356017d7e1823d9c1793050"
+  },
+  {
+    "name": "Galidor/dv_macro.cct",
+    "url": "https://archive.org/download/galidor_quest/dv_macro.cct",
+    "sha256": "7224f3e0c33d7dee571be8e514c25d0b8846f7e30909ac590cb10570ff9617c2"
+  },
+  {
+    "name": "Galidor/dv_mok.cct",
+    "url": "https://archive.org/download/galidor_quest/dv_mok.cct",
+    "sha256": "3441c307ec4ee9a19e219ce6df088e37e3a3ade9eb03adf7b000d52b40476e08"
+  },
+  {
+    "name": "Galidor/dv_sewer.cct",
+    "url": "https://archive.org/download/galidor_quest/dv_sewer.cct",
+    "sha256": "94c193691f628d91b136d27228f4a44b6acd3aa8a6229ec71c6fa84a50e7ed88"
+  },
+  {
+    "name": "Galidor/es_bonglandoi.cct",
+    "url": "https://archive.org/download/galidor_quest/es_bonglandoi.cct",
+    "sha256": "54bd04374bdd796467e51f47b94c4b693b45994066af3aa511dd6154698be189"
+  },
+  {
+    "name": "Galidor/es_bonglandoi_charm_arena.cct",
+    "url": "https://archive.org/download/galidor_quest/es_bonglandoi_charm_arena.cct",
+    "sha256": "4a9133da79bfba737b8432bb4032bc98b1285d36a26773b4014eb06912624093"
+  },
+  {
+    "name": "Galidor/es_mounds.cct",
+    "url": "https://archive.org/download/galidor_quest/es_mounds.cct",
+    "sha256": "8c934f2585c72686c78f2c34079b941b6cb447a364d5cbac86c9352b0320457c"
+  },
+  {
+    "name": "Galidor/es_narkeenin.cct",
+    "url": "https://archive.org/download/galidor_quest/es_narkeenin.cct",
+    "sha256": "44c9d6ed4919f742971ca0269b6ac217d1843b807e908f277b9809a249a2f114"
+  },
+  {
+    "name": "Galidor/es_narkeenin_power_arena.cct",
+    "url": "https://archive.org/download/galidor_quest/es_narkeenin_power_arena.cct",
+    "sha256": "f07b385ec2af0f26732e4ae345c5a6be8d4fbfbcbd7527212f6c3f92e2b91b5c"
+  },
+  {
+    "name": "Galidor/es_oneli_gorge.cct",
+    "url": "https://archive.org/download/galidor_quest/es_oneli_gorge.cct",
+    "sha256": "557b5a4fbbab7df680dc82988c2baa4b6d3299a458fab03385e6e4381412e2ce"
+  },
+  {
+    "name": "Galidor/es_qarsikti.cct",
+    "url": "https://archive.org/download/galidor_quest/es_qarsikti.cct",
+    "sha256": "bfd81d238731bdd80892ab435b2fb6b17385e3443a1481ac8b12bd5e0c1e4f19"
+  },
+  {
+    "name": "Galidor/es_sontoori.cct",
+    "url": "https://archive.org/download/galidor_quest/es_sontoori.cct",
+    "sha256": "ac8230e01854fa89b8c97d382509c39ccd145d5f34bdfbe43c73ceab12a57e14"
+  },
+  {
+    "name": "Galidor/galidorgame.dcr",
+    "url": "https://archive.org/download/galidor_quest/galidorgame.dcr",
+    "sha256": "98cc74d40c28455c4d8d8b488ab098c2c91e0505bf4958785317055c759ad076"
+  },
+  {
+    "name": "Galidor/kek_blocka.cct",
+    "url": "https://archive.org/download/galidor_quest/kek_blocka.cct",
+    "sha256": "abb9f0901b332c8ec432425a4d865ef275422162e99361ef92d72a575375fa17"
+  },
+  {
+    "name": "Galidor/kek_blockb.cct",
+    "url": "https://archive.org/download/galidor_quest/kek_blockb.cct",
+    "sha256": "8c11d8853c95268f8b4d3bdbc55076379498569eb29be0a781393a07826554c4"
+  },
+  {
+    "name": "Galidor/kek_blockc.cct",
+    "url": "https://archive.org/download/galidor_quest/kek_blockc.cct",
+    "sha256": "473e4af01ca79a8d683e7e4d8630b319ee829914b004afe8a05a0003c3176931"
+  },
+  {
+    "name": "Galidor/kek_blockd.cct",
+    "url": "https://archive.org/download/galidor_quest/kek_blockd.cct",
+    "sha256": "9313d7dc3fefe3023bcc370f14ca4e9967a4fffa15ec4f8f62d2c8820deb16c2"
+  },
+  {
+    "name": "Galidor/kek_botyard1.cct",
+    "url": "https://archive.org/download/galidor_quest/kek_botyard1.cct",
+    "sha256": "c417f2c34dd1e9d37c742cf07c76b494556c320439c05f8ed9303deb19afd87b"
+  },
+  {
+    "name": "Galidor/kek_botyard2.cct",
+    "url": "https://archive.org/download/galidor_quest/kek_botyard2.cct",
+    "sha256": "ea220cc38c67e04f0df8a89725c224862dd5206270e36fa138d3afc722d60074"
+  },
+  {
+    "name": "Galidor/kek_entrance.cct",
+    "url": "https://archive.org/download/galidor_quest/kek_entrance.cct",
+    "sha256": "658b4b9085db04a28ca82cab884208e84f6c4e4b7cd72c74258e1997539563d0"
+  },
+  {
+    "name": "Galidor/kek_final.cct",
+    "url": "https://archive.org/download/galidor_quest/kek_final.cct",
+    "sha256": "8e765e7536c7f378234ab3f01b14a953ed507df74d30b3c14ad95911d3830f27"
+  },
+  {
+    "name": "Galidor/zones1.cct",
+    "url": "https://archive.org/download/galidor_quest/zones1.cct",
+    "sha256": "8d558411f7789a453c30f872730ed87136f48c9bbf924d49d8db62ff0ec01acb"
+  },
+  {
+    "name": "Galidor/zones2.cct",
+    "url": "https://archive.org/download/galidor_quest/zones2.cct",
+    "sha256": "e05be01524b9c7abab4540e06b32903a924bba5ef577481e50234aa9cefd559f"
+  },
+  {
+    "name": "Galidor/zones3.cct",
+    "url": "https://archive.org/download/galidor_quest/zones3.cct",
+    "sha256": "edb4b01f20d27998b6e44f682e257e6635609f10b6c8cb61d8123cf3895407a6"
+  }
+]

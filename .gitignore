@@ -1,0 +1,33 @@
+# Third-party runtimes, the JDK, and the pinned dependency source cache.
+# fetch-runtime.sh, fetch-java.sh, fetch-shockwave.sh and fetch-sources.py
+# rebuild all of it from the URLs and hashes recorded in the scripts.
+vendor/
+assets/
+# Written by bootstrap-toolchain.sh with this machine's paths.
+Flashback/toolchain-env.sh
+
+# Built and packaged output.
+*.app/
+*.zip
+*.tar.gz
+Flashback/build/
+__pycache__/
+.DS_Store
+
+# Game files. These are other people's games and artwork; the release excludes
+# them and so does this repository. The manifests beside them are kept — they
+# are the compatibility record (each package's origin, hash and status) and
+# carry no game content.
+Downloaded Games/*
+!Downloaded Games/*.md
+!Downloaded Games/*.json
+!Downloaded Games/*.txt
+!Downloaded Games/Shockwave Games/
+Downloaded Games/Shockwave Games/*
+!Downloaded Games/Shockwave Games/*.md
+!Downloaded Games/Shockwave Games/Shockwave Compatibility Corpus/
+Downloaded Games/Shockwave Games/Shockwave Compatibility Corpus/*
+!Downloaded Games/Shockwave Games/Shockwave Compatibility Corpus/*.md
+!Downloaded Games/Shockwave Games/Shockwave Compatibility Corpus/*.json
+!Downloaded Games/Shockwave Games/Shockwave Compatibility Corpus/*.txt
+java-games/

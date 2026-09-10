@@ -1,0 +1,73 @@
+{
+  "steps": [
+    {
+      "wait": 0,
+      "read": "(async()=>{const values={};for(const code of ['_movie.path','externalParamValue(\"src\")']){const r=JSON.parse(await __vm.mcp_eval_lingo(code));values[code]=r.success?r.result_value:r;}window.hostOriginsVerified=values['_movie.path']===JSON.stringify('https://games.example/preserved/Games/')&&values['externalParamValue(\"src\")']===JSON.stringify('https://games.example/preserved/Games/missilecommand.dcr');return values;})()"
+    },
+    {
+      "read": "(async()=>{async function run(code){const r=JSON.parse(await __vm.mcp_eval_lingo(code));if(!r.success)throw Error(code+\": \"+r.error);return r.result_value;}await run(\"flashbackWindowProbe = _player.getProp(#windowList, 1)\");const results={};for(const [prop,value] of [[\"_movie.idleHandlerPeriod\", \"2\"], [\"_movie.allowZooming\", \"0\"], [\"_movie.allowGraphicMenu\", \"0\"], [\"_movie.allowTransportControl\", \"0\"], [\"_movie.allowVolumeControl\", \"0\"], [\"_movie.allowSaveLocal\", \"0\"], [\"_player.getProp(#windowList, 1).resizable\", \"0\"], [\"_player.getProp(#windowList, 1).titlebarOptions.visible\", \"0\"], [\"_player.getProp(#windowList, 1).appearanceOptions.border\", \"#none\"]]){const old=await run(prop);const setter=prop.replace(\"_player.getProp(#windowList, 1)\",\"flashbackWindowProbe\");try{await run(setter+\" = \"+value);const actual=await run(prop);results[prop]=actual;if(actual!==value)throw Error(prop+\" returned \"+actual);}finally{await run(setter+\" = \"+old);}}window.hostPropsVerified=true;return results;})().catch(e=>({error:String(e)}))",
+      "wait": 0
+    },
+    {
+      "move": [
+        50,
+        70
+      ],
+      "wait": 0.3,
+      "read": "(async()=>{const r=JSON.parse(await __vm.mcp_eval_lingo(\"_mouse.mouseLoc\"));const p=r.result_value?.match(/-?\\d+/g)?.map(Number);const expected=[50, 70];const ok=r.success&&p?.length===2&&p.every((v,i)=>Math.abs(v-expected[i])<=1);window.hostHoverChecks??=[];window.hostHoverChecks.push(ok);return {result:r,expected,ok};})()"
+    },
+    {
+      "click": [
+        60,
+        80
+      ],
+      "read": "(async()=>{const r=JSON.parse(await __vm.mcp_eval_lingo(\"_mouse.mouseLoc\"));const p=r.result_value?.match(/-?\\d+/g)?.map(Number);const expected=[60, 80];const ok=r.success&&p?.length===2&&p.every((v,i)=>Math.abs(v-expected[i])<=1);window.hostPointerChecks??=[];window.hostPointerChecks.push(ok);return {result:r,expected,ok};})()",
+      "wait": 1
+    },
+    {
+      "move": [
+        170,
+        80
+      ],
+      "wait": 0.3,
+      "read": "(async()=>{const r=JSON.parse(await __vm.mcp_eval_lingo(\"_mouse.mouseLoc\"));const p=r.result_value?.match(/-?\\d+/g)?.map(Number);const expected=[170, 80];const ok=r.success&&p?.length===2&&p.every((v,i)=>Math.abs(v-expected[i])<=1);window.hostHoverChecks??=[];window.hostHoverChecks.push(ok);return {result:r,expected,ok};})()",
+      "resize": [
+        620,
+        470
+      ]
+    },
+    {
+      "click": [
+        180,
+        90
+      ],
+      "read": "(async()=>{const r=JSON.parse(await __vm.mcp_eval_lingo(\"_mouse.mouseLoc\"));const p=r.result_value?.match(/-?\\d+/g)?.map(Number);const expected=[180, 90];const ok=r.success&&p?.length===2&&p.every((v,i)=>Math.abs(v-expected[i])<=1);window.hostPointerChecks??=[];window.hostPointerChecks.push(ok);return {result:r,expected,ok};})()",
+      "wait": 1
+    },
+    {
+      "move": [
+        60,
+        200
+      ],
+      "wait": 0.3,
+      "read": "(async()=>{const r=JSON.parse(await __vm.mcp_eval_lingo(\"_mouse.mouseLoc\"));const p=r.result_value?.match(/-?\\d+/g)?.map(Number);const expected=[60, 200];const ok=r.success&&p?.length===2&&p.every((v,i)=>Math.abs(v-expected[i])<=1);window.hostHoverChecks??=[];window.hostHoverChecks.push(ok);return {result:r,expected,ok};})()",
+      "resize": [
+        1100,
+        800
+      ]
+    },
+    {
+      "click": [
+        70,
+        210
+      ],
+      "read": "(async()=>{const r=JSON.parse(await __vm.mcp_eval_lingo(\"_mouse.mouseLoc\"));const p=r.result_value?.match(/-?\\d+/g)?.map(Number);const expected=[70, 210];const ok=r.success&&p?.length===2&&p.every((v,i)=>Math.abs(v-expected[i])<=1);window.hostPointerChecks??=[];window.hostPointerChecks.push(ok);return {result:r,expected,ok};})()",
+      "wait": 1
+    }
+  ],
+  "expect": "window.hostOriginsVerified === true && (window.hostPropsVerified === true && window.hostPointerChecks?.length === 3 && window.hostPointerChecks.every(Boolean)) && window.hostHoverChecks?.length === 3 && window.hostHoverChecks.every(Boolean)",
+  "parameters": {
+    "flashbackProbe": "context-check"
+  },
+  "page": "https://games.example/preserved/index.html"
+}

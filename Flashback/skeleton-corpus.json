@@ -1,0 +1,1903 @@
+{
+  "files": 548,
+  "unique_w3d_streams": 564,
+  "skeletons": [
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Skyboard - Silent Bay Studios/skyboard.dcr",
+      "stream_offset": 670748,
+      "sha256": "c8713b145f7e1498db0b2fca408ef5cd4287ef9f3071af956336fc68291b9d8c",
+      "name": "sk8r_player",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Skyboard - Silent Bay Studios/skyboard.dcr",
+      "stream_offset": 670748,
+      "sha256": "c8713b145f7e1498db0b2fca408ef5cd4287ef9f3071af956336fc68291b9d8c",
+      "name": "sk8g_player",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Skyboard - Silent Bay Studios/skyboard.dcr",
+      "stream_offset": 670748,
+      "sha256": "c8713b145f7e1498db0b2fca408ef5cd4287ef9f3071af956336fc68291b9d8c",
+      "name": "sk8d_player",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Skyboard - Silent Bay Studios/skyboard.dcr",
+      "stream_offset": 670748,
+      "sha256": "c8713b145f7e1498db0b2fca408ef5cd4287ef9f3071af956336fc68291b9d8c",
+      "name": "sk8y_player",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Guns of Anarchy/guns_of_anarchy.dcr",
+      "stream_offset": 1065448,
+      "sha256": "d0da23b830dbca6d8671cf1b3d71cc4e6cea254d4f619d25adf1add32dcfc5cc",
+      "name": "player",
+      "bones": 40,
+      "before": {
+        "ok": true,
+        "tail": 56,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 56,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Guns of Anarchy/guns_of_anarchy.dcr",
+      "stream_offset": 1806553,
+      "sha256": "3f338a72e82413cf903a1e2568c18cde9a4155553f015ab0719064aed429b209",
+      "name": "enemy",
+      "bones": 44,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/European Soccer Champions - Silent Bay Studios/european_soccer_champions.dcr",
+      "stream_offset": 1175388,
+      "sha256": "248c4767b67abe0e776478471c34deed2b630def96a92b5c84e37446eca8f8fa",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Delta Force Operation Fire Shield/delta_force.dcr",
+      "stream_offset": 1232043,
+      "sha256": "febf3b1c520ae180fb2530cf75ea8715ba2c27b0256bfe3cf9a049ae9f56b91f",
+      "name": "player",
+      "bones": 48,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Delta Force Operation Fire Shield/delta_force.dcr",
+      "stream_offset": 1576263,
+      "sha256": "b501a4128104d1fa9b993138af41ca3e5f27ce8d9822e4d415eb6a6e50c59a9c",
+      "name": "enemy",
+      "bones": 44,
+      "before": {
+        "ok": true,
+        "tail": 52,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 52,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Extreme Quad - Silent Bay Studios/extreme_quad.dcr",
+      "stream_offset": 1321100,
+      "sha256": "5b5ade450c56510f35748f232165950b3164214184eaa2327236229d0b69b10b",
+      "name": "player",
+      "bones": 27,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Basketball Slam - Silent Bay Studios/basketball_slam.dcr",
+      "stream_offset": 400564,
+      "sha256": "0a72a85c507637404de75e92b8e8fa714aee8346e606aa0e84245e743c0aca47",
+      "name": "player",
+      "bones": 26,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Drift Trike/drift_trike.dcr",
+      "stream_offset": 1968839,
+      "sha256": "9ea8a0d0d79da3b4d3f1c33e335a4d68482cf14d29a1ce71e92f44ea86ae34c9",
+      "name": "player",
+      "bones": 31,
+      "before": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Free Running - Silent Bay Studios/free_running.dcr",
+      "stream_offset": 531772,
+      "sha256": "9323569d32c8cb4062f2b0fef6b6f4945c5540402e9191f4fe50935bf6b49167",
+      "name": "player",
+      "bones": 40,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Creepy Pong - Silent Bay Studios/creepy_pong.dcr",
+      "stream_offset": 1044636,
+      "sha256": "89138567c444a2b08cf3cebcdfe6ea390f17be1133ca502aefa8ea80487558e6",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Creepy Pong - Silent Bay Studios/creepy_pong.dcr",
+      "stream_offset": 1217691,
+      "sha256": "8d567e49c9c2d720e691c54ad3481d3311bcda0bd6e9bae612bf746cbf5c0396",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Creepy Pong - Silent Bay Studios/creepy_pong.dcr",
+      "stream_offset": 1301654,
+      "sha256": "534e5a4b9d333c429d67fd822ea7cf365618614d65f1d238616b98519e6ef967",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Creepy Pong - Silent Bay Studios/creepy_pong.dcr",
+      "stream_offset": 1368360,
+      "sha256": "9a5535db11ca10bab41d55d6c080a3acd90183c27a3094815c3504f0dbbed3cd",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Creepy Pong - Silent Bay Studios/creepy_pong.dcr",
+      "stream_offset": 1430212,
+      "sha256": "f118822618f9a23ea70e958144faae35b427bcfd2d0354fed46b5418ef4be849",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Creepy Pong - Silent Bay Studios/creepy_pong.dcr",
+      "stream_offset": 1500329,
+      "sha256": "d720b9263a095f7173fa3b02e75adc7cd5de1cc5a79ba8ce51783456aba23990",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Winter Games - Silent Bay Studios/winter_games.dcr",
+      "stream_offset": 1553629,
+      "sha256": "fe7f7293e92b5d78994855b3d637c19f60d36a0da88d4b484c8291e86f4a32fb",
+      "name": "player",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Winter Games - Silent Bay Studios/winter_games.dcr",
+      "stream_offset": 1842597,
+      "sha256": "dd9f66d9eed70772ce0d37947b6596de2e0f3da7ecbad437be94a49c5de99baa",
+      "name": "player",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Winter Games - Silent Bay Studios/winter_games.dcr",
+      "stream_offset": 2032833,
+      "sha256": "128f7761a82c18b9290c57aeb9422c3900841ce8c1f9390cbdef90fd0eeeae30",
+      "name": "player",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 56,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 56,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Winter Games - Silent Bay Studios/winter_games.dcr",
+      "stream_offset": 2543022,
+      "sha256": "1a90663c744bd2deccf412a184210f60b4ade026d20be77b95754d4f9ea6d86a",
+      "name": "player",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Winter Games - Silent Bay Studios/winter_games.dcr",
+      "stream_offset": 2818291,
+      "sha256": "d78c0d9865f3727bdfe8f868ac4c3e7d0794dcf56883314cf7719d7c6a668df8",
+      "name": "player",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Upipe Skateboard - Silent Bay Studios/u_pipe.dcr",
+      "stream_offset": 818870,
+      "sha256": "8ea070ec0da6435dd768a85a496aba27eb13361f16d70236d1c311b7013a05a0",
+      "name": "player",
+      "bones": 31,
+      "before": {
+        "ok": true,
+        "tail": 52,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 52,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Golf Ace - Silent Bay Studios/golf_ace.dcr",
+      "stream_offset": 1143438,
+      "sha256": "b9a955cef9ce586fdd2cf2af731d43e35347e7f5e2e92486a777e2637e072f17",
+      "name": "player1",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Golf Ace - Silent Bay Studios/golf_ace.dcr",
+      "stream_offset": 1325795,
+      "sha256": "95445b08d4b55564e49108f352395209ce63be7a088697e7ad60f534ef6ffb07",
+      "name": "player2",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 32,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 32,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Golf Ace - Silent Bay Studios/golf_ace.dcr",
+      "stream_offset": 1494704,
+      "sha256": "e6229f0be7291183cff5a47945e84e37b775c7356e82915647da214a1102ad87",
+      "name": "player3",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Golf Ace - Silent Bay Studios/golf_ace.dcr",
+      "stream_offset": 1705508,
+      "sha256": "ed3000c6a2ed3a04f0c62c7363bb019e214cbe99ce19a19ad6c69c952fbe9de6",
+      "name": "player4",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Extreme Trial - Silent Bay Studios/extreme_trial.dcr",
+      "stream_offset": 458124,
+      "sha256": "ccc8df2e619be9660d863dd02277dd9aca6a98c6a95c7ccd4ea21ea2d7874c08",
+      "name": "player",
+      "bones": 25,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Sportbike Sprint - Silent Bay Studios/sportbike_sprint.dcr",
+      "stream_offset": 760747,
+      "sha256": "6097f0f9516ea7c37886244ba0287b0a46d93462c037d53077cc31767729cd7f",
+      "name": "player",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Beach Soccer - Silent Bay Studios/beach_soccer.dcr",
+      "stream_offset": 841486,
+      "sha256": "939bebe29c24298d3db984b64ad77668d10b70b1e0cfd99162abb07418111983",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Insane Ski Jump - Silent Bay Studios/insane_ski_jump.dcr",
+      "stream_offset": 702080,
+      "sha256": "fc4326a51a04e5a12ef9e51aaa2e4519791e9ff9e72934d9dda26c0c12d243fe",
+      "name": "player",
+      "bones": 28,
+      "before": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/White Water Rafting/white_water_rafting.dcr",
+      "stream_offset": 895756,
+      "sha256": "1cb7d81f2ffe3b7664783fcd377f5a1f20e287574a462be0ffec89073ad0e0d6",
+      "name": "boat",
+      "bones": 29,
+      "before": {
+        "ok": false,
+        "error": "invalid name length 0 at bone 1"
+      },
+      "after": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 192
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/White Water Rafting/white_water_rafting.dcr",
+      "stream_offset": 895756,
+      "sha256": "1cb7d81f2ffe3b7664783fcd377f5a1f20e287574a462be0ffec89073ad0e0d6",
+      "name": "player",
+      "bones": 34,
+      "before": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Motocross Country Fever/motocross_country_fever.dcr",
+      "stream_offset": 906271,
+      "sha256": "e2a672019119ecc531491a2499d46d54157fcba9ba8f665021404f49d872d7ee",
+      "name": "player",
+      "bones": 25,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Motocross Country Fever/motocross_country_fever.dcr",
+      "stream_offset": 1322143,
+      "sha256": "b78b2c312922fb681e23aa4e38ca9f5183cd9603950ae2afec9f32e5b36d7eb5",
+      "name": "chicken",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Pizza Hot/pizza_hot.dcr",
+      "stream_offset": 1672924,
+      "sha256": "090aff348187eeccd64fb82aae8a5853b7faa33b4817057efa34619ac50fc10d",
+      "name": "sco_pgd",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Pizza Hot/pizza_hot.dcr",
+      "stream_offset": 1672924,
+      "sha256": "090aff348187eeccd64fb82aae8a5853b7faa33b4817057efa34619ac50fc10d",
+      "name": "sco_pgu",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/War Copter/war_copter.dcr",
+      "stream_offset": 700626,
+      "sha256": "c3d377b7d304facdd1a161046515f5035c44f3ce0759f99495a45f9187ca6bfd",
+      "name": "enemy",
+      "bones": 28,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/War Copter/war_copter.dcr",
+      "stream_offset": 1525316,
+      "sha256": "3947c7cf245511fbc3a294ed26db4d6d063d34fce0bf5d48c5e57cfb6a34bdeb",
+      "name": "player",
+      "bones": 27,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Ice Racer - Silent Bay Studios/iceracer.dcr",
+      "stream_offset": 890367,
+      "sha256": "56249881db1118ec70fea8354d417802ad5de04c9886ba0fc3d0c16ed535c04e",
+      "name": "player",
+      "bones": 28,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Wakeboard Pro - Silent Bay Studios/wakeboard_pro.dcr",
+      "stream_offset": 825255,
+      "sha256": "18e2a9fddb06ca09c5ebb60ba9210c27372c2e5cfb1c43c2c8cb3210ee61e8a7",
+      "name": "wkb_player",
+      "bones": 40,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Jet Ski Racing - Silent Bay Studios/jetski_racing.dcr",
+      "stream_offset": 747291,
+      "sha256": "c5e773e78d9526d3235ae1b17014fb846e0d5819ea5ae3b52d5239f46347ec7d",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Jet Ski Racing - Silent Bay Studios/jetski_racing.dcr",
+      "stream_offset": 1250816,
+      "sha256": "d6e9da2b97855c00b2550d60dd8e36b86130c58e4b4916abeccedda8b21ff515",
+      "name": "whale",
+      "bones": 34,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Transformers Beast Hunters/Transformers.dcr",
+      "stream_offset": 1958968,
+      "sha256": "9f9791aa1e242e180f37f6e51cd55fff3e5c80a8cfe3a0a3f44869acae8bf571",
+      "name": "player",
+      "bones": 29,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Transformers Beast Hunters/Transformers.dcr",
+      "stream_offset": 2141141,
+      "sha256": "e583c2d48360485041d9872450e9ab23a09679fb37edae8c8808591c5552398f",
+      "name": "eradicon",
+      "bones": 29,
+      "before": {
+        "ok": true,
+        "tail": 60,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 60,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Transformers Beast Hunters/Transformers.dcr",
+      "stream_offset": 2260892,
+      "sha256": "6ea38164037f8195a4e41a111f7da67a7976ea9c704e3a73981ad4556b30cae4",
+      "name": "soundwave",
+      "bones": 29,
+      "before": {
+        "ok": true,
+        "tail": 60,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 60,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Transformers Beast Hunters/Transformers.dcr",
+      "stream_offset": 2379765,
+      "sha256": "a580969c0ab4ed844b31062ffd0981a9326433d31d8df0c7cd15456d9d381b4b",
+      "name": "Starscream",
+      "bones": 29,
+      "before": {
+        "ok": true,
+        "tail": 80,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 80,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Soccer Five - Silent Bay Studios/soccer_five.dcr",
+      "stream_offset": 677918,
+      "sha256": "196827139f7cecf7d56bb93918021538a842a9dc8f75122ca9db3baf01a88e81",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 32,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 32,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Zombie Big Trouble/zombie_big_trouble.dcr",
+      "stream_offset": 936665,
+      "sha256": "cad636a3d57b6a75dd45eb4075ad1840a435cdd58a2d205db25a8f9061e5d8c2",
+      "name": "player",
+      "bones": 48,
+      "before": {
+        "ok": true,
+        "tail": 36,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 36,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Zombie Big Trouble/zombie_big_trouble.dcr",
+      "stream_offset": 1077477,
+      "sha256": "56faa7364f5f758c9143b57f19f5459be128c12695f3c76c7be213443b7adcf1",
+      "name": "enemy",
+      "bones": 39,
+      "before": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Rifleman/rifleman.dcr",
+      "stream_offset": 644160,
+      "sha256": "bba453e2fc2bf37df75222c547a073eb3606c610fa47facc5ceb5f4bf35b05c1",
+      "name": "player",
+      "bones": 48,
+      "before": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Rifleman/rifleman.dcr",
+      "stream_offset": 735202,
+      "sha256": "c8c8c2a522bc9c1f044b95d22f03ad0932ae89ac762d5e542b852caf9b303a59",
+      "name": "colonel",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Rifleman/rifleman.dcr",
+      "stream_offset": 799681,
+      "sha256": "3874d03dee25bab5bf268a3de36660911dc065411be406e984cc0594bacb786d",
+      "name": "enemy",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Under Arms/under_arms.dcr",
+      "stream_offset": 641671,
+      "sha256": "c018b0f2497355e9c6cd08c54eeb1cf4809cfd41d2f77e2807c9148b79a22b32",
+      "name": "player",
+      "bones": 48,
+      "before": {
+        "ok": true,
+        "tail": 68,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 68,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Under Arms/under_arms.dcr",
+      "stream_offset": 1328675,
+      "sha256": "0df35235c491051814d0f75b6c9f7feb1e1b3b925d8557b3ef29c8a56be14b34",
+      "name": "enemy",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Motorcross Urban Fever/motocross_urban_fever.dcr",
+      "stream_offset": 561273,
+      "sha256": "c9a482d050b962391507fbba2844da75d6b8a7f5d9967ced077369bbf3c58936",
+      "name": "player",
+      "bones": 25,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Jousting - Silent Bay Studios/jousting.dcr",
+      "stream_offset": 894115,
+      "sha256": "5544b5f5ae82b10742364c6c8746ea28e24a3791ee545110d547b31af338916f",
+      "name": "horse",
+      "bones": 34,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Jousting - Silent Bay Studios/jousting.dcr",
+      "stream_offset": 894115,
+      "sha256": "5544b5f5ae82b10742364c6c8746ea28e24a3791ee545110d547b31af338916f",
+      "name": "knight",
+      "bones": 33,
+      "before": {
+        "ok": true,
+        "tail": 144,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 144,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/World Rugby 2011 - Silent Bay Studios/world_rugby11.dcr",
+      "stream_offset": 953251,
+      "sha256": "9af569c6d648b1aee12c9ed6c4b3e5a7aa3ee80021469a284d513ac55c82954e",
+      "name": "player",
+      "bones": 35,
+      "before": {
+        "ok": true,
+        "tail": 64,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 64,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/World Rugby 2011 - Silent Bay Studios/world_rugby11.dcr",
+      "stream_offset": 1227911,
+      "sha256": "d0f8ef03868015902fb6f99762a7bf7c2d0415988d37d9668484c61c59539b03",
+      "name": "player",
+      "bones": 35,
+      "before": {
+        "ok": true,
+        "tail": 64,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 64,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Battle Wheels/bww.dcr",
+      "stream_offset": 745461,
+      "sha256": "5f82ffd0318a2cd6018daba0b0ebfbf70a92c59d674028fad619702cbf526927",
+      "name": "player_vul",
+      "bones": 34,
+      "before": {
+        "ok": true,
+        "tail": 48,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 48,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Battle Wheels/bww.dcr",
+      "stream_offset": 1244863,
+      "sha256": "94a18d90b9f105b3e1a493728f7794c942a5c04c9c1ebd91e985eedf8ebdfea3",
+      "name": "player_blu",
+      "bones": 34,
+      "before": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Battle Wheels/bww.dcr",
+      "stream_offset": 1511505,
+      "sha256": "2e154a50fe072c94e1ee04e6250cc83fd5727bfd6c7cdb6fe8ee69a366a5fdd4",
+      "name": "player_nin",
+      "bones": 34,
+      "before": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Battle Wheels/bww.dcr",
+      "stream_offset": 1796385,
+      "sha256": "99ffc8e7b227a6bae9f1b8201c7da15990b174f10c9c0b3eb34f89d1b6bbcf95",
+      "name": "player_sam",
+      "bones": 34,
+      "before": {
+        "ok": true,
+        "tail": 52,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 52,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Snowboard Madness - Silent Bay Studios/snowboard_madness.dcr",
+      "stream_offset": 954510,
+      "sha256": "b5543037095fae26a1c1005ab40188b4dec67cb30326409f3470f2801314b31f",
+      "name": "playerm",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Snowboard Madness - Silent Bay Studios/snowboard_madness.dcr",
+      "stream_offset": 1091723,
+      "sha256": "b4f0fbc91c0fd6f6c9d039f623ac218e3a5a293ac26833c01dbf6eafed1636d4",
+      "name": "playerf",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Go Karts - Silent Bay Studios/go_karts.dcr",
+      "stream_offset": 738970,
+      "sha256": "dfaf7c5d12d6b0b09b1ef62713af513242bd427973d4516ece7dacc1e4ad35dc",
+      "name": "player",
+      "bones": 25,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Basketball Jam - Silent Bay Studios/basketball_jam.dcr",
+      "stream_offset": 2084557,
+      "sha256": "0f62d514140c4cf0db2efadea5a6bf6fce2bcafa5466dbff7c01dfbbd40b3e73",
+      "name": "player",
+      "bones": 39,
+      "before": {
+        "ok": true,
+        "tail": 56,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 56,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Karate King - Silent Bay Studios/karate_king.dcr",
+      "stream_offset": 679677,
+      "sha256": "37e9561451c9a828abfb9f04beb91b0f3bd6d9d723a062a4b9023d9e962b40ae",
+      "name": "player",
+      "bones": 40,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Karate King - Silent Bay Studios/karate_king.dcr",
+      "stream_offset": 861067,
+      "sha256": "6fb100a05cd432edc9614ad5ff536e6be0d88c121ef3487ac9b950ecfca9c60b",
+      "name": "enemy1",
+      "bones": 26,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Karate King - Silent Bay Studios/karate_king.dcr",
+      "stream_offset": 1144645,
+      "sha256": "2eb44298e55745ba546d746c5fe8df47deecd91a48b41a3d59232840d82d25ff",
+      "name": "enemy2",
+      "bones": 26,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Karate King - Silent Bay Studios/karate_king.dcr",
+      "stream_offset": 1283306,
+      "sha256": "3a5e8c740e5440fc1d9304c33c6eecbd7c6dafdf874954b4c43c7cbe611fb7d7",
+      "name": "enemy3",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Blues Bikers/blues_bikers.dcr",
+      "stream_offset": 947249,
+      "sha256": "c35c2af5418bfdd6e002c948c4746be7fa67eea10ee253f9d4a5bca222c25e86",
+      "name": "bbk_player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Blues Bikers/blues_bikers.dcr",
+      "stream_offset": 1387850,
+      "sha256": "f919a9625de0edbbc2da0df4d3bc3939ab9509578bb086464d03ba76494bf40d",
+      "name": "bbk_player_f",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Blues Bikers/blues_bikers.dcr",
+      "stream_offset": 1437683,
+      "sha256": "2ec896dcb4123097abdb534452949f92681f28004bad1ed70f0150c161b1d387",
+      "name": "roadcop",
+      "bones": 25,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Centre Court Tennis - Silent Bay Studios/centre_court_tennis.dcr",
+      "stream_offset": 1011917,
+      "sha256": "9b0b3b0c325dc79c74aeb07483e4bfe19a7b40d692108c1749e791a1c374213b",
+      "name": "player",
+      "bones": 36,
+      "before": {
+        "ok": true,
+        "tail": 68,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 68,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Centre Court Tennis - Silent Bay Studios/centre_court_tennis.dcr",
+      "stream_offset": 1577936,
+      "sha256": "6ea4aa44f3b7eff7d27eb9677f63f55320ce79683c32585644ccbd97b5367cec",
+      "name": "player",
+      "bones": 32,
+      "before": {
+        "ok": true,
+        "tail": 72,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 72,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Free Wheels - Silent Bay Studios/free_wheels.dcr",
+      "stream_offset": 556717,
+      "sha256": "79f63db0597db343f264d5e3b084603b1fffb922b0df4f042d6ada5e9d439d8a",
+      "name": "player",
+      "bones": 25,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/American Football - Silent Bay Studios/american_football.dcr",
+      "stream_offset": 875000,
+      "sha256": "bd6f75b0bf3902f91dd510f93aec7d5b1cac0b5b3578121f73821fae1d77088e",
+      "name": "player",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 32,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 32,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/American Football - Silent Bay Studios/american_football.dcr",
+      "stream_offset": 875000,
+      "sha256": "bd6f75b0bf3902f91dd510f93aec7d5b1cac0b5b3578121f73821fae1d77088e",
+      "name": "player_add",
+      "bones": 30,
+      "before": {
+        "ok": true,
+        "tail": 32,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 32,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/start.dcr",
+      "stream_offset": 90192,
+      "sha256": "f6ba0a9448e5e344b9a0503e3be5fec755d2085f98d98755d18bb9223dbcf119",
+      "name": "Bone01",
+      "bones": 3,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 8
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/start.dcr",
+      "stream_offset": 90192,
+      "sha256": "f6ba0a9448e5e344b9a0503e3be5fec755d2085f98d98755d18bb9223dbcf119",
+      "name": "charachterBiped",
+      "bones": 24,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/LegoStudios_.dcr",
+      "stream_offset": 484446,
+      "sha256": "e12492371f0c9e494f275d0f982d87ef723aceabf49afd50f3b0de5a38729caa",
+      "name": "Bone01",
+      "bones": 3,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 8
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/LegoStudios_.dcr",
+      "stream_offset": 484446,
+      "sha256": "e12492371f0c9e494f275d0f982d87ef723aceabf49afd50f3b0de5a38729caa",
+      "name": "charachterBiped",
+      "bones": 24,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/LegoStudios_.dcr",
+      "stream_offset": 539962,
+      "sha256": "26bc6c2679673751cdb2217ff8edea14239a6417bcac1fc1a2426a2c723fe16d",
+      "name": "shock",
+      "bones": 24,
+      "before": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/level3/endcutscene.W3D",
+      "stream_offset": 0,
+      "sha256": "eecfbbaa52b47e4975f53e06526a27f1dbb5a295da34c3c652256685cbd6e838",
+      "name": "RaxiComingout",
+      "bones": 25,
+      "before": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/level3/endcutscene.W3D",
+      "stream_offset": 0,
+      "sha256": "eecfbbaa52b47e4975f53e06526a27f1dbb5a295da34c3c652256685cbd6e838",
+      "name": "Raxi1",
+      "bones": 25,
+      "before": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 28,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/level3/endcutscene.W3D",
+      "stream_offset": 0,
+      "sha256": "eecfbbaa52b47e4975f53e06526a27f1dbb5a295da34c3c652256685cbd6e838",
+      "name": "GT",
+      "bones": 24,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/level2/tohunga.W3D",
+      "stream_offset": 0,
+      "sha256": "ece3ee3c700647674e33fce68065d818d6db53bb92ffcb2e5e5213dd3fe827d6",
+      "name": "tohunga",
+      "bones": 23,
+      "before": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 44,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/level1/cutscene2anims.W3D",
+      "stream_offset": 0,
+      "sha256": "9878fbab36b17590aae642cb277d2a4afdb7e9fdb6b1f47876e7b94dcd84604e",
+      "name": "Nikie",
+      "bones": 24,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/LEGO Studios Backlot/level1/cutscene2anims.W3D",
+      "stream_offset": 0,
+      "sha256": "9878fbab36b17590aae642cb277d2a4afdb7e9fdb6b1f47876e7b94dcd84604e",
+      "name": "Player",
+      "bones": 24,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 57331,
+      "sha256": "85be8ec439f7d36d819cb53bb1320a90730f8e04ebc7fc400600e41b41e2c749",
+      "name": "TheSpectatorFace_016",
+      "bones": 11,
+      "before": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 24,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 172498,
+      "sha256": "0de9b4f4c5665c229047f955491979f64543db6d3ee0151456a2a20d7ebcbf55",
+      "name": "C130_013",
+      "bones": 9,
+      "before": {
+        "ok": true,
+        "tail": 64,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 64,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 278792,
+      "sha256": "e038e5b86b1bcc14e603ca5f247dc1d19fcbb06db694683c842c1d93a04c8c42",
+      "name": "RallyCarOnline_023",
+      "bones": 7,
+      "before": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 40,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 476663,
+      "sha256": "aab471ff26908f647c9158c435e9e4cc1b2745ec3e13b6c7feac739640a1e3df",
+      "name": "CrashHelmet_005",
+      "bones": 7,
+      "before": {
+        "ok": true,
+        "tail": 36,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 36,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 570188,
+      "sha256": "6a0963767408bcef94de17dbccb3d1b23c7bdb0babf8549d61cdd1bc60070cb4",
+      "name": "SnowRoad_007",
+      "bones": 14,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 660035,
+      "sha256": "bd8516dc2f3bead76f9245265ca931ce3f79b0ed736e51241afd3bd77951f81a",
+      "name": "SnowRoadForkOpens_006",
+      "bones": 14,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 715152,
+      "sha256": "e5e2ee72e25595de37cc534e184fc7cb8656834b7b9cd55ea5ea0150bb2dff4b",
+      "name": "SnowRoadForkCloses_006",
+      "bones": 14,
+      "before": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 20,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 783733,
+      "sha256": "a8d1c6cacf1e6ab03bb4a8561bb301dbf383ec135119d4891a8e7222276fdb91",
+      "name": "Crevass_001",
+      "bones": 14,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 808042,
+      "sha256": "a46944a28bdbb79d11d50f82ad3fcdec6d0f460e320ec9f73162a2c431e5d96b",
+      "name": "CrevassIndent_002:Layer1",
+      "bones": 14,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 832248,
+      "sha256": "385489c6c467455e46fe2584db45e59baa39a14d17aaa2868524e7da5e826f30",
+      "name": "Glacier_001",
+      "bones": 14,
+      "before": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Redline Rumble 2 Detonator/redline2detonator/game.dcr",
+      "stream_offset": 856835,
+      "sha256": "694ac2b922f2e9197c67f6f9add49d996dfa7ff121ab697e83414a6d08fbf405",
+      "name": "GlacierBulb_000",
+      "bones": 14,
+      "before": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 16,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Doomsday (2008 Shockwave Game)/doomsday/game.dcr",
+      "stream_offset": 2531467,
+      "sha256": "379534a50b4975cacae0fa547513379fa53347557dfccd02b39e81cd1f97084f",
+      "name": "mutant1",
+      "bones": 31,
+      "before": {
+        "ok": false,
+        "error": "invalid name length 0 at bone 3"
+      },
+      "after": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 40
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Doomsday (2008 Shockwave Game)/doomsday/game.dcr",
+      "stream_offset": 2642825,
+      "sha256": "77a92fa8809fd746a9e0cc2228696b76a2d358c23c87682f63a719b11add0de8",
+      "name": "mutant2",
+      "bones": 31,
+      "before": {
+        "ok": false,
+        "error": "invalid name length 54656 at bone 3"
+      },
+      "after": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 32
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Doomsday (2008 Shockwave Game)/doomsday/game.dcr",
+      "stream_offset": 2744688,
+      "sha256": "2f9d987db100e60f76a4d535afdd195ee293d3d253d6f151e8a84cf76b13950a",
+      "name": "mutant3",
+      "bones": 31,
+      "before": {
+        "ok": false,
+        "error": "invalid name length 0 at bone 19"
+      },
+      "after": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 16
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/Doomsday (2008 Shockwave Game)/doomsday/game.dcr",
+      "stream_offset": 2904951,
+      "sha256": "a96e9cc31fb31a26c5319c7465693877daea2dff615ad3bbf321e9a7b0012794",
+      "name": "player",
+      "bones": 3,
+      "before": {
+        "ok": false,
+        "error": "invalid name length 0 at bone 2"
+      },
+      "after": {
+        "ok": true,
+        "tail": 12,
+        "optional_bytes": 8
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/MONSTER BASH/en/monster.dcr",
+      "stream_offset": 84379,
+      "sha256": "b7d246d9acfe125d20ef0cc008db80d6279a7d4b61738144a966a85a52516b53",
+      "name": "club",
+      "bones": 3,
+      "before": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/MONSTER BASH/en/monster.dcr",
+      "stream_offset": 84379,
+      "sha256": "b7d246d9acfe125d20ef0cc008db80d6279a7d4b61738144a966a85a52516b53",
+      "name": "skull",
+      "bones": 2,
+      "before": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 0
+      },
+      "after": {
+        "ok": true,
+        "tail": 4,
+        "optional_bytes": 0
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/MONSTER BASH/en/monster.dcr",
+      "stream_offset": 84379,
+      "sha256": "b7d246d9acfe125d20ef0cc008db80d6279a7d4b61738144a966a85a52516b53",
+      "name": "monster",
+      "bones": 109,
+      "before": {
+        "ok": false,
+        "error": "invalid name length 31768 at bone 2"
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 232
+      }
+    },
+    {
+      "file": "Shockwave Compatibility Corpus/Games/MONSTER BASH/en/loader.dcr",
+      "stream_offset": 70342,
+      "sha256": "14741d39109a452367e77af321aa27348bc12c1d9939bc196767425399aae110",
+      "name": "monster",
+      "bones": 109,
+      "before": {
+        "ok": false,
+        "error": "invalid name length 0 at bone 2"
+      },
+      "after": {
+        "ok": true,
+        "tail": 8,
+        "optional_bytes": 160
+      }
+    }
+  ]
+}
