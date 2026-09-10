@@ -30,6 +30,10 @@ from pathlib import Path
 # low, American Football sits it mid-right, Basketball Slam bottom-left.
 SPOTS = [(0.50, 0.78), (0.50, 0.67), (0.78, 0.67), (0.21, 0.83), (0.50, 0.50)]
 
+# Two signals, because games outside the Miniclip family keep their state under
+# their own global names. The first is that family's game object; the second is
+# how many globals hold a value at all, which rises when any game builds its
+# world regardless of what it calls things.
 STATE = """(()=>{
   const globals = JSON.parse(__vm.mcp_get_globals()).globals;
   const state = JSON.parse(__vm.mcp_get_execution_state());
@@ -42,8 +46,12 @@ STATE = """(()=>{
     total = Object.keys(props).length;
     live = Object.values(props).filter(p => p.type_name !== 'void').length;
   }
+  const values = Object.values(globals);
+  const named_globals = values.filter(g => g.type_name !== 'void').length;
+  const objects = values.filter(g => g.type_name === 'script_instance').length;
   return {frame: state.current_frame, total_frames: state.total_frames,
           object: name, live: live, properties: total,
+          globals: named_globals, instances: objects,
           errors: (window.shockwaveErrors || []).length};
 })()"""
 
@@ -109,20 +117,32 @@ def main():
                       seconds=round(time.monotonic()-start, 1),
                       before_live=before.get('live'), after_live=after.get('live'),
                       properties=after.get('properties'), object=after.get('object'),
-                      frame=after.get('frame'),
-                      gained=(after.get('live') or 0) - (before.get('live') or 0))
+                      frame=after.get('frame'), before_frame=before.get('frame'),
+                      before_globals=before.get('globals'), after_globals=after.get('globals'),
+                      before_instances=before.get('instances'),
+                      after_instances=after.get('instances'),
+                      gained=(after.get('live') or 0) - (before.get('live') or 0),
+                      gained_globals=(after.get('globals') or 0) - (before.get('globals') or 0),
+                      gained_instances=(after.get('instances') or 0) - (before.get('instances') or 0))
         results.append(record)
         (root/'Results.json').write_text(json.dumps(results, indent=2)+'\n')
-        print(f"{case['title'][:36]:38} live {record['before_live']} -> {record['after_live']}"
-              f"  of {record['properties']}  {record['object'] or ''}", flush=True)
+        print(f"{case['title'][:34]:36} live {record['before_live']}->{record['after_live']}"
+              f"  globals {record['before_globals']}->{record['after_globals']}"
+              f"  objects {record['before_instances']}->{record['after_instances']}"
+              f"  frame {record['before_frame']}->{record['frame']}", flush=True)
         library = out/'Library'
         if library.is_dir():
             shutil.rmtree(library)
 
-    leads = [r for r in results if (r['gained'] or 0) > 0]
-    print(f'\n{len(leads)} of {len(results)} titles gained game state after menu input.')
-    for record in sorted(leads, key=lambda r: -(r['gained'] or 0)):
-        print(f"  +{record['gained']:<4} {record['title'][:44]:46}{record['object'] or ''}")
+    def score(record):
+        return max(record.get('gained') or 0, record.get('gained_instances') or 0,
+                   (record.get('gained_globals') or 0) // 2)
+    leads = [r for r in results if score(r) > 0]
+    print(f'\n{len(leads)} of {len(results)} titles gained state after menu input.')
+    for record in sorted(leads, key=lambda r: -score(r)):
+        print(f"  {record['title'][:40]:42} props +{record.get('gained') or 0:<4}"
+              f" objects +{record.get('gained_instances') or 0:<4}"
+              f" globals +{record.get('gained_globals') or 0}")
 
 
 if __name__ == '__main__':
