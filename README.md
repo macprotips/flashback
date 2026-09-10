@@ -14,7 +14,7 @@ dialogs, and Help. See the [design review](Flashback/DESIGN-REVIEW.md).
 Version 1.5.1 improves Shockwave website parameters and error handling, and
 verifies that packaged player files match the tested source.
 
-Version 1.9.0 expands the Shockwave compatibility work and verifies 20 opening gameplay cases. See the [compatibility report](Flashback/SHOCKWAVE-COMPATIBILITY.md) for exact test scopes and remaining failures.
+Version 1.10.0 repairs Director score parsing, a movie property read through call syntax, and vector component indexing, and verifies 23 of 24 opening gameplay cases. Every recorded result in this release — the launch survey as well as the gameplay cases — comes from the runtime the app ships. See the [compatibility report](Flashback/SHOCKWAVE-COMPATIBILITY.md) for exact test scopes and remaining failures.
 
 The original standalone **TextTwist 2.app** is also kept here, with its details below.
 

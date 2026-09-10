@@ -60,10 +60,15 @@ CASES = [
     dict(name='GreatFireworkRace', source='Eidos.zip', entry='Games/Great Firework Race.dcr',
          steps=[click(433,298,4),dict(modifier='shift',hold=1.5,wait=.1)],
          expect=condition("JSON.parse(__vm.mcp_get_execution_state()).current_frame === 5 && Number(await value('velocity')) > 0")),
-    dict(name='AirShow', source='AirShow.zip', entry='projector-loader.dcr', wait=10,
+    dict(name='AirShow', source='AirShow.zip', entry='projector-loader.dcr', wait=16,
          projector=dict(member='air-show.exe', offset=9275434, size=7739,
                         sha256='746e435033d5b894aad1863b7b118d7a973734968dc265032f9ada6646927717'),
-         steps=[click(460,316,1),click(467,135,10),key(' ',49,.4,2),key(' ',49,.4,3),key('\uf703',124,.6,.1)],
+         # Ten seconds and a bare click were enough on an idle machine. Under
+         # load this title reaches its title screen — game object built, audio
+         # playing — but the press lands before the button answers, so it sits
+         # there. Its siblings in this engine all wait sixteen and roll over
+         # first; the recorded scope below is unchanged.
+         steps=[dict(click=[460,316],hover=.8,wait=2),click(467,135,10),key(' ',49,.4,2),key(' ',49,.4,3),key('\uf703',124,.6,.1)],
          expect=condition("Number(await value('gGame.pPlayerTimeRemaining')) < 60000 && Number(await value('gGame.pPlayerTimeRemaining')) > 0 && await value('gGame.pPlayer.pOldPos.x') !== await value('gGame.pPlayer.pStartPos.x')")),
     dict(name='BarrelMaze', source='Nintendo.zip', entry='Games/Donkey Kong Country Barrel Maze/dkbmload.dcr', wait=8,
          parameters={'sw1':'./','sw2':'Copyright2003Skyworks'},

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "1.9.0",
+  "release": "1.10.0",
   "checked": "2026-09-10",
   "platform": "Apple Silicon; native macOS WebKit host; macOS 26.5 SDK; macOS 13 deployment target",
   "definitions": {
@@ -14,7 +14,7 @@
     "dirplayer_upstream": "68376fbb4494a6bbad4c70081ecdcb99814a74c9",
     "standalone_ruffle": "0.6.0",
     "dirplayer_ruffle": "79d1ca0f45d79e28c3a0658bbc6b8430d26ef308",
-    "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+    "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
   },
   "collection_inventory": {
     "indexed_titles": 105,
@@ -44,64 +44,28 @@
     "selected_titles": 105,
     "runs": [
       {
-        "evidence": "Collection",
+        "evidence": "Collection3",
         "titles": 105,
         "counts": {
-          "OBSERVED": 96,
-          "FAIL": 9
+          "OBSERVED": 103,
+          "FAIL": 2
         },
-        "app": "/private/tmp/flashback-compat-180/Flashback-Check.app",
-        "polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a"
-      },
-      {
-        "evidence": "After7",
-        "titles": 4,
-        "counts": {
-          "OBSERVED": 4
-        },
-        "app": "/private/tmp/flashback-compat-180/Flashback-Check.app",
-        "polyfill_sha256": "616d9ad5c887775a882b52c188d454ea456c831a7bfd3f513aa548eb5de15a35"
-      },
-      {
-        "evidence": "After8b",
-        "titles": 36,
-        "counts": {
-          "OBSERVED": 33,
-          "FAIL": 3
-        },
-        "app": "/private/tmp/flashback-compat-180/Flashback-Check.app",
-        "polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670"
-      },
-      {
-        "evidence": "After10b",
-        "titles": 6,
-        "counts": {
-          "OBSERVED": 6
-        },
-        "app": "/private/tmp/flashback-compat-180/Flashback-Check.app",
-        "polyfill_sha256": "d1fe3cf4b0bb141d6bfb45a7cce81ad14445a739ca8695d60b19bdf9449de14f"
-      },
-      {
-        "evidence": "After10long",
-        "titles": 5,
-        "counts": {
-          "OBSERVED": 5
-        },
-        "app": "/private/tmp/flashback-compat-180/Flashback-Check.app",
-        "polyfill_sha256": "d1fe3cf4b0bb141d6bfb45a7cce81ad14445a739ca8695d60b19bdf9449de14f"
+        "app": "/Users/mpt/Documents/ChatGPT/textwist/Flashback.app",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
+        "note": "Every indexed title relaunched against the shipped runtime, so the survey and the gameplay cases now share one runtime build."
       }
     ],
     "warning": "Staged opening observations use the recorded runtime hashes. They do not certify gameplay or all titles on the final runtime."
   },
   "runtime_unit_tests": {
-    "passed": 135,
+    "passed": 138,
     "failed": 0
   },
   "gameplay_regression": {
     "passed_before": 13,
     "before_total": 15,
-    "passed_after": 20,
-    "total": 21,
+    "passed_after": 23,
+    "total": 24,
     "cases": [
       {
         "game": "Rapunzel",
@@ -109,8 +73,8 @@
         "entry_sha256": "02d6c6a92793b316a88ed6f9a87946e60d61724441140d1b4b23ce863b2bbb21",
         "status": "PASS",
         "scope": "Start a level and move the character.",
-        "evidence": "Core17/Rapunzel",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Core3/Rapunzel",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Supersonic",
@@ -118,8 +82,8 @@
         "entry_sha256": "0fb6ce24e40c712400a2f1b7015220aba0165dbab9df4e910f144cddf31993af",
         "status": "PASS",
         "scope": "Load external GUI cast, enter 3D driving, and drive.",
-        "evidence": "Core17/Supersonic",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Core3/Supersonic",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Merlin3",
@@ -127,8 +91,8 @@
         "entry_sha256": "9e31078ad9f34efc1f3a2c07f990505e8128cfeafdf93eb7598f70a4be5ed967",
         "status": "PASS",
         "scope": "Pass introduction and move in the first playable map.",
-        "evidence": "Core17/Merlin3",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Core3/Merlin3",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Merlin1",
@@ -136,8 +100,8 @@
         "entry_sha256": "6929773973ad606e81c270c026d248dbdaef6813d8b19b045123b2354268d1cc",
         "status": "PASS",
         "scope": "Recover launch parameters, pass introduction, and move.",
-        "evidence": "Core17/Merlin1",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Core3/Merlin1",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Merlin2",
@@ -145,8 +109,8 @@
         "entry_sha256": "991eeae0326307f5846a5711c6aa98ce45aca75811d4e299b580a1cd77a5f630",
         "status": "PASS",
         "scope": "Pass introduction, enter game mode, and move.",
-        "evidence": "Regression17/Merlin2",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/Merlin2",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "BreakoutLite",
@@ -154,8 +118,8 @@
         "entry_sha256": "ebb2f1f59d3bbc9a940c0de62cb9ff4695ccc5f1399a86bebe790a28ceda7e1a",
         "status": "PASS",
         "scope": "Launch the ball, move the paddle, and break bricks.",
-        "evidence": "Regression17/BreakoutLite",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/BreakoutLite",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Centipede",
@@ -163,8 +127,8 @@
         "entry_sha256": "a4a8e95b7c4c4058e8eafc740eedb098e612f8edc11afbdc9a392bcb48dc894b",
         "status": "PASS",
         "scope": "Start and score using the fire key.",
-        "evidence": "Replay17/Centipede",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Replay3/Centipede",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Frogger",
@@ -172,8 +136,8 @@
         "entry_sha256": "4a3d04a1f8d1cfda9b3bbf83b331546324e50d8e6b44deb6f7b0398a0181c0da",
         "status": "PASS",
         "scope": "Start and score with upward movement.",
-        "evidence": "Replay17/Frogger",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Replay3/Frogger",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "MissileCommand",
@@ -181,8 +145,8 @@
         "entry_sha256": "b51bc07c3a5895c23f94ed0af05c59baa8d55f9f04b53e7b726cadd39522b723",
         "status": "PASS",
         "scope": "Start and fire using native pointer input.",
-        "evidence": "Regression17/MissileCommand",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/MissileCommand",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "SuperBreakout",
@@ -190,8 +154,8 @@
         "entry_sha256": "cf02c05b8a33361454c424d5697b50a54dd2ede03772ae5d069139e0ba40e02b",
         "status": "PASS",
         "scope": "Select Double mode, start and move the paddles.",
-        "evidence": "Regression17/SuperBreakout",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/SuperBreakout",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Junkbot",
@@ -199,8 +163,8 @@
         "entry_sha256": "ebeca20b2430b637b77204cd9912767669e52895cb1fee1276e13b7dda76a165",
         "status": "PASS",
         "scope": "Enter a level and move a brick, increasing the move counter.",
-        "evidence": "Regression17/Junkbot",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/Junkbot",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "WorldBuilder",
@@ -208,8 +172,8 @@
         "entry_sha256": "8d3452e6627abb09b52910797059a0e75d5eb8962b84b416b8c7b7ce71a4c955",
         "status": "PASS",
         "scope": "Reach the tutorial right-scroll step.",
-        "evidence": "Regression17/WorldBuilder",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/WorldBuilder",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "MonsterBash",
@@ -217,8 +181,8 @@
         "entry_sha256": "5066656239c6f9226d1b986aaa045435ecacc864e7aa2cbb9fa32b1bd96ed217",
         "status": "PASS",
         "scope": "Pick up club and skull, throw, swing, record a successful hit and track it with the camera.",
-        "evidence": "Regression17/MonsterBash",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/MonsterBash",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Backlot",
@@ -226,8 +190,8 @@
         "entry_sha256": "1db8e5cb2242c2783c9eb09dce915c71fe47a62d9f150f9f4f2aea5f403df3da",
         "status": "LIMITED",
         "scope": "Black initialization frame; unsupported dynamic Lingo script compilation prevents the launcher replacement scripts from executing. No playable level verified.",
-        "evidence": "Regression17/Backlot",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/Backlot",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "CreepyPong",
@@ -235,8 +199,8 @@
         "entry_sha256": "6d9041916d5651721d051eec07297e449ae06a4143111c83fbcaba99ea6e94c1",
         "status": "PASS",
         "scope": "Import the original ZIP, recover the launcher, choose a bat and opponent, enter a 3D match, move the bat and strike the ball.",
-        "evidence": "Regression17/CreepyPong",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/CreepyPong",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Courage",
@@ -244,8 +208,8 @@
         "entry_sha256": "61e6cc9a74cf0887d3c5691339ff414d278bfbe7e1e0dea16b4749bcce6a85d8",
         "status": "PASS",
         "scope": "Complete the introduction, collect food and a can opener, and verify kitchen state and artwork.",
-        "evidence": "Regression17/Courage",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Replay3/Courage",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "MiniGolf",
@@ -253,8 +217,8 @@
         "entry_sha256": "893caea123c1aa8cfd8a5ea62c0d82e9c35e3ca3cbd5e1fa5a3834877ef386ab",
         "status": "PASS",
         "scope": "Use reconstructed launch settings, choose Practice, and record the first stroke.",
-        "evidence": "Regression17/MiniGolf",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/MiniGolf",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "AirShow",
@@ -262,8 +226,8 @@
         "entry_sha256": "746e435033d5b894aad1863b7b118d7a973734968dc265032f9ada6646927717",
         "status": "PASS",
         "scope": "Import the original ZIP, recover its launcher, choose an aircraft and fly while the countdown runs.",
-        "evidence": "Regression17/AirShow",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Replay4/AirShow",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "BarrelMaze",
@@ -271,8 +235,8 @@
         "entry_sha256": "d2719f263b0b6d4146c1310f283202d427e39ff5113cbe3452e266b31b9cee31",
         "status": "PASS",
         "scope": "Use reconstructed launch settings, enter the maze and move the barrel.",
-        "evidence": "Regression17/BarrelMaze",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/BarrelMaze",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "GreatFireworkRace",
@@ -280,8 +244,8 @@
         "entry_sha256": "e38d2ea8af2cf161b802841aa277c074fd3ae860abc267368b880404b5f2f429",
         "status": "PASS",
         "scope": "Start the race and accelerate with native Shift input.",
-        "evidence": "Regression17/GreatFireworkRace",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+        "evidence": "Regression3/GreatFireworkRace",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
       },
       {
         "game": "Galidor",
@@ -289,37 +253,73 @@
         "entry_sha256": "98cc74d40c28455c4d8d8b488ab098c2c91e0505bf4958785317055c759ad076",
         "status": "PASS",
         "scope": "Create a visible character, enter at the intended tutorial entrance, move with native mouse input, and jump with V. Online saving is unavailable.",
-        "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e",
-        "evidence": "GalidorFinal17/Galidor"
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
+        "evidence": "Regression3/Galidor"
+      },
+      {
+        "game": "BeachSoccer",
+        "collection_id": "beach-soccer",
+        "entry_sha256": "662e8780060a4940495307f9fbdacf069a4e9970f943cfc78abad6bdb5264295",
+        "status": "PASS",
+        "scope": "Recover the original launcher, start a match from the title screen, skip the briefing, and swap the controlled player; the 3D match runs with both teams and a ball in play. Scoring and later matches are unverified.",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
+        "evidence": "Regression3/BeachSoccer"
+      },
+      {
+        "game": "AmericanFootball",
+        "collection_id": "american-football",
+        "entry_sha256": "ca1ff36bf1d62f26bcf52cc7492bee4c6c5425f9a20542e69808aab5568f3e4c",
+        "status": "PASS",
+        "scope": "Recover the original launcher, start a match through the team menu, skip the briefing, and snap the ball; the 3D match runs with both teams and the ball moves from its snap position. Completing a drive is unverified.",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
+        "evidence": "Regression3/AmericanFootball"
+      },
+      {
+        "game": "FreeRunning",
+        "collection_id": "free-running",
+        "entry_sha256": "d3ac3ba9bdd8d123502712c9ec9b41769fb95fbd90ddaa0ffdb0c7317514a196",
+        "status": "PASS",
+        "scope": "Recover the original launcher, start the first level from the title screen, and run with the up arrow; the character moves along the roof while the level timer runs. Later levels and scoring are unverified.",
+        "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
+        "evidence": "NewCase5/FreeRunning"
       }
     ],
     "latest_runs": [
       {
-        "evidence": "Regression17",
-        "passed": 14,
-        "total": 17,
+        "evidence": "Regression3",
+        "titles": 20,
+        "passed": 15,
         "limited": 1,
-        "failed": 2,
-        "note": "Centipede asset copy failed when disk space ran out; Frogger timed out immediately afterward. Original results are retained."
+        "failed": 4,
+        "note": "Native input in two cases landed at the wrong moment while the machine ran out of disk space mid-run; both were re-recorded from a clean run and the original results are retained."
       },
       {
-        "evidence": "Replay17",
-        "passed": 2,
-        "total": 2,
-        "note": "Both interrupted cases passed on the signed app after disposable compiler artifacts were cleared."
+        "evidence": "Replay3",
+        "titles": 4,
+        "passed": 3
       },
       {
-        "evidence": "Core17",
-        "passed": 4,
-        "total": 4
+        "evidence": "Replay4",
+        "titles": 1,
+        "passed": 1
+      },
+      {
+        "evidence": "NewCase5",
+        "titles": 1,
+        "passed": 1
+      },
+      {
+        "evidence": "Core3",
+        "titles": 4,
+        "passed": 4
       }
     ]
   },
   "collection_status_counts": {
-    "PASS": 18,
-    "OBSERVED": 85,
+    "PASS": 21,
+    "OBSERVED": 81,
     "LIMITED": 1,
-    "FAIL": 1
+    "FAIL": 2
   },
   "games": [
     {
@@ -330,8 +330,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/air-show",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/air-show",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "746e435033d5b894aad1863b7b118d7a973734968dc265032f9ada6646927717",
       "projector_provenance": {
         "archive": "Air Show - Silent Bay Studios.zip",
@@ -342,8 +342,8 @@
         "format": "MDGF"
       },
       "gameplay_check": "Import the original ZIP, recover its launcher, choose an aircraft and fly while the countdown runs.",
-      "gameplay_evidence": "Regression17/AirShow",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Replay4/AirShow",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "american-football",
@@ -351,10 +351,10 @@
       "entry": "Games/American Football - Silent Bay Studios/projector-loader.dcr",
       "sha256": "ca1ff36bf1d62f26bcf52cc7492bee4c6c5425f9a20542e69808aab5568f3e4c",
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
-      "status": "OBSERVED",
+      "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/american-football",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/american-football",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "ca1ff36bf1d62f26bcf52cc7492bee4c6c5425f9a20542e69808aab5568f3e4c",
       "projector_provenance": {
         "archive": "American Football - Silent Bay Studios.zip",
@@ -363,7 +363,10 @@
         "offset": 10307050,
         "size": 7775,
         "format": "MDGF"
-      }
+      },
+      "gameplay_check": "Recover the original launcher, start a match through the team menu, skip the briefing, and snap the ball; the 3D match runs with both teams and the ball moves from its snap position. Completing a drive is unverified.",
+      "gameplay_evidence": "Regression3/AmericanFootball",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "banjo-kazooie-memory-game",
@@ -373,8 +376,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/banjo-kazooie-memory-game",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/banjo-kazooie-memory-game",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "6d3005e18fb484a0e8e2bb1409317fb0a8099b1f0d4b2b3358af04d43a1b3982"
     },
     {
@@ -385,8 +388,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After10long/basketball-jam",
-      "launch_polyfill_sha256": "d1fe3cf4b0bb141d6bfb45a7cce81ad14445a739ca8695d60b19bdf9449de14f",
+      "launch_evidence": "Collection3/basketball-jam",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "6a8ae54fca46e7f24262f0487e8bba91d77583a34aee4a98ac0103443ec1e7a0",
       "projector_provenance": {
         "archive": "Basketball Jam - Silent Bay Studios.zip",
@@ -406,8 +409,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/basketball-slam",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/basketball-slam",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "2e347d137b7f95e1ed0080005586516bb9d4caa81104f6a728cef40c3938ca6e",
       "projector_provenance": {
         "archive": "Basketball Slam - Silent Bay Studios.zip",
@@ -426,8 +429,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/battle-wheels",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/battle-wheels",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "5987da34868fedf86a822b03dc80ae3cbb4ce57b0a2851f674cb50d89c7043ee"
     },
     {
@@ -436,10 +439,10 @@
       "entry": "Games/Beach Soccer - Silent Bay Studios/projector-loader.dcr",
       "sha256": "662e8780060a4940495307f9fbdacf069a4e9970f943cfc78abad6bdb5264295",
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
-      "status": "OBSERVED",
+      "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/beach-soccer",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/beach-soccer",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "662e8780060a4940495307f9fbdacf069a4e9970f943cfc78abad6bdb5264295",
       "projector_provenance": {
         "archive": "Beach Soccer - Silent Bay Studios.zip",
@@ -448,7 +451,10 @@
         "offset": 10307050,
         "size": 7770,
         "format": "MDGF"
-      }
+      },
+      "gameplay_check": "Recover the original launcher, start a match from the title screen, skip the briefing, and swap the controlled player; the 3D match runs with both teams and a ball in play. Scoring and later matches are unverified.",
+      "gameplay_evidence": "Regression3/BeachSoccer",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "blues-bikers",
@@ -458,8 +464,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/blues-bikers",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/blues-bikers",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "044349c1d60ff6c9c8a6fe4620532bf46066cdfdfa563ff73a3a837e895379fb"
     },
     {
@@ -470,12 +476,12 @@
       "source_page": "https://themetalbox.com/index.php?page=breakout_lite",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/breakout-lite",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/breakout-lite",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "ebb2f1f59d3bbc9a940c0de62cb9ff4695ccc5f1399a86bebe790a28ceda7e1a",
       "gameplay_check": "Launch the ball, move the paddle, and break bricks.",
-      "gameplay_evidence": "Regression17/BreakoutLite",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/BreakoutLite",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "cartoon-network-smash-tennis-extreme-pong",
@@ -485,8 +491,8 @@
       "source_page": "https://archive.org/details/extreme_pong",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/cartoon-network-smash-tennis-extreme-pong",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/cartoon-network-smash-tennis-extreme-pong",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "5a71741dd6fbecc15ef01f465a31619ea00ea3f9265ca646b1114b695f5cc9d1"
     },
     {
@@ -497,8 +503,8 @@
       "source_page": "https://archive.org/details/fistful_dcr",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/catdog-fistful-of-mail",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/catdog-fistful-of-mail",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "fdd1eeb8d95f679a62b37b1a2a662613a1538d09cf1f17682060bfc14f740e48"
     },
     {
@@ -509,8 +515,8 @@
       "source_page": "https://archive.org/details/granny_dcr",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/catdog-granny-invaders",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/catdog-granny-invaders",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "683597db4d7b91d948568aa15047e3c9064d890b4e9284d430842d5d66d58171"
     },
     {
@@ -521,8 +527,8 @@
       "source_page": "https://archive.org/details/poolpong",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/catdog-pool-pong",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/catdog-pool-pong",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "db90a19c1ed4fa504ed9324429be3153a7add15c4f4a854fddebb65583c84734"
     },
     {
@@ -533,12 +539,12 @@
       "source_page": "https://archive.org/details/hasbrointeractive",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/centipede",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/centipede",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "a4a8e95b7c4c4058e8eafc740eedb098e612f8edc11afbdc9a392bcb48dc894b",
       "gameplay_check": "Start and score using the fire key.",
-      "gameplay_evidence": "Replay17/Centipede",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Replay3/Centipede",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "centre-court-tennis",
@@ -548,8 +554,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After10long/centre-court-tennis",
-      "launch_polyfill_sha256": "d1fe3cf4b0bb141d6bfb45a7cce81ad14445a739ca8695d60b19bdf9449de14f",
+      "launch_evidence": "Collection3/centre-court-tennis",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "e8215b4beb14faea67eeee14a4cf38914dc6deabc9f4143c6bf4985a797e4365",
       "projector_provenance": {
         "archive": "Centre Court Tennis - Silent Bay Studios.zip",
@@ -569,8 +575,8 @@
       "source_page": "https://archive.org/details/eidos-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/commandos-2-target-practice",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/commandos-2-target-practice",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "432295f1cc9ad3ce950db77be705ffec7888fd0d3758f3543351468952f3be18"
     },
     {
@@ -581,12 +587,12 @@
       "source_page": "https://archive.org/details/courage-in-creepy-tv",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/courage-in-creep-tv",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/courage-in-creep-tv",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "61e6cc9a74cf0887d3c5691339ff414d278bfbe7e1e0dea16b4749bcce6a85d8",
       "gameplay_check": "Complete the introduction, collect food and a can opener, and verify kitchen state and artwork.",
-      "gameplay_evidence": "Regression17/Courage",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Replay3/Courage",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "crash-car-combat",
@@ -596,8 +602,8 @@
       "source_page": "https://archive.org/details/crash-car-combat",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/crash-car-combat",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/crash-car-combat",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "85946d9fedae8deea6381a8f3cfa8dbf2f98a6926b91e5ecd36cc60235f019fb"
     },
     {
@@ -608,8 +614,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/crazy-counting",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/crazy-counting",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "0bfdc299e34e923484708015cc5397d0bbb4e721e1438f77164f9175f8063e29"
     },
     {
@@ -620,8 +626,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/creepy-pong",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/creepy-pong",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "6d9041916d5651721d051eec07297e449ae06a4143111c83fbcaba99ea6e94c1",
       "projector_provenance": {
         "archive": "Creepy Pong - Silent Bay Studios.zip",
@@ -632,8 +638,8 @@
         "format": "MDGF"
       },
       "gameplay_check": "Import the original ZIP, recover the launcher, choose a bat and opponent, enter a 3D match, move the bat and strike the ball.",
-      "gameplay_evidence": "Regression17/CreepyPong",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/CreepyPong",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "delta-force-operation-fire-shield",
@@ -643,8 +649,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/delta-force-operation-fire-shield",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/delta-force-operation-fire-shield",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "0f3854463a16cb8b166c7d2e74b2ee07bea06821450108ba924fd2c6fd2e57b4"
     },
     {
@@ -655,8 +661,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/dinky-rinky",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/dinky-rinky",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "fea05df1d236f634bba130126bc5d584fa9eb5d66f18611e4932b2b8758ea1c5"
     },
     {
@@ -667,8 +673,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/donkey-kong-64-lore-quiz",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/donkey-kong-64-lore-quiz",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "f805bd0ce354712bafb02b5c07600c930ccc93d112fd9dcb6d629b291e6c3270"
     },
     {
@@ -678,13 +684,13 @@
       "sha256": "d2719f263b0b6d4146c1310f283202d427e39ff5113cbe3452e266b31b9cee31",
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "PASS",
-      "after": "FAIL: This Shockwave game couldn\u2019t continue. Try Add from Website to recover its original settings, or add the complete game folder. Some Director features and Xtras remain unsupported.",
-      "launch_evidence": "Collection/donkey-kong-country-barrel-maze",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
+      "launch_evidence": "Collection3/donkey-kong-country-barrel-maze",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "d2719f263b0b6d4146c1310f283202d427e39ff5113cbe3452e266b31b9cee31",
       "gameplay_check": "Use reconstructed launch settings, enter the maze and move the barrel.",
-      "gameplay_evidence": "Regression17/BarrelMaze",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/BarrelMaze",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "donkey-konk",
@@ -694,8 +700,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/donkey-konk",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/donkey-konk",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "a233782ac538e95aa79d83b88d3d7ec2b58835de41c01a8a866185f4f42c32c0"
     },
     {
@@ -706,8 +712,8 @@
       "source_page": "https://archive.org/details/doomsday_shockwave",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/doomsday",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/doomsday",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "ef2df56a8bc1fa70d04d7fc00e7b358ca532167b63d5f4a126d6854ecd37203c"
     },
     {
@@ -718,8 +724,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/drift-trike",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/drift-trike",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "dc7c3c11c823925bea8332937e8e0dd533ac737749cbcb61c3bf15e4fb765fa9"
     },
     {
@@ -730,8 +736,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/european-soccer-champions",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/european-soccer-champions",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "027606ed7bb414d03a4c36d705584889d5f80dcc9086fd7ef79caf1375e04a5e",
       "projector_provenance": {
         "archive": "European Soccer Champions - Silent Bay Studios.zip",
@@ -750,8 +756,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/excitebike",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/excitebike",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "5f6326af13995c2f2bbc8e6c292d6695f5dbd2d7490b9baf463b1b67758f4431"
     },
     {
@@ -762,8 +768,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/extreme-quad",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/extreme-quad",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "92526cac03152c255c59b7db0d3b00a28e2b4c0202c481f32151b413be21d7f4",
       "projector_provenance": {
         "archive": "Extreme Quad - Silent Bay Studios.zip",
@@ -782,8 +788,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/extreme-trial",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/extreme-trial",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "2c64ab5ee15bc3ecf72960fa888347d24fc5840d5d09f1a48ab8f649465aeaac",
       "projector_provenance": {
         "archive": "Extreme Trial - Silent Bay Studios.zip",
@@ -802,8 +808,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After7/f-zero-x-academy-garage",
-      "launch_polyfill_sha256": "616d9ad5c887775a882b52c188d454ea456c831a7bfd3f513aa548eb5de15a35",
+      "launch_evidence": "Collection3/f-zero-x-academy-garage",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "2b74688351de735db3110e1e60487fdbbba9819b6d938dfb9c59c7778c3986a5"
     },
     {
@@ -814,8 +820,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/fast-car-frenzy",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/fast-car-frenzy",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "0adc4c7ddfc9586c4fbb0a0dc3722caeb42383415f76a406a1f448c67d893d2d",
       "projector_provenance": {
         "archive": "Fast Car Frenzy - Silent Bay Studios.zip",
@@ -834,8 +840,8 @@
       "source_page": "https://archive.org/details/eidos-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/fear-effect-2-retro-helix",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/fear-effect-2-retro-helix",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "0ec52f2eb3cac930ed8db221d72b5b8466c8e53194312defee3eaad1b8033c5f"
     },
     {
@@ -844,10 +850,10 @@
       "entry": "Games/Free Running - Silent Bay Studios/projector-loader.dcr",
       "sha256": "d3ac3ba9bdd8d123502712c9ec9b41769fb95fbd90ddaa0ffdb0c7317514a196",
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
-      "status": "OBSERVED",
+      "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/free-running",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/free-running",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "d3ac3ba9bdd8d123502712c9ec9b41769fb95fbd90ddaa0ffdb0c7317514a196",
       "projector_provenance": {
         "archive": "Free Running - Silent Bay Studios.zip",
@@ -856,7 +862,10 @@
         "offset": 10307050,
         "size": 7378,
         "format": "MDGF"
-      }
+      },
+      "gameplay_check": "Recover the original launcher, start the first level from the title screen, and run with the up arrow; the character moves along the roof while the level timer runs. Later levels and scoring are unverified.",
+      "gameplay_evidence": "NewCase5/FreeRunning",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "free-wheels",
@@ -866,8 +875,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After10long/free-wheels",
-      "launch_polyfill_sha256": "d1fe3cf4b0bb141d6bfb45a7cce81ad14445a739ca8695d60b19bdf9449de14f",
+      "launch_evidence": "Collection3/free-wheels",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "9c4815810161aab0b9b4a1eb3e0c03424827ceec9ef7fb5c5b126ab6372a5e38",
       "projector_provenance": {
         "archive": "Free Wheels - Silent Bay Studios.zip",
@@ -887,12 +896,12 @@
       "source_page": "https://archive.org/details/hasbrointeractive",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/frogger",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/frogger",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "4a3d04a1f8d1cfda9b3bbf83b331546324e50d8e6b44deb6f7b0398a0181c0da",
       "gameplay_check": "Start and score with upward movement.",
-      "gameplay_evidence": "Replay17/Frogger",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Replay3/Frogger",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "galidor-quest",
@@ -901,16 +910,16 @@
       "sha256": "98cc74d40c28455c4d8d8b488ab098c2c91e0505bf4958785317055c759ad076",
       "source_page": "https://archive.org/details/galidor_quest",
       "status": "PASS",
-      "after": "FAIL: Missing game files: flashback://ee62daad60ea3eacaf11efaaac73913a7179c5acb4dbd21451e4be718d5fb607/game/dummy.cct",
-      "launch_evidence": "After8b/galidor-quest",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
+      "launch_evidence": "Collection3/galidor-quest",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "98cc74d40c28455c4d8d8b488ab098c2c91e0505bf4958785317055c759ad076",
       "notes": "Visible character and native movement/jump replay pass in the tutorial. Original game.asp service and archived dummy.cct placeholder are recorded expected missing resources; online saving and later levels are unverified.",
       "additional_evidence": "Galidor-After13",
       "additional_polyfill_sha256": "6ad9c5d43ab73ee45f49f5de5d4ffdcde35b8c2640f8ef5887c605588311710a",
       "gameplay_check": "Create a visible character, enter at the intended tutorial entrance, move with native mouse input, and jump with V. Online saving is unavailable.",
-      "gameplay_evidence": "GalidorFinal17/Galidor",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/Galidor",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "go-karts",
@@ -920,8 +929,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/go-karts",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/go-karts",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "3414c7e224e70c310afc8e1958ba00555470e42655bfdb432f8d388ae5b4a237",
       "projector_provenance": {
         "archive": "Go Karts - Silent Bay Studios.zip",
@@ -940,8 +949,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/golf-ace",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/golf-ace",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "b83dc839ff3540f461d66baa27def4e41a76ae268382977c54f4e3e2019c09c2",
       "projector_provenance": {
         "archive": "Golf Ace - Silent Bay Studios.zip",
@@ -960,8 +969,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/goodness-rakes",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/goodness-rakes",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "8a9f986377c590c2b67716f6fc976d29faf87cdb24235d739b4b682b56640ea6"
     },
     {
@@ -972,12 +981,12 @@
       "source_page": "https://archive.org/details/eidos-shockwave-webgames",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After7/great-firework-race",
-      "launch_polyfill_sha256": "616d9ad5c887775a882b52c188d454ea456c831a7bfd3f513aa548eb5de15a35",
+      "launch_evidence": "Collection3/great-firework-race",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "e38d2ea8af2cf161b802841aa277c074fd3ae860abc267368b880404b5f2f429",
       "gameplay_check": "Start the race and accelerate with native Shift input.",
-      "gameplay_evidence": "Regression17/GreatFireworkRace",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/GreatFireworkRace",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "guns-of-anarchy",
@@ -987,8 +996,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/guns-of-anarchy",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/guns-of-anarchy",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "383fb87671efc3be24394b3715c77829ed5d9bb26dfcd8fa94201515f146240f"
     },
     {
@@ -999,8 +1008,8 @@
       "source_page": "https://archive.org/details/boxtops_dcr",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/hey-arnold-box-tops",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/hey-arnold-box-tops",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "96335d7364d394f8291d6739697e1fa03360baa5ebc3063a00330590e3a7ff88"
     },
     {
@@ -1011,8 +1020,8 @@
       "source_page": "https://archive.org/details/hockey_dcr",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/hey-arnold-ice-hockey",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/hey-arnold-ice-hockey",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "6dd506bfc0b7a3565f356e884e99d973c9271f10a8b231856980125be5879348"
     },
     {
@@ -1023,8 +1032,8 @@
       "source_page": "https://archive.org/details/pigskins",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/hey-arnold-pig-skins-r-us",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/hey-arnold-pig-skins-r-us",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "75af41ff84de2db03e8e91a2c268943056ffc0ae4c65565936dab7ca76fba974"
     },
     {
@@ -1035,8 +1044,8 @@
       "source_page": "https://archive.org/details/sewer-game",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/hey-arnold-sewer-king",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/hey-arnold-sewer-king",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "ce02d8ad106bd564e6028edb25f13c9185af1b6050b04c6171df84e21c60828f"
     },
     {
@@ -1047,8 +1056,8 @@
       "source_page": "https://archive.org/details/tourdepond",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/hey-arnold-tour-de-pond",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/hey-arnold-tour-de-pond",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "522427e072033abfb7ac337e781a67659ee95229a3a9795b412cb6e8e09686a3"
     },
     {
@@ -1059,8 +1068,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/hot-rods",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/hot-rods",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "f6ea1c5fca4e702d327426e818edcfaefdd95ce348d43177f2ada306f676d2b6"
     },
     {
@@ -1071,8 +1080,8 @@
       "source_page": "https://archive.org/details/hwferrariswgame",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/hot-wheels-ferrari-x-v-speed-trial",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/hot-wheels-ferrari-x-v-speed-trial",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "c40ddd936446384e52c487390e3bd5f48d0fc498045253bbcd8d389c7770b7d5"
     },
     {
@@ -1083,8 +1092,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/ice-racer",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/ice-racer",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "b4f361a258c23427d652b5aab49ea19e0c860ac17fa2d35ccda89bb29ab77808",
       "projector_provenance": {
         "archive": "Ice Racer - Silent Bay Studios.zip",
@@ -1103,8 +1112,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After10long/insane-ski-jump",
-      "launch_polyfill_sha256": "d1fe3cf4b0bb141d6bfb45a7cce81ad14445a739ca8695d60b19bdf9449de14f",
+      "launch_evidence": "Collection3/insane-ski-jump",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "fe1daa34f3fcf35784a63d95537c1fa65bdda7b602074ca595653fbbfacf2158",
       "projector_provenance": {
         "archive": "Insane Ski Jump - Silent Bay Studios.zip",
@@ -1124,8 +1133,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/jet-ski-racing",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/jet-ski-racing",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "f6ca7c350543d7368b5a48815ace4c4a472f2ecef1f56b3edbf5261199727240",
       "projector_provenance": {
         "archive": "Jet Ski Racing - Silent Bay Studios.zip",
@@ -1144,8 +1153,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/jousting",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/jousting",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "7b836a00f69b67bd2a16ca006d1ed6c749301dcc1ec5189b202fb8a03c436995",
       "projector_provenance": {
         "archive": "Jousting - Silent Bay Studios.zip",
@@ -1164,8 +1173,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/karate-king",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/karate-king",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "a2451cf596ae36129cddc71e88d1d00af4f8e7e8bfa06e3f4e029bff00e51335",
       "projector_provenance": {
         "archive": "Karate King - Silent Bay Studios.zip",
@@ -1184,8 +1193,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/kremling-krunch",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/kremling-krunch",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "eb8124b7c238835dc427d3c956333d80b3657240904fce8370f0c8554089f742"
     },
     {
@@ -1196,12 +1205,12 @@
       "source_page": "https://archive.org/details/legostudiosbacklot",
       "status": "LIMITED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/lego-studios-backlot",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/lego-studios-backlot",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "1db8e5cb2242c2783c9eb09dce915c71fe47a62d9f150f9f4f2aea5f403df3da",
       "gameplay_check": "Black initialization frame; unsupported dynamic Lingo script compilation prevents the launcher replacement scripts from executing. No playable level verified.",
-      "gameplay_evidence": "Regression17/Backlot",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/Backlot",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "lego-world-builder",
@@ -1211,12 +1220,12 @@
       "source_page": "https://archive.org/details/lego-world-builder",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/lego-world-builder",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/lego-world-builder",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "8d3452e6627abb09b52910797059a0e75d5eb8962b84b416b8c7b7ce71a4c955",
       "gameplay_check": "Reach the tutorial right-scroll step.",
-      "gameplay_evidence": "Regression17/WorldBuilder",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/WorldBuilder",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "mario-golf-power-meter",
@@ -1226,8 +1235,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/mario-golf-power-meter",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/mario-golf-power-meter",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "286e739044a950b1b83c528ac9c7abd00e59e7be4728cc89aeb09dafefc90b9a"
     },
     {
@@ -1238,8 +1247,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/mario-s-memory-madness",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/mario-s-memory-madness",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "bd320db3a0d793ce9ea5700755100945a2ef09f3a3b5d5b9057e0f2dba7c8dce"
     },
     {
@@ -1250,8 +1259,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/melon-mayhem",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/melon-mayhem",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "b1a2466fc435bf6c5c086d00b4afc641d7e2515777d86823c9d8af14f44d6179"
     },
     {
@@ -1262,12 +1271,12 @@
       "source_page": "https://themetalbox.com/index.php?page=merlin_1",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/merlin-s-revenge-1",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/merlin-s-revenge-1",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "6929773973ad606e81c270c026d248dbdaef6813d8b19b045123b2354268d1cc",
       "gameplay_check": "Recover launch parameters, pass introduction, and move.",
-      "gameplay_evidence": "Core17/Merlin1",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Core3/Merlin1",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "merlin-s-revenge-2",
@@ -1277,12 +1286,12 @@
       "source_page": "https://themetalbox.com/index.php?page=merlin_2",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/merlin-s-revenge-2",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/merlin-s-revenge-2",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "991eeae0326307f5846a5711c6aa98ce45aca75811d4e299b580a1cd77a5f630",
       "gameplay_check": "Pass introduction, enter game mode, and move.",
-      "gameplay_evidence": "Regression17/Merlin2",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/Merlin2",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "merlin-s-revenge-3",
@@ -1292,12 +1301,12 @@
       "source_page": "https://themetalbox.com/index.php?page=merlin_3",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/merlin-s-revenge-3",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/merlin-s-revenge-3",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "9e31078ad9f34efc1f3a2c07f990505e8128cfeafdf93eb7598f70a4be5ed967",
       "gameplay_check": "Pass introduction and move in the first playable map.",
-      "gameplay_evidence": "Core17/Merlin3",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Core3/Merlin3",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "missile-command",
@@ -1307,12 +1316,12 @@
       "source_page": "https://archive.org/details/hasbrointeractive",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/missile-command",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/missile-command",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "b51bc07c3a5895c23f94ed0af05c59baa8d55f9f04b53e7b726cadd39522b723",
       "gameplay_check": "Start and fire using native pointer input.",
-      "gameplay_evidence": "Regression17/MissileCommand",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/MissileCommand",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "monster-bash",
@@ -1322,12 +1331,12 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/monster-bash",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/monster-bash",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "5066656239c6f9226d1b986aaa045435ecacc864e7aa2cbb9fa32b1bd96ed217",
       "gameplay_check": "Pick up club and skull, throw, swing, record a successful hit and track it with the camera.",
-      "gameplay_evidence": "Regression17/MonsterBash",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/MonsterBash",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "motocross-country-fever",
@@ -1337,8 +1346,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/motocross-country-fever",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/motocross-country-fever",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "111ad1c6dfa151eea01f7267c8d69300cd3304621398df3ee78e2ec6f65724d9"
     },
     {
@@ -1349,8 +1358,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/motocross-urban-fever",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/motocross-urban-fever",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "7a294713076651d0f028540083e1585e9d980ddfc9910062f101bee22cd1ae8c"
     },
     {
@@ -1361,12 +1370,12 @@
       "source_page": "https://archive.org/details/nwmgholes",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/nabisco-world-candystand-mini-golf",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/nabisco-world-candystand-mini-golf",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "893caea123c1aa8cfd8a5ea62c0d82e9c35e3ca3cbd5e1fa5a3834877ef386ab",
       "gameplay_check": "Use reconstructed launch settings, choose Practice, and record the first stroke.",
-      "gameplay_evidence": "Regression17/MiniGolf",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/MiniGolf",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "nabiscoworld-oreo-adventure",
@@ -1376,8 +1385,8 @@
       "source_page": "https://archive.org/details/naboreo",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After7/nabiscoworld-oreo-adventure",
-      "launch_polyfill_sha256": "616d9ad5c887775a882b52c188d454ea456c831a7bfd3f513aa548eb5de15a35",
+      "launch_evidence": "Collection3/nabiscoworld-oreo-adventure",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "d9a9ae9c79a37aefe81083bccd540c8c75c68f27ca96ca0ba756df254fa30982"
     },
     {
@@ -1388,8 +1397,8 @@
       "source_page": "https://archive.org/details/nights-shockwave-game",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/nights-into-dreams-shockwave-game",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/nights-into-dreams-shockwave-game",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "7f8e8887f206946be52b4cd6542b6693ab03d4028c71dc379297b9f798d8a1da"
     },
     {
@@ -1400,8 +1409,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/nomiss",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/nomiss",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "16037127ff2ac87d11a9bca35f7be083dca5352518c93d9da6018d9d7bb02e15"
     },
     {
@@ -1412,8 +1421,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "FAIL",
       "after": "FAIL: This Shockwave game couldn\u2019t continue. Try Add from Website to recover its original settings, or add the complete game folder. Some Director features and Xtras remain unsupported.",
-      "launch_evidence": "After8b/on-the-run-2",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/on-the-run-2",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "b091c1eca03f990647e77c389ffc7133ca131bc667193a59ddfec3970c80db6d",
       "projector_provenance": {
         "archive": "On The Run 2 - Miniclip.zip",
@@ -1432,8 +1441,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After10b/operation-flashpoint-cold-war-crisis-helicopter-gunship",
-      "launch_polyfill_sha256": "d1fe3cf4b0bb141d6bfb45a7cce81ad14445a739ca8695d60b19bdf9449de14f",
+      "launch_evidence": "Collection3/operation-flashpoint-cold-war-crisis-helicopter-gunship",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "bb645c8416ac5088bbee92fcaf300e0ce16d610ea05b386cf9b20cd74130ad1d"
     },
     {
@@ -1444,8 +1453,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/pizza-hot",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/pizza-hot",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "02809f76eaf7cbb5198146bb21821d15a450c8af2e43a3662d6d8884d3d68a79"
     },
     {
@@ -1456,8 +1465,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/power-boat",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/power-boat",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "43bf8d9cd5a986d0bdc730b21f3ad9b1e062912e8e20060ca5ef7444f1ae3d29",
       "projector_provenance": {
         "archive": "Power Boat - Silent Bay Studios.zip",
@@ -1476,8 +1485,8 @@
       "source_page": "https://archive.org/details/redrangertotherescue",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/power-rangers-in-space-red-ranger-to-the-rescue",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/power-rangers-in-space-red-ranger-to-the-rescue",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "ac52fadffd52d2746e2d75e4a62d436c37cbdc77320d4678d880059972a117d7"
     },
     {
@@ -1488,8 +1497,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/raceway-500",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/raceway-500",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "2e182cc6054b60d1205555b6d034be79aef26754504943f428acf455540b968b",
       "projector_provenance": {
         "archive": "Raceway 500 - Silent Bay Studios.zip",
@@ -1508,12 +1517,12 @@
       "source_page": "https://themetalbox.com/index.php?page=rapunzel",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/rapunzel-s-escape",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/rapunzel-s-escape",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "02d6c6a92793b316a88ed6f9a87946e60d61724441140d1b4b23ce863b2bbb21",
       "gameplay_check": "Start a level and move the character.",
-      "gameplay_evidence": "Core17/Rapunzel",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Core3/Rapunzel",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "redline-rumble-2-detonator",
@@ -1523,8 +1532,8 @@
       "source_page": "https://archive.org/details/redline2detonator",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/redline-rumble-2-detonator",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/redline-rumble-2-detonator",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "bad38b29b12350cbcb9f61b74a5275ac5638a449b4901ea8b5369c5f1224cf37"
     },
     {
@@ -1533,10 +1542,10 @@
       "entry": "Games/Redline Rumble Revolution Standalone/redline-rumble-revolution/xform/RedLineRumbleRevolution.dcr",
       "sha256": "1bf9a7745b9cf2d3dab4c7f7bcec3556187969c996f268af35459ba0a815acc5",
       "source_page": "https://archive.org/details/redline-rumble-revolution",
-      "status": "OBSERVED",
-      "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After7/redline-rumble-revolution",
-      "launch_polyfill_sha256": "616d9ad5c887775a882b52c188d454ea456c831a7bfd3f513aa548eb5de15a35",
+      "status": "FAIL",
+      "after": "FAIL: This Shockwave game couldn\u2019t continue. Try Add from Website to recover its original settings, or add the complete game folder. Some Director features and Xtras remain unsupported.",
+      "launch_evidence": "Collection3/redline-rumble-revolution",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "1bf9a7745b9cf2d3dab4c7f7bcec3556187969c996f268af35459ba0a815acc5"
     },
     {
@@ -1547,8 +1556,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/rifleman",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/rifleman",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "ccd15dda40c14d0979d58dabe0cffab6a0e754a0920e3336a45c264524b54fb5"
     },
     {
@@ -1559,8 +1568,8 @@
       "source_page": "https://archive.org/details/scooby-doo-in-the-attack-of-the-vampire-pumpkinheads_shockwave",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/scooby-doo-in-the-attack-of-the-vampire-pumpkinheads",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/scooby-doo-in-the-attack-of-the-vampire-pumpkinheads",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "739bd430a8f59482806a1aee86b6d42e84db024ea55583cc05309f1f706cea18"
     },
     {
@@ -1571,8 +1580,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/skyboard",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/skyboard",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "0fcab86ce0a2e92489f4574188a630fd473d95eb42d9097c6c8cd9951e6212ef",
       "projector_provenance": {
         "archive": "Skyboard - Silent Bay Studios.zip",
@@ -1591,8 +1600,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/snowboard-madness",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/snowboard-madness",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "557d877999551816970ca79be36dc1e26f30118f6c2fc1fd3b9564a87a44eab1",
       "projector_provenance": {
         "archive": "Snowboard Madness - Silent Bay Studios.zip",
@@ -1611,8 +1620,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/soccer-five",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/soccer-five",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "309cde1a65409f14a52ca0d60ab77e8a67418a16247d028c4ce07f54cbdf6dcb",
       "projector_provenance": {
         "archive": "Soccer Five - Silent Bay Studios.zip",
@@ -1631,8 +1640,8 @@
       "source_page": "https://archive.org/details/boating_dcr",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/spongebob-squarepants-boating-school",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/spongebob-squarepants-boating-school",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "c8322886f95265fb8863318dc374ad293b7aefee5e84dc3a02a50a5c4b8b368e"
     },
     {
@@ -1643,8 +1652,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After10long/sportbike-sprint",
-      "launch_polyfill_sha256": "d1fe3cf4b0bb141d6bfb45a7cce81ad14445a739ca8695d60b19bdf9449de14f",
+      "launch_evidence": "Collection3/sportbike-sprint",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "4cc2873365c4836b59d4477e6a53d16848a0e91e3a4259aa2e66a0b97c43a55c",
       "projector_provenance": {
         "archive": "Sportbike Sprint - Silent Bay Studios.zip",
@@ -1664,8 +1673,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/stunt-driver",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/stunt-driver",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "35c27fabb23c241dd72721ee4784d999a109b4be96ed3c1c4a615ab486a6e3be",
       "projector_provenance": {
         "archive": "Stunt Driver - Silent Bay Studios.zip",
@@ -1684,8 +1693,8 @@
       "source_page": "https://archive.org/details/stunt_sled",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/stunt-sled",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/stunt-sled",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "6562fd473d4fb2c8f1aa7a0a841bc3bd85695aeb9cee6c2d0d28e855263f57a0"
     },
     {
@@ -1696,12 +1705,12 @@
       "source_page": "https://archive.org/details/hasbrointeractive",
       "status": "PASS",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/super-breakout",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/super-breakout",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "cf02c05b8a33361454c424d5697b50a54dd2ede03772ae5d069139e0ba40e02b",
       "gameplay_check": "Select Double mode, start and move the paddles.",
-      "gameplay_evidence": "Regression17/SuperBreakout",
-      "gameplay_polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+      "gameplay_evidence": "Regression3/SuperBreakout",
+      "gameplay_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
     },
     {
       "id": "super-trucks",
@@ -1711,8 +1720,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/super-trucks",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/super-trucks",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "dda2e2a9e45f8fa5e2da50894d3d9268dd2d87c1400ca8e804aa5b1db85e1afb",
       "projector_provenance": {
         "archive": "Super Trucks - Silent Bay Studios.zip",
@@ -1731,8 +1740,8 @@
       "source_page": "https://archive.org/details/ppg_pillowfight",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/the-powerpuff-girls-pillow-fight",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/the-powerpuff-girls-pillow-fight",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "ec576eca990ccc67aa9c19ffee0ac982dc5ccc5f600fc58e8870f442ba5dcb49"
     },
     {
@@ -1743,8 +1752,8 @@
       "source_page": "https://archive.org/details/eidos-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/tomb-raider",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/tomb-raider",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "f144023e3ed2a2be8344d87012d82b0083d2c308bac979e28822def18829a992"
     },
     {
@@ -1755,8 +1764,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/transformers-beast-hunters",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/transformers-beast-hunters",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "26764e11aecf3fb0ede87b554d6d013740181cdf1c6c28d492570e4a62040f68"
     },
     {
@@ -1767,8 +1776,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/turbo-racing-2",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/turbo-racing-2",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "8a26acdbe797a65a27226611b50995dac6546d07635bee5fbc41eaecdabe42ff"
     },
     {
@@ -1779,8 +1788,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/under-arms",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/under-arms",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "08ce7d6cc7c8c88551692f9273502b8496039607a67b5237fce146b36637e5ee"
     },
     {
@@ -1791,8 +1800,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/upipe-skateboard",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/upipe-skateboard",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "b55f70190586b11c3390b2d65509b070c6b040b455bf8e291e76c2bbd843c2a0",
       "projector_provenance": {
         "archive": "Upipe Skateboard - Silent Bay Studios.zip",
@@ -1811,8 +1820,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/wakeboard-pro",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/wakeboard-pro",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "e8052d167e155a71cbdd3830c3c167c3023b56b2be286de98895a33e1426c10a",
       "projector_provenance": {
         "archive": "Wakeboard Pro - Silent Bay Studios.zip",
@@ -1831,8 +1840,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/war-copter",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/war-copter",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "49c4492c36db1df32e66cd12588bba51efb39a691e08ccffa8267056aad65488"
     },
     {
@@ -1843,8 +1852,8 @@
       "source_page": "https://archive.org/details/nintendo-shockwave-webgames",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/wario-s-whack-attack",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/wario-s-whack-attack",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "96b907a6a9278f14a275d56baad990f9daae6f2814b93e4d2e32ebfec886645e"
     },
     {
@@ -1855,8 +1864,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/white-water-rafting",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/white-water-rafting",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "592fa240f654867aab6b551e454b05b33c215e6eac2f66178d07f273b90a0b91"
     },
     {
@@ -1867,8 +1876,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/winter-games",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/winter-games",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "6ab373fc6314107a14b7d16875406f388dc900ad6ce0b430fe4aa7d5b5d59433",
       "projector_provenance": {
         "archive": "Winter Games - Silent Bay Studios.zip",
@@ -1887,8 +1896,8 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "After8b/world-rugby-2011",
-      "launch_polyfill_sha256": "2772ca2168a03e42770f5877074cd0d2c9a6cecbb3445ab13ca3fa0804470670",
+      "launch_evidence": "Collection3/world-rugby-2011",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "91d6d2a61b90b86137a40ff0d6bc25abe96e4293c03fc15721010443e1c21af8",
       "projector_provenance": {
         "archive": "World Rugby 2011 - Silent Bay Studios.zip",
@@ -1907,16 +1916,16 @@
       "source_page": "https://archive.org/details/miniclip_shockwave-games",
       "status": "OBSERVED",
       "after": "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted",
-      "launch_evidence": "Collection/zombie-big-trouble",
-      "launch_polyfill_sha256": "05fe93b66ce606f4b67308780fbbdb7f64d372f7deae6c1d31a4997cce13f52a",
+      "launch_evidence": "Collection3/zombie-big-trouble",
+      "launch_polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
       "launch_entry_sha256": "3190fc4aebed5f7a5886639a4e5adb5a0662f3a90f57a364836899814c67e1de"
     }
   ],
   "host_regression": {
     "status": "PASS",
     "scope": "Archived _movie.path and src, mutable host property restoration, and native hover/click accuracy at three window sizes.",
-    "evidence": "Host17",
-    "polyfill_sha256": "a2954af3a91e3838bc6ea14647a8b9ea2ff1eae55dc62770524ca2ca6b511b7e"
+    "evidence": "Host3",
+    "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef"
   },
-  "evidence_root": "Flashback/build/compatibility-1.9.0 (development evidence, excluded from release)"
+  "evidence_root": "Flashback/build/compatibility-1.10.0 (development evidence, excluded from release)"
 }

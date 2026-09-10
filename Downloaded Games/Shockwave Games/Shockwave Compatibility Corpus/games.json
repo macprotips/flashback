@@ -49,7 +49,7 @@
     "bytes": 7775,
     "container": "MDGF",
     "parameters": {},
-    "status": "OBSERVED",
+    "status": "PASS",
     "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
     "package_evidence": {
       "external_cast_files": 2,
@@ -219,7 +219,7 @@
     "bytes": 7770,
     "container": "MDGF",
     "parameters": {},
-    "status": "OBSERVED",
+    "status": "PASS",
     "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
     "package_evidence": {
       "external_cast_files": 2,
@@ -1078,7 +1078,7 @@
     "bytes": 7378,
     "container": "MDGF",
     "parameters": {},
-    "status": "OBSERVED",
+    "status": "PASS",
     "entry_selection": "Unchanged compressed Director launcher recovered from the original projector; opening observation only; gameplay unverified.",
     "package_evidence": {
       "external_cast_files": 2,
@@ -2451,7 +2451,7 @@
     "bytes": 133014,
     "container": "MDGF",
     "parameters": {},
-    "status": "OBSERVED",
+    "status": "FAIL",
     "entry_selection": "Suggested from original package structure; opening gameplay not verified",
     "package_evidence": {
       "external_cast_files": 8,

@@ -26,8 +26,11 @@ See `SOURCE.md`; the companion assets retain their pinned 0.8.1 versions.
 - Record a package's own missing resources in the collection manifest, so a
   placeholder that the original archive never contained is not counted as a
   launch failure. Every other missing file still fails its title.
-- Two more Miniclip titles have recorded gameplay conditions: Beach Soccer and
-  American Football.
+- Three more Miniclip titles have recorded gameplay conditions: Beach Soccer,
+  American Football and Free Running. Free Running was found by sweeping the
+  titles that had never been driven with input — its record said its game
+  object was not initialized, and it initializes fine once its preloader is
+  allowed to finish.
 
 The 1.9.0 changes remain:
 
@@ -81,7 +84,7 @@ errors still show the native compatibility error. Games remain offline.
 
 ## Tested interactions
 
-**20 of 21 tested titles pass their recorded opening-gameplay condition.**
+**23 of 24 tested titles pass their recorded opening-gameplay condition.**
 Backlot remains limited and is listed below.
 
 The table records opening interactions, not whole-game completion. A title
@@ -113,6 +116,7 @@ state. No game code or save is changed to force a successful result.
 | Galidor Quest | Build a visible character, enter at the intended tutorial entrance, move with the mouse, and jump with V. Online saving and later levels are unverified. |
 | Beach Soccer | Recover the original launcher, start a match from the title screen, skip the briefing, swap the controlled player, and kick off; the ball leaves the centre spot and the 3D match runs with both teams. Scoring and later matches are unverified. |
 | American Football | Recover the original launcher, choose a team, skip the briefing, and snap the ball; the ball moves from its snap position in a 3D match with both teams. Completing a drive is unverified. |
+| Free Running | Recover the original launcher, start the first level from the title screen, and run with the up arrow; the character moves along the roof while the level timer runs. Later levels and scoring are unverified. |
 | Monster Bash | Animate the complete 109-bone character, pick up the club and skull, throw and hit the skull with native Space input, increase the hit counter, and enter game-camera tracking. |
 
 The first four tests additionally check native keyboard input, audio, resizing,
@@ -129,7 +133,7 @@ python3 Flashback/check-shockwave-corpus.py /tmp/flashback-shockwave-corpus
 ```
 
 The first command downloads four original fixtures and verifies their hashes.
-The second verifies nineteen additional game cases from original archived
+The second verifies twenty additional game cases from original archived
 movies and packages. It prints per-game results and writes `Results.json`, screenshots,
 input/state snapshots, and the exact `Probe.json` sequence. Known limited cases
 are reported as LIMITED and do not become PASS merely because a movie opens.

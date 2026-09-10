@@ -4,7 +4,9 @@ A native Mac library for Flash, Java, offline HTML, and experimental Shockwave g
 
 ## Use it
 
-Version 1.9.0 repairs shared Director script dispatch, string operations, cast allocation, and embedded Flash startup. It recovers original Miniclip launchers and adds native gameplay replays for Courage, Mini Golf, Air Show, Barrel Maze, Great Firework Race, Creepy Pong, and Galidor. See [tested interactions](SHOCKWAVE-COMPATIBILITY.md) for the measured scope and remaining failures.
+Version 1.10.0 lets you **drag an image straight onto a game's card** to use it as that game's artwork, and fills **Discover** with 136 well-known browser games from the Flash and Shockwave era, each matched to an Internet Archive item that has a playable file. `featured-catalog.json` records how that list was assembled and what was rejected; listings are still labelled untested unless Flashback has actually checked them. It also validates a score entry before reading it as a sprite span, which stops fifteen titles from reporting a frame count in the billions and never looping; reads a movie property written with call syntax; and reads a vector's components by index. It adds native gameplay cases for Beach Soccer and American Football, and relaunches every indexed title against the shipped runtime. See [tested interactions](SHOCKWAVE-COMPATIBILITY.md) for the measured scope and remaining failures.
+
+Version 1.9.0 repaired shared Director script dispatch, string operations, cast allocation, and embedded Flash startup. It recovers original Miniclip launchers and adds native gameplay replays for Courage, Mini Golf, Air Show, Barrel Maze, Great Firework Race, Creepy Pong, and Galidor. See [tested interactions](SHOCKWAVE-COMPATIBILITY.md) for the measured scope and remaining failures.
 
 Version 1.7.3 added an always-on adult-content filter to **Discover**. Titles, tags, descriptions, and file names are checked before cards or artwork appear, and again when opening details or downloading. The filter relies on Archive metadata and can miss unlabelled content. **Keep Looking** continues past a fully filtered page.
 
