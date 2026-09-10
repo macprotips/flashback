@@ -27,6 +27,8 @@ FIXTURES.extend([
          sha256='82e8825f77dc79b26d240218a369f73c5e2a0f3c906a1905015aa96942bd5f52'),
     dict(name='AmericanFootball.zip', url='https://archive.org/download/miniclip_shockwave-games/Miniclip%20Shockwave%20Player%20Games/American%20Football%20-%20Silent%20Bay%20Studios.zip',
          sha256='dba8b6d9c5a551d92ce90e61b583f181df0c0e85d922ea39b6a888ab0d3b4b99'),
+    dict(name='FreeRunning.zip', url='https://archive.org/download/miniclip_shockwave-games/Miniclip%20Shockwave%20Player%20Games/Free%20Running%20-%20Silent%20Bay%20Studios.zip',
+         sha256='3d37a257c9f98e59c3fab438919a1bfd9f0c6de1ecf5846cc584185d711876f9'),
 ])
 
 FIXTURES.extend(json.loads(Path(__file__).with_name('shockwave-galidor-fixtures.json').read_text()))
@@ -148,6 +150,20 @@ CASES = [
                 dict(read="(async()=>{const r=JSON.parse(await __vm.mcp_eval_lingo('gGame.pBall.getPosition().x'));return window.__americanFootballBallX=Number(r.result_value);})()",wait=0),
                 key(' ',49,.4,2.5)],
          expect=condition("Number(await value('gGame.pTeams.count')) === 2 && await value('gGame.pPlayerTeamId') === '#team1' && Math.abs(Number(await value('gGame.pBall.getPosition().x')) - window.__americanFootballBallX) > 20")),
+    # Found by probe-shockwave-menus.py, not by hand: its record said "gGame is
+    # not initialized" and it initializes fine once the preloader is allowed to
+    # finish. The up arrow moves the character roughly two thousand units along
+    # the roof, which is what the condition checks — the level loading on its
+    # own does not satisfy it.
+    dict(name='FreeRunning', source='FreeRunning.zip', entry='projector-loader.dcr', wait=16,
+         projector=dict(member='free-running.exe', offset=10307050, size=7378,
+                        sha256='d3ac3ba9bdd8d123502712c9ec9b41769fb95fbd90ddaa0ffdb0c7317514a196'),
+         # The level needs a moment after it opens before it takes input; the
+         # stash step's own wait provides it.
+         steps=[dict(click=[295,300],hover=.8,wait=8),
+                dict(read="(async()=>{const r=JSON.parse(await __vm.mcp_eval_lingo('gGame.pPc.pLastGroundPos.y'));return window.__freeRunningGroundY=Number(r.result_value);})()",wait=3),
+                key('\uf700',126,2.0,1.0)],
+         expect=condition("Number(await value('gGame.pLevelId')) === 1 && Number(await value('gGame.pPlayerTimeRemaining')) > 0 && Math.abs(Number(await value('gGame.pPc.pLastGroundPos.y')) - window.__freeRunningGroundY) > 100")),
 ]
 
 

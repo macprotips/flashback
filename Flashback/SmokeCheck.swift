@@ -483,7 +483,19 @@ import UniformTypeIdentifiers
             try await Task.sleep(nanoseconds:600_000_000)
         }
         if let point = step["move"] as? [Double], point.count == 2 { try await clickMovie(session,x:point[0],y:point[1],moveOnly:true) }
-        if let point = step["click"] as? [Double], point.count == 2 { try await clickMovie(session,x:point[0],y:point[1],hover:step["hover"] as? Double ?? 0.1) }
+        if let point = step["click"] as? [Double], point.count == 2 {
+            // A sweep across many games cannot know each stage's size in
+            // advance — they run from 589x443 to 799x449 — so a step may give
+            // its position as a fraction of the stage instead of in movie
+            // pixels. Recorded cases keep using pixels.
+            var x = point[0], y = point[1]
+            if step["fractional"] as? Bool == true {
+                let size = try await session.web.callAsyncJavaScript("const c=document.querySelector('#stage_canvas_container canvas');return [c.width,c.height];",arguments:[:],in:nil,contentWorld:.page) as? [Double]
+                guard let size, size.count == 2 else { throw LibraryError("Game canvas is unavailable for fractional input") }
+                x *= size[0]; y *= size[1]
+            }
+            try await clickMovie(session,x:x,y:y,hover:step["hover"] as? Double ?? 0.1)
+        }
         if let points = step["drag"] as? [Double], points.count == 4 {
             try await clickMovie(session,x:points[0],y:points[1],dragTo:NSPoint(x:points[2],y:points[3]))
         }
