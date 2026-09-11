@@ -50,7 +50,7 @@
           "OBSERVED": 103,
           "FAIL": 2
         },
-        "app": "/Users/mpt/Documents/ChatGPT/textwist/Flashback.app",
+        "app": "Flashback.app",
         "polyfill_sha256": "3dc356897dbf48681116dd1b5981a78a3ed7a2a987fecd9b15916bf6494c64ef",
         "note": "Every indexed title relaunched against the shipped runtime, so the survey and the gameplay cases now share one runtime build."
       }

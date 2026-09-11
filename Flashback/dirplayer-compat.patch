@@ -1077,7 +1077,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/mod.rs b/vm-rust/src/player/handlers/datum_handlers/mod.rs
 --- a/vm-rust/src/player/handlers/datum_handlers/mod.rs
 +++ b/vm-rust/src/player/handlers/datum_handlers/mod.rs
-@@ -350,15 +350,29 @@
+@@ -350,15 +350,32 @@
                          // the <_movie> wording) — callers use that code to decide
                          // whether to keep searching; a genuine failure *inside* a
                          // known handler must keep its own error.
@@ -1098,10 +1098,13 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
 +                            // `_movie.markerlist().count` and `_movie.markerlist()[i]`,
 +                            // parentheses and all, so the name arrives here as a
 +                            // handler rather than through the GetProp path above.
-+                            // Only a bare `receiver()` call can be a property read —
-+                            // anything carrying arguments is a real method call and
-+                            // keeps its HandlerNotFound.
-+                            if args.len() == 1 {
++                            // Only a bare `receiver()` call can be a property read.
++                            // A movie call carries just its arguments — the
++                            // receiver is not among them, as the getProp arm
++                            // above shows — so an empty list is the no-argument
++                            // form. Anything carrying arguments is a real method
++                            // call and keeps its HandlerNotFound.
++                            if args.is_empty() {
 +                                if let Ok(value) =
 +                                    reserve_player_mut(|player| player.get_movie_prop(handler_name))
 +                                {
@@ -1115,7 +1118,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
                          })
                      }
                  }
-@@ -376,8 +390,9 @@
+@@ -376,8 +393,9 @@
                      reserve_player_mut(|player| {
                          use crate::director::lingo::datum::Datum;
                          let prop_name = player.get_datum(&args[0]).symbol_value()?;
@@ -1126,7 +1129,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
                              let index = player.get_datum(&args[1]).int_value()?;
                              let idx = (index as usize).saturating_sub(1);
                              match prop_datum {
-@@ -395,7 +410,7 @@
+@@ -395,7 +413,7 @@
                                  other => Ok(player.alloc_datum(other)),
                              }
                          } else {
@@ -1135,7 +1138,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
                          }
                      })
                  }
-@@ -403,7 +418,7 @@
+@@ -403,7 +421,7 @@
                      // Bare property/method access: try get_stage_prop, else VOID.
                      reserve_player_mut(|player| {
                          match crate::player::stage::get_stage_prop(player, handler_name) {

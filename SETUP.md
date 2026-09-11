@@ -17,20 +17,20 @@ repository and then re-fetching the rest.
 
 ## On the new Mac
 
-**1. Xcode.** Install Xcode (the beta is what this project has been built with)
-and point the tools at it. The Command Line Tools alone are not enough — they
-do not ship the SwiftUI macro plugin, and `@State` fails to compile with
-"external macro implementation type 'SwiftUIMacros.StateMacro' could not be
-found". Either select Xcode globally or export it per shell:
+**1. Xcode.** Install a current Xcode release and point the command-line tools
+at it. The standalone Command Line Tools package does not include the SwiftUI
+macro plugin required by the app. Either select Xcode globally or export it
+for the build shell:
 
 ```sh
-export DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer
+export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 ```
 
 **2. Clone the repository.**
 
 ```sh
-gh repo clone macprotips/flashback && cd flashback
+git clone https://github.com/macprotips/flashback.git
+cd flashback
 ```
 
 **3. Fetch the runtimes and the toolchain.** These download a few GB.
@@ -56,11 +56,11 @@ runs the website and archive checks on the way through.
 ## Moving the game files
 
 `Downloaded Games/` is not in the repository — it holds other people's games and
-their artwork. Copy the folder across directly (AirDrop, an external disk, or
-`rsync` over the LAN):
+their artwork. Copy the folder across directly using AirDrop, an external disk,
+or `rsync` over the LAN:
 
 ```sh
-rsync -av --progress "Downloaded Games/" othermac.local:"~/Documents/ChatGPT/textwist/Downloaded Games/"
+rsync -av --progress "Downloaded Games/" user@other-mac.local:"~/Games/Flashback/Downloaded Games/"
 ```
 
 Its manifests travel in the repository, so once the files are in place the
@@ -73,7 +73,7 @@ fixtures, so those run without this folder.
 ## Running the checks
 
 ```sh
-python3 Flashback/check-shockwave-corpus.py /tmp/flashback-corpus     # 19 asserted gameplay cases
+python3 Flashback/check-shockwave-corpus.py /tmp/flashback-corpus     # recorded gameplay cases
 ./Flashback/check-shockwave.sh /tmp/flashback-core                    # the four core games plus host behaviour
 python3 Flashback/check-dirplayer-patch.py                            # the runtime's corresponding source
 ```

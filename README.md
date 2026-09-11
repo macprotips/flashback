@@ -1,65 +1,39 @@
 # Flashback
 
-**Flashback.app** is the general-purpose Mac app built in this workspace. Drop
-in SWF files, runnable Java JARs, offline HTML games, experimental Shockwave movies, folders, or ZIP archives to import and play them. See [Flashback's guide](Flashback/README.md)
-for usage, build instructions, compatibility, and release notes.
+Flashback is a native macOS library for playing classic Flash, Shockwave,
+Java, and offline HTML games.
 
-Flashback 1.4 adds **Add from Website** (⌘⇧O): paste a game page, find its
-embedded game, recover available assets, review the results, and add it to
-your offline library. No browser extension is needed. The distributable
-**Flashback-Mac.zip** includes the signed app and its matching source.
+It runs on macOS 13 and later, with native Apple Silicon and Intel support.
+The app bundles the required players, so no browser plug-in, separate Java
+installation, or package manager is needed.
 
-Flashback 1.5 refines the welcome screen, library, website importer, player,
-dialogs, and Help. See the [design review](Flashback/DESIGN-REVIEW.md).
-Version 1.5.1 improves Shockwave website parameters and error handling, and
-verifies that packaged player files match the tested source.
+## Status
 
-Version 1.10.0 repairs Director score parsing, a movie property read through call syntax, and vector component indexing, and verifies 23 of 24 opening gameplay cases. Every recorded result in this release — the launch survey as well as the gameplay cases — comes from the runtime the app ships. See the [compatibility report](Flashback/SHOCKWAVE-COMPATIBILITY.md) for exact test scopes and remaining failures.
+Flashback is beta software. Compatibility varies by game and runtime; the
+documented checks cover specific opening interactions rather than complete
+games.
 
-The original standalone **TextTwist 2.app** is also kept here, with its details below.
+Claude was used as a development aid for parts of the implementation and
+documentation. The project author reviewed and maintains the resulting work.
 
-## TextTwist 2 for Mac
+## Features
 
-Double-click **TextTwist 2.app** in this folder. You can also drag the app into
-Applications; its game files and Ruffle runtime are contained inside it.
-Supports Apple Silicon and Intel Macs on macOS 11 or later.
+- Import SWF, JAR, HTML, Shockwave movies, folders, and ZIP archives.
+- Recover games and launch settings from archived web pages.
+- Keep each game's files, artwork, and local storage isolated.
+- Browse a curated catalog of archived Flash and Shockwave games.
+- Run imported games offline, with remote game requests blocked.
+- Use native pause, restart, mute, full-screen, and library controls.
 
-This packages the original GameHouse Flash browser edition with Ruffle 0.6.0.
-It is an emulator-backed Mac application, not a source-code port or the full
-Windows retail edition. The original browser edition's mode restrictions and
-promotional buttons are preserved. Gameplay assets are local; no browser,
-Adobe Flash installation, Windows, or online game server is required.
+Shockwave support is a work in progress. The compatibility report records the
+tested titles and the boundaries of the current runtime.
 
-If Ruffle asks to access the game folder on first launch, select the bundled
-`Contents/Resources/game` folder. The locally built wrapper is ad-hoc signed,
-not Apple-notarized. Saves use Ruffle's normal per-user local storage.
+## License
 
-Keyboard: type letters, press Return to submit, or use the game's on-screen
-controls. Select Untimed for relaxed play or Timed for the countdown mode.
+Flashback's original source, documentation, and artwork are licensed under
+the [GNU General Public License v3.0](LICENSE). Third-party runtimes and
+game files retain their own licenses and copyrights; see
+[Flashback/Licenses](Flashback/Licenses) for the bundled notices.
 
-## Sources
-
-- Game files: https://games2.gamefools.com/onlinegames/TextTwist2/
-- Original publisher listing: https://www.gamehouse.com/games/texttwist-2
-- Runtime: https://github.com/ruffle-rs/ruffle/releases/tag/v0.6.0
-- Mac runtime archive: https://github.com/ruffle-rs/ruffle/releases/download/v0.6.0/ruffle-0.6.0-macos-universal.tar.gz
-
-Game assets remain the property of their respective owners. This local bundle
-does not grant redistribution rights. Ruffle's license is included inside the
-app at `Contents/Resources/Ruffle-LICENSE.md`.
-
-## Rebuild and verification
-
-`python3 fetch_assets.py` downloads the publicly hosted browser assets into
-`assets/`. Extract the official Ruffle Mac archive into `vendor/`, then run
-`./build.sh`. This compiles a universal launcher using Apple's command-line
-tools, bundles the dependencies, signs locally while preserving Ruffle's
-sandbox entitlements, and runs `python3 verify.py`.
-
-Validation performed: every active local XML asset reference exists, all
-bundled files match their downloaded originals, both CPU architectures are
-present, and deep code-signature verification passes. The native runtime was
-launched successfully. Visual gameplay was checked with the same game assets
-and Ruffle 0.6.0 web runtime: menu, Untimed game, keyboard word submission,
-score increase, and Next Round availability. Native window interaction and
-long-term save persistence were not independently automated.
+The repository also retains the original TextTwist 2 Mac bundle as a separate
+legacy project. It is independent of Flashback's build and release.

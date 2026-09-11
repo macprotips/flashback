@@ -148,10 +148,11 @@ extensions, service workers, or old plug-ins are outside this support. HTML
 support does not turn an applet, Shockwave, or Unity Web Player page into a
 playable game. Games needing HTTP-only browser APIs may also need a different host.
 
-Shockwave uses the bundled **DirPlayer** with Flashback compatibility changes browser emulator. It runs inside
-Flashback without Wine or an installed Shockwave plug-in. The original movie
-files stay unchanged; imported assets resolve from the movie’s folder. The
-player preserves the game’s aspect ratio across resizing and full screen.
+Shockwave uses the bundled **DirPlayer** with Flashback's compatibility
+patches. It runs inside Flashback without Wine or an installed Shockwave
+plug-in. The original movie files stay unchanged; imported assets resolve from
+the movie's folder. The player preserves the game's aspect ratio across
+resizing and full screen.
 Local folder and ZIP imports also recover settings from matching nearby HTML
 launchers. Website imports retain Director plug-in parameters, including `sw1`–`sw9` and
 custom language/settings values; extensionless Director ActiveX embeds are
