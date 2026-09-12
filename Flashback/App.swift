@@ -198,6 +198,9 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
             if !failures.isEmpty {
                 alert = Message(title:"Some games couldn’t be added", body:failures.joined(separator:"\n\n"))
                 status = ""
+            } else if !status.isEmpty {
+                try? await Task.sleep(nanoseconds:2_000_000_000)
+                status = ""
             }
         }
     }
@@ -462,12 +465,16 @@ struct LibraryView: View {
             }.controlSize(.large).disabled(!model.canWrite).padding(.horizontal,16)
             Button(action:model.help) { Label("Flashback Help",systemImage:"questionmark.circle").font(.system(size:11)) }
                 .buttonStyle(.plain).foregroundStyle(.secondary).padding(.vertical,20).frame(maxWidth:.infinity)
-        }.frame(width:210).background(.bar)
+        }.frame(width:258).background(.bar)
     }
     private var header: some View {
         HStack(alignment:.center,spacing:20) {
-            Text(model.filter.rawValue).font(.system(size:23,weight:.semibold))
-                .accessibilityIdentifier("library-heading").auditFrame("heading",model:model)
+            VStack(alignment:.leading,spacing:3) {
+                Text(model.filter.rawValue).font(.system(size:25,weight:.semibold))
+                    .accessibilityIdentifier("library-heading").auditFrame("heading",model:model)
+                Text("\(model.games.count) \(model.games.count == 1 ? "game" : "games")")
+                    .font(.system(size:13)).foregroundStyle(.secondary)
+            }
             Spacer(minLength:0)
             if !model.games.isEmpty {
                 HStack(spacing:7) {
@@ -477,12 +484,12 @@ struct LibraryView: View {
                         Button { model.query = "" } label: { Image(systemName:"xmark.circle.fill").foregroundStyle(.secondary) }
                             .buttonStyle(.plain).accessibilityLabel("Clear search").auditFrame("clear-search",model:model)
                     }
-                }.font(.system(size:13)).padding(.horizontal,9).frame(width:170,height:30)
+                }.font(.system(size:13)).padding(.horizontal,11).frame(width:232,height:36)
                     .background(Palette.card,in:RoundedRectangle(cornerRadius:6))
                     .overlay(RoundedRectangle(cornerRadius:6).strokeBorder(searchFocused ? Palette.accent : Palette.separator.opacity(0.6),lineWidth:searchFocused ? 2 : 1))
                     .auditFrame("search",model:model)
             }
-        }.padding(.horizontal,28).padding(.vertical,26)
+        }.padding(.horizontal,32).padding(.top,26).padding(.bottom,22)
     }
     private var emptyLibrary: some View {
         VStack(spacing:18) {
@@ -511,20 +518,26 @@ struct LibraryView: View {
     }
     private var gameGrid: some View {
         ScrollView {
-            LazyVGrid(columns:[GridItem(.adaptive(minimum:205,maximum:300),spacing:20)],alignment:.leading,spacing:22) {
+            LazyVGrid(columns:[GridItem(.adaptive(minimum:220,maximum:320),spacing:24)],alignment:.leading,spacing:28) {
                 ForEach(model.visibleGames) { game in GameCard(game:game,model:model) }
-            }.auditFrame("grid", model:model).padding(.horizontal,28).padding(.bottom,26)
+            }.auditFrame("grid", model:model).padding(.horizontal,32).padding(.bottom,28)
         }.auditFrame("viewport", model:model)
     }
     private var footer: some View {
-        HStack(spacing:9) {
-            if model.isImporting { ProgressView().controlSize(.small) }
-            else { Image(systemName:"square.and.arrow.down").accessibilityHidden(true) }
-            Text(model.status.isEmpty ? "Drop files or folders to add games" : model.status).lineLimit(1).auditFrame("status", model:model)
-            Spacer()
-            if !model.games.isEmpty { Text("\(model.games.count) \(model.games.count == 1 ? "game" : "games")").auditFrame("count", model:model) }
-        }.font(.system(size:11)).foregroundStyle(.secondary).padding(.horizontal,28).frame(height:34)
-            .overlay(alignment:.top) { Divider().opacity(0.55) }
+        Group {
+            if model.isImporting || !model.status.isEmpty {
+                HStack(spacing:9) {
+                    if model.isImporting { ProgressView().controlSize(.small) }
+                    Image(systemName:"square.and.arrow.down").accessibilityHidden(true)
+                    Text(model.status).lineLimit(1).auditFrame("status", model:model)
+                }.font(.system(size:11)).foregroundStyle(.secondary)
+                    .padding(.horizontal,14).frame(height:30)
+                    .background(.regularMaterial,in:RoundedRectangle(cornerRadius:8))
+                    .overlay(RoundedRectangle(cornerRadius:8).strokeBorder(Palette.separator.opacity(0.35),lineWidth:1))
+                    .padding(.bottom,12)
+                    .frame(maxWidth:.infinity,alignment:.center)
+            }
+        }
     }
 }
 
@@ -537,33 +550,39 @@ struct GameCard: View {
         VStack(alignment:.leading,spacing:0) {
             Button { model.play(game) } label: {
                 // An overlay paints within the grid's width; artwork must never size the card.
-                Color(nsColor:.underPageBackgroundColor)
-                    .frame(height:150)
-                    .overlay {
+                ZStack(alignment:.topTrailing) {
+                    Color(nsColor:.underPageBackgroundColor)
+                        .overlay {
                     if let cover = NSImage(contentsOf:model.library.artworkURL(game)) {
-                        Image(nsImage:cover).resizable().scaledToFit().id(model.coverRevision)
+                        Image(nsImage:cover).resizable().scaledToFill().id(model.coverRevision)
                     } else {
-                        VStack(spacing:12) {
-                            Image(systemName:"gamecontroller").font(.system(size:35,weight:.light)).accessibilityHidden(true)
-                            Text(game.format).font(.system(size:10,weight:.medium)).tracking(0.5)
-                        }.foregroundStyle(.secondary)
-
+                        ZStack(alignment:.topTrailing) {
+                            VStack(spacing:12) {
+                                Image(systemName:"gamecontroller").font(.system(size:35,weight:.light)).accessibilityHidden(true)
+                            }.foregroundStyle(.secondary.opacity(0.72))
+                                .frame(maxWidth:.infinity,maxHeight:.infinity)
+                            Text(game.format).font(.system(size:10,weight:.medium)).tracking(0.4)
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal,10).padding(.vertical,6)
+                                .background(.black.opacity(0.25),in:RoundedRectangle(cornerRadius:7))
+                                .padding(10)
+                        }
+                            .background(LinearGradient(colors:[Color(white:0.13),Color(white:0.09)],startPoint:.topLeading,endPoint:.bottomTrailing))
                     }
                     }
-                    .overlay {
                     if hovering {
                         ZStack {
                             Color.black.opacity(0.2)
                             Image(systemName:"play.fill").font(.system(size:19)).foregroundStyle(.white).frame(width:46,height:46).background(.black.opacity(0.55),in:Circle())
                         }
                     }
-                    }.clipped().contentShape(Rectangle())
+                }.aspectRatio(16/9,contentMode:.fit).clipShape(RoundedRectangle(cornerRadius:10)).contentShape(Rectangle())
             }.buttonStyle(.plain).accessibilityLabel("Play \(game.title)").accessibilityIdentifier("play-\(game.id)").onHover { hovering = $0 }.auditFrame("play-\(game.id)", model:model)
             HStack(alignment:.center,spacing:8) {
                 VStack(alignment:.leading,spacing:5) {
-                    Text(game.title).font(.system(size:13,weight:.semibold)).lineLimit(1).help(game.title)
+                    Text(game.title).font(.system(size:15,weight:.semibold)).lineLimit(1).help(game.title)
                     Text(model.javaSessions[game.id] != nil ? "Playing" : (game.lastPlayed == nil ? game.format : "Played \(game.lastPlayed!.formatted(.relative(presentation:.named)))"))
-                        .font(.system(size:11)).foregroundStyle(.secondary).lineLimit(1)
+                        .font(.system(size:12)).foregroundStyle(.secondary).lineLimit(1)
                 }.frame(maxWidth:.infinity,alignment:.leading).auditFrame("caption-\(game.id)", model:model)
                 Button { model.favorite(game) } label: {
                     Image(systemName:game.favorite ? "heart.fill" : "heart").foregroundStyle(game.favorite ? Palette.accent : Color.secondary)
@@ -573,11 +592,8 @@ struct GameCard: View {
                     .accessibilityIdentifier("favorite-\(game.id)")
                     .help(game.favorite ? "Remove from favorites" : "Add to favorites").disabled(!model.canWrite)
                     .auditFrame("favorite-\(game.id)", model:model)
-            }.padding(12)
+            }.padding(.top,10).padding(.horizontal,2).padding(.bottom,2)
         }
-        .background(Palette.card,in:RoundedRectangle(cornerRadius:8))
-        .clipShape(RoundedRectangle(cornerRadius:8))
-        .overlay(RoundedRectangle(cornerRadius:8).strokeBorder(Palette.separator.opacity(0.45),lineWidth:1))
         .overlay {
             if receivingArtwork {
                 RoundedRectangle(cornerRadius:8).fill(Palette.accent.opacity(0.14))
