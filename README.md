@@ -40,6 +40,3 @@ Flashback's original source, documentation, and artwork are licensed under
 the [GNU General Public License v3.0](LICENSE). Third-party runtimes and
 game files retain their own licenses and copyrights; see
 [Flashback/Licenses](Flashback/Licenses) for the bundled notices.
-
-The repository also retains the original TextTwist 2 Mac bundle as a separate
-legacy project. It is independent of Flashback's build and release.

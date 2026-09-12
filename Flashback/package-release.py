@@ -53,7 +53,8 @@ def verify():
     for path in APP.rglob('*'):
         if not path.is_file(): continue
         assert path.suffix.lower() not in ('.swf','.dcr','.dir','.dxr','.cct','.cst'), path
-        assert path.name not in ('Library.json', 'wiz3.jar', 'game.swf', 'TextTwist 2.app'), path
+        assert path.name not in ('Library.json', 'wiz3.jar', 'game.swf'), path
+        assert 'texttwist' not in str(path.relative_to(APP)).lower(), path
     for name in ('BrandArtwork.swift', 'MakeIcon.swift', 'App.swift', 'Player.swift'):
         assert 'play.square.stack' not in (SOURCE/name).read_text(), name
     assert 'systemSymbolName' not in (SOURCE/'MakeIcon.swift').read_text()
@@ -118,6 +119,7 @@ def main():
         assert f'{top}/vendor/java/liberica/{JAVA_SOURCE.name}' in names
         assert not any('/Flashback/build/' in name or '/java-games/' in name or '/shockwave-games/' in name for name in names)
         assert not any(Path(name).suffix.lower() in ('.swf','.dcr','.dir','.dxr','.cct','.cst') for name in names)
+        assert not any('texttwist' in name.lower() for name in names)
     run('ditto', str(APP), str(release/'Flashback.app'))
     for name in ('LICENSE', 'SOURCE.md', 'DISTRIBUTION-AUDIT.md', 'RELEASING.md', 'SHOCKWAVE-COMPATIBILITY.md', 'COMPATIBILITY-RESEARCH.md', 'compatibility-results.json', 'skeleton-corpus.json'):
         shutil.copy2(SOURCE/name, release/name)
