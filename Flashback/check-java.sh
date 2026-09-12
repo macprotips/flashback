@@ -23,6 +23,14 @@ JAVA
     "-Dflashback.runner=$runner" "-Dflashback.game=$check/game" "-Duser.home=$check/saves" \
     -cp "$check/Host.jar" RunCheck "$check/game/Check.jar"
 "$jdk/bin/java" -cp "$check/Host.jar" JavaRunner --inspect "$check/game/Check.jar"
+cat > "$check/midlet.mf" <<'EOF'
+Manifest-Version: 1.0
+MIDlet-1: Check,,JavaPolicyCheck
+MicroEdition-Profile: MIDP-2.0
+MicroEdition-Configuration: CLDC-1.1
+EOF
+"$jdk/bin/jar" cfm "$check/game/Midlet.jar" "$check/midlet.mf" -C "$check/game/classes" .
+test "$($jdk/bin/java -cp "$check/Host.jar" JavaRunner --inspect "$check/game/Midlet.jar")" = J2ME
 "$jdk/bin/jar" cf "$check/game/Library.jar" -C "$check/game/classes" .
 if "$jdk/bin/java" -cp "$check/Host.jar" JavaRunner --inspect "$check/game/Library.jar" >"$check/error" 2>&1; then
     echo 'FAIL: accepted a library without a Main-Class'; exit 1

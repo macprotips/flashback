@@ -9,20 +9,37 @@ import java.util.jar.*;
 public final class JavaRunner {
     static Class<?> gameClass;
 
-    public static String mainClass(File file) throws IOException {
+    static Manifest manifest(File file) throws IOException {
         try (JarFile jar = new JarFile(file)) {
             JarEntry entry = jar.getJarEntry("META-INF/MANIFEST.MF");
             if (entry == null || entry.getSize() < 0 || entry.getSize() > 65536)
                 throw new IOException("This JAR needs a valid application manifest (at most 64 KB).");
-            Manifest manifest;
-            try (InputStream stream = jar.getInputStream(entry)) { manifest = new Manifest(stream); }
-            String name = manifest.getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
-            if (name == null || !name.matches("[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*"))
-                throw new IOException("This is not a standalone Java game. Use a runnable JAR with a Main-Class; applet-only and phone games need a different player.");
+            try (InputStream stream = jar.getInputStream(entry)) { return new Manifest(stream); }
+        }
+    }
+
+    /** Classifies a JAR before choosing the desktop or Java ME player. */
+    public static String inspect(File file) throws IOException {
+        Manifest manifest = manifest(file);
+        Attributes attributes = manifest.getMainAttributes();
+        if (attributes.getValue("MIDlet-1") != null ||
+            attributes.getValue("MicroEdition-Profile") != null ||
+            attributes.getValue("MicroEdition-Configuration") != null) return "J2ME";
+        String name = attributes.getValue(Attributes.Name.MAIN_CLASS);
+        if (name == null || !name.matches("[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*"))
+            throw new IOException("This is not a standalone Java game. Use a runnable JAR with a Main-Class or a Java ME JAR with a MIDlet manifest.");
+        try (JarFile jar = new JarFile(file)) {
             if (jar.getJarEntry(name.replace('.', '/') + ".class") == null)
                 throw new IOException("The game's main class is missing from this JAR.");
-            return name;
         }
+        return "DESKTOP:" + name;
+    }
+
+    public static String mainClass(File file) throws IOException {
+        String result = inspect(file);
+        if (!result.startsWith("DESKTOP:"))
+            throw new IOException("This is a Java ME game. Use the bundled J2ME player instead of the desktop Java player.");
+        return result.substring("DESKTOP:".length());
     }
 
     static void launch(File file) throws Exception {
@@ -55,7 +72,7 @@ public final class JavaRunner {
         try {
             if (args.length != 2) throw new IOException("Choose a Java game from Flashback.");
             File file = new File(args[1]).getCanonicalFile();
-            if (args[0].equals("--inspect")) { System.out.println(mainClass(file)); return; }
+            if (args[0].equals("--inspect")) { System.out.println(inspect(file)); return; }
             if (!args[0].equals("--play")) throw new IOException("Unknown player command.");
             Thread.setDefaultUncaughtExceptionHandler((thread, error) -> {
                 error.printStackTrace();

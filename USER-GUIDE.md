@@ -28,6 +28,7 @@ Flashback accepts:
 
 - Flash `.swf` files
 - Runnable Java 8 desktop `.jar` files
+- Java ME/MIDP mobile `.jar` files, including games with a `MIDlet-1` manifest
 - Offline HTML or HTML5 games (`.html` or `.htm`)
 - Shockwave `.dcr`, `.dir`, and `.dxr` movies
 - ZIP archives containing a game and its supporting files
@@ -80,11 +81,13 @@ Right-click a game card for these actions:
 
 ## Play and save
 
-Flash games provide **Pause**, **Restart**, **Mute**, and **Unmute** controls, plus full screen. HTML and Shockwave games provide restart and full screen; use the game’s own controls for pausing and sound. Java games open in a separate window and use their own controls. **Restart** can discard unsaved progress, and closing Flashback closes running Java games.
+Flash games provide **Pause**, **Restart**, **Mute**, and **Unmute** controls, plus full screen. HTML and Shockwave games provide restart and full screen; use the game’s own controls for pausing and sound. Java desktop and Java ME games open in separate windows and use their own controls. **Restart** can discard unsaved progress, and closing Flashback closes running Java games.
 
 The player toolbar’s **Library** button returns to the collection. If a player cannot open a game, **Try Again** starts it again; when a restart needs confirmation, choose **Cancel** or **Restart**.
 
 Flash local saves and HTML local storage are kept separately for each game. Flashback does not create save states for games that never supported saving. Games that depend on browser cookies, hard-coded external paths, or live services may not preserve progress offline.
+
+Java ME games run in a phone-sized emulated screen. The bundled player maps the number keys and arrow keys to the phone keypad; its support depends on the APIs used by each game. Java ME settings and record-store data are kept in that game’s private save folder.
 
 ## Menus and shortcuts
 

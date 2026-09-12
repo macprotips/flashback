@@ -27,6 +27,18 @@ mkdir -p build/java "$app/Resources/Java"
 # Use the ASM copy already included in this pinned JDK/JRE.
 "$jdk/bin/javac" -XDignore.symbol.file -d build/java JavaRunner.java Wiz3Display.java GameArchive.java
 "$jdk/bin/jar" cf "$app/Resources/JavaRunner.jar" -C build/java .
+rm -rf build/j2me
+mkdir -p build/j2me/classes "$app/Resources/J2ME"
+find ../vendor/sources/freej2me/src -name '*.java' -print > build/j2me-sources.txt
+"$jdk/bin/javac" -d build/j2me/classes @build/j2me-sources.txt
+cp -R ../vendor/sources/freej2me/resources/. build/j2me/classes/
+mkdir -p build/j2me/classes/META-INF
+cp ../vendor/sources/freej2me/META-INF/freej2me-build.version build/j2me/classes/META-INF/
+cat > build/j2me-manifest <<'EOF'
+Manifest-Version: 1.0
+Main-Class: org.recompile.freej2me.FreeJ2ME
+EOF
+"$jdk/bin/jar" cfm "$app/Resources/J2ME/freej2me.jar" build/j2me-manifest -C build/j2me/classes .
 mkdir -p build/archive-check
 "$jdk/bin/javac" -cp build/java -d build/archive-check ArchiveChecks.java
 "$jdk/bin/java" -cp build/java:build/archive-check ArchiveChecks

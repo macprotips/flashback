@@ -38,6 +38,11 @@ def verify():
     assert 'Authority=Developer ID Application:' in signature, 'Sign with Developer ID before packaging.'
     assert 'runtime' in signature, 'The release must use hardened runtime signing.'
     assert set(run('lipo', '-archs', str(APP/'Contents/MacOS/Flashback')).stdout.split()) == {'arm64', 'x86_64'}
+    j2me = resources/'J2ME/freej2me.jar'
+    assert j2me.is_file(), j2me
+    with zipfile.ZipFile(j2me) as archive:
+        assert 'org/recompile/freej2me/FreeJ2ME.class' in archive.namelist()
+        assert b'Main-Class: org.recompile.freej2me.FreeJ2ME' in archive.read('META-INF/MANIFEST.MF')
     for source_dir, runtime_dir in [(PROJECT/'vendor/ruffle-web', resources/'Runtime'),
                                     (PROJECT/'vendor/dirplayer/runtime', resources/'Shockwave')]:
         for path in source_dir.rglob('*'):
@@ -77,7 +82,9 @@ def verify():
                 'dirplayer/.github/workflows/build.yml', 'dirplayer/xtra-sdk/src/lib.rs',
                 'bobba-xtra/src/lib.rs', 'groove-xtra/src/lib.rs',
                 'ruffle/Cargo.lock', 'ruffle/web/package-lock.json',
-                'dirplayer-ruffle/Cargo.lock', 'dirplayer-ruffle/web/package-lock.json']
+                'dirplayer-ruffle/Cargo.lock', 'dirplayer-ruffle/web/package-lock.json',
+                'freej2me/LICENSE', 'freej2me/build.xml',
+                'freej2me/src/org/recompile/freej2me/FreeJ2ME.java']
     for name in required: assert (UPSTREAM/name).is_file(), name
     for name, digest in json.loads((UPSTREAM/'SOURCE-TREE.json').read_text()).items():
         assert sha256(UPSTREAM/name) == digest, name
@@ -97,7 +104,7 @@ def main():
     own_files = [p for p in SOURCE.iterdir() if p.is_file() and
                  (p.suffix in ('.swift','.java','.sh','.py','.html','.policy','.plist','.md','.patch') or p.name in ('LICENSE','shockwave-host-probe.json','compatibility-results.json','skeleton-corpus.json','shockwave-galidor-fixtures.json','featured-catalog.json'))]
     source_paths = own_files + [SOURCE/'Licenses', JAVA_SOURCE]
-    source_paths += [UPSTREAM/name for name in ('dirplayer','dirplayer-ruffle','bobba-xtra','groove-xtra','ruffle','dependencies',
+    source_paths += [UPSTREAM/name for name in ('dirplayer','dirplayer-ruffle','bobba-xtra','groove-xtra','ruffle','freej2me','dependencies',
                                                'MANIFEST.json','JAVASCRIPT-SOURCES.json','SOURCE-TREE.json')]
     def filter_source(member):
         if Path(member.name).name in ('.DS_Store', '.git'): return None
@@ -116,6 +123,8 @@ def main():
         assert f'{top}/Flashback/check-website.sh' in names
         for name in ('Archive.swift','ArchiveView.swift','ArchiveChecks.swift','ArchiveUICheck.swift','archive-fixture.py','check-archive.sh','dirplayer-compat.patch','check-dirplayer-patch.py','rebuild-shockwave.sh','check-shockwave-corpus.py','shockwave-host-probe.json','check-installation.py','check-shockwave-collection.py','inspect-shockwave-skeletons.py','COMPATIBILITY-RESEARCH.md','compatibility-results.json','skeleton-corpus.json'):
             assert f'{top}/Flashback/{name}' in names
+        assert f'{top}/vendor/sources/freej2me/LICENSE' in names
+        assert f'{top}/vendor/sources/freej2me/src/org/recompile/freej2me/FreeJ2ME.java' in names
         assert f'{top}/vendor/java/liberica/{JAVA_SOURCE.name}' in names
         assert not any('/Flashback/build/' in name or '/java-games/' in name or '/shockwave-games/' in name for name in names)
         assert not any(Path(name).suffix.lower() in ('.swf','.dcr','.dir','.dxr','.cct','.cst') for name in names)

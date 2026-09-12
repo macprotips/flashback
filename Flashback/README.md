@@ -39,8 +39,9 @@ shows the app version and credits.
 
 - Drop a **.swf file** anywhere in the library, or use **Add Games** / **⌘O**.
 - Choose **Add from Website** / **⌘⇧O** to recover a game from a web page or direct download.
-- Drop a **runnable .jar file** to play a classic Java desktop game such as Wiz 3.
-  Java games open in their own native window and use their own game controls.
+- Drop a **.jar file** to play a classic Java desktop game such as Wiz 3 or a
+  Java ME/MIDP mobile game such as Bounce Tales. Desktop Java games and mobile
+  games open in their own native windows and use their own game controls.
   Right-click a running game in the library to quit it. Closing Flashback also
   closes its Java games.
 - Drop an **HTML/HTML5 game folder** with its `index.html` (or other start page).
@@ -134,10 +135,12 @@ Network access is used during recovery; the players remain offline.
 ### Players
 
 Flash uses Ruffle; Java uses a separate Java 8 process with a restricted policy.
-Java support covers **AWT/Swing desktop JARs with a `Main-Class` manifest**,
-including older applet games that their author has packaged as applications.
-Applet-only HTML, raw `.class` files, `.jnlp` launchers, Java ME phone games,
-JavaFX, newer Java bytecode, and games needing native libraries are unsupported.
+Java support covers **AWT/Swing desktop JARs with a `Main-Class` manifest** and
+**Java ME/MIDP JARs with a `MIDlet-1` manifest**, including older applet games
+that their author has packaged as applications. Applet-only HTML, raw `.class`
+files, `.jnlp` launchers, JavaFX, newer Java bytecode, and games needing native
+libraries are unsupported. Java ME support uses the bundled FreeJ2ME player and
+is limited by the APIs it implements.
 An ordinary library JAR gives a clear error instead of pretending to play.
 
 HTML uses the Mac’s built-in WebKit and supports self-contained offline HTML,

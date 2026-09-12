@@ -20,7 +20,7 @@ struct WelcomeView: View {
                 feature("Play classic games",icon:"gamecontroller") {
                     HStack(alignment:.top,spacing:23) {
                         format("Flash",detail:".swf")
-                        format("Java",detail:"Desktop .jar")
+                        format("Java",detail:"Desktop and mobile .jar")
                         format("HTML5",detail:".html")
                         format("Shockwave",detail:"Experimental")
                     }.padding(.vertical,2)

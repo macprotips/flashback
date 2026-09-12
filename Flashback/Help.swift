@@ -23,7 +23,7 @@ struct HelpView: View {
                 }
                 section("Supported games") {
                     definition("Flash", ".swf files. Pause, restart, mute, and full screen are available in the player.")
-                    definition("Java", "Runnable Java 8 desktop .jar games. Applet-only pages, JNLP launchers, and mobile Java games are not supported. Games open in their own windows; use their own controls.")
+                    definition("Java", "Runnable Java 8 desktop .jar games and Java ME/MIDP mobile .jar games. Applet-only pages and JNLP launchers are not supported. Games open in their own windows; use their own controls.")
                     definition("HTML5", "Offline .html or .htm games. Add the entire game folder. Use the game’s own pause and sound controls.")
                     definition("Shockwave", ".dcr, .dir, and .dxr movies. Support is experimental; some games and Xtras are not supported. Include external cast files, sounds, and levels.")
                 }

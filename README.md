@@ -24,7 +24,7 @@ using every app button and keyboard shortcut.
 
 ## Features
 
-- Import SWF, JAR, HTML, Shockwave movies, folders, and ZIP archives.
+- Import SWF, desktop or Java ME/MIDP JAR, HTML, Shockwave movies, folders, and ZIP archives.
 - Recover games and launch settings from archived web pages.
 - Keep each game's files, artwork, and local storage isolated.
 - Browse a curated catalog of archived Flash and Shockwave games.

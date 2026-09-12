@@ -36,6 +36,9 @@ for this supplied-source distribution arrangement.
   corresponding Java source for the supplied 8u504+1 binaries, including
   HotSpot, native libraries, build scripts, and notices. This is the vendor's
   source release, not the Java-class-only `src.zip` from a JDK.
+- `vendor/sources/freej2me/`: the pinned FreeJ2ME MIDP/CLDC player source and
+  its ObjectWeb ASM notices. `Flashback/freej2me-compat.patch` supplies the
+  Flashback title and readiness signal used by the native launcher.
 
 DirPlayer includes Flashback compatibility changes; the other engine sources
 are unchanged. Unrelated game binaries,
@@ -123,6 +126,12 @@ configuration, `make images` builds the JDK/JRE images. Preserve the license,
 assembly exception, third-party readme, and version metadata when replacing
 either bundled runtime. The host's Java 8 API/ASM dependencies must remain
 available; run `check-java.sh` and the app's Java checks after replacement.
+
+The native Java host classifies a JAR from its manifest. Desktop applications
+use `JavaRunner`; MIDP/CLDC archives with `MIDlet-1` use the bundled FreeJ2ME
+AWT player. `build.sh` compiles FreeJ2ME from `vendor/sources/freej2me/` and
+packages its resources into `Flashback.app/Contents/Resources/J2ME/freej2me.jar`.
+Run `check-java.sh` to verify both manifest paths.
 
 ## Attribution and changes
 

@@ -1,0 +1,20 @@
+--- a/src/org/recompile/freej2me/FreeJ2ME.java
++++ b/src/org/recompile/freej2me/FreeJ2ME.java
+@@ -59,7 +59,7 @@
+ 
+ 	public FreeJ2ME(String args[])
+ 	{
+-		main = new Frame("FreeJ2ME");
++		main = new Frame(System.getProperty("flashback.title", "FreeJ2ME"));
+ 		main.setSize(350,450);
+ 		main.setBackground(new Color(0,0,64));
+ 		try
+@@ -294,6 +294,8 @@
+ 			settingsChanged();
+ 
+ 			Mobile.getPlatform().runJar();
++			System.out.println("FLASHBACK_READY");
++			System.out.flush();
+ 		}
+ 		else
+ 		{
