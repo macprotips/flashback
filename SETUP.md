@@ -12,7 +12,6 @@ repository and then re-fetching the rest.
 | Source, scripts, docs, compatibility records | ~12 MB | git |
 | `vendor/` — Ruffle, DirPlayer, the JDK, dependency sources | ~2.4 GB | `Flashback/fetch-*` scripts re-download it from recorded URLs and hashes |
 | `vendor/toolchain/` — Node, Rust, wasm-pack | ~1 GB | `Flashback/bootstrap-toolchain.sh` |
-| `Downloaded Games/` — game files | ~1.9 GB | copy by hand; these are other people's games |
 | `Flashback.app`, release ZIP, source tarball | ~2 GB | rebuilt by `build.sh` and `package-release.py` |
 
 ## On the new Mac
@@ -53,23 +52,6 @@ sh Flashback/build.sh
 That produces `Flashback.app` next to the repository, runs the unit suite, and
 runs the website and archive checks on the way through.
 
-## Moving the game files
-
-`Downloaded Games/` is not in the repository — it holds other people's games and
-their artwork. Copy the folder across directly using AirDrop, an external disk,
-or `rsync` over the LAN:
-
-```sh
-rsync -av --progress "Downloaded Games/" user@other-mac.local:"~/Games/Flashback/Downloaded Games/"
-```
-
-Its manifests travel in the repository, so once the files are in place the
-compatibility checks can verify them:
-`Downloaded Games/Shockwave Games/Shockwave Compatibility Corpus/games.json`
-records every package's origin, entry file and SHA-256, and `SHA256SUMS.txt`
-covers the rest. The corpus and core Shockwave checks download their own
-fixtures, so those run without this folder.
-
 ## Running the checks
 
 ```sh
@@ -78,18 +60,8 @@ python3 Flashback/check-shockwave-corpus.py /tmp/flashback-corpus     # recorded
 python3 Flashback/check-dirplayer-patch.py                            # the runtime's corresponding source
 ```
 
-The collection survey needs the game files:
-
-```sh
-python3 Flashback/check-shockwave-collection.py \
-    "Downloaded Games/Shockwave Games/Shockwave Compatibility Corpus/games.json" \
-    /tmp/flashback-survey --wait 8 --discard-imports
-```
-
 ## A note on disk
 
-A full working folder — repository, vendor, toolchain, game files, and a built
-release — needs roughly 25 GB, and the Shockwave checks write screenshots as
-they go. They are sensitive to running out of space: a full disk shows up as
-games failing their input timing rather than as a disk error, which is
-confusing to debug. Keep some headroom before a long run.
+A full working folder — repository, vendor, toolchain, and a built release —
+needs roughly 23 GB, and the Shockwave checks write screenshots as they go.
+Keep some headroom before a long run.
