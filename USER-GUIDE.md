@@ -87,7 +87,7 @@ The player toolbar’s **Library** button returns to the collection. If a player
 
 Flash local saves and HTML local storage are kept separately for each game. Flashback does not create save states for games that never supported saving. Games that depend on browser cookies, hard-coded external paths, or live services may not preserve progress offline.
 
-Java ME games run in a phone-sized emulated screen. The bundled player maps the number keys and arrow keys to the phone keypad; its support depends on the APIs used by each game. Java ME settings and record-store data are kept in that game’s private save folder.
+Java ME games run in a phone-sized emulated screen. Flashback uses the game’s JAD display settings when supplied, and maps the number keys and arrow keys to the emulated phone keypad. Support depends on the APIs used by each game. Java ME settings and record-store data are kept in that game’s private save folder.
 
 ## Menus and shortcuts
 

@@ -139,8 +139,9 @@ Java support covers **AWT/Swing desktop JARs with a `Main-Class` manifest** and
 **Java ME/MIDP JARs with a `MIDlet-1` manifest**, including older applet games
 that their author has packaged as applications. Applet-only HTML, raw `.class`
 files, `.jnlp` launchers, JavaFX, newer Java bytecode, and games needing native
-libraries are unsupported. Java ME support uses the bundled FreeJ2ME player and
-is limited by the APIs it implements.
+libraries are unsupported. Java ME support uses the bundled FreeJ2ME-Plus player.
+Flashback reads a matching JAD when available to select the game’s display size
+and frame rate; compatibility still depends on the vendor APIs used by each game.
 An ordinary library JAR gives a clear error instead of pretending to play.
 
 HTML uses the Mac’s built-in WebKit and supports self-contained offline HTML,

@@ -3,6 +3,8 @@ import java.awt.*;
 import java.io.*;
 import java.lang.reflect.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.jar.*;
 
 /** A small, separately sandboxed host for ordinary Java game applications. */
@@ -16,6 +18,62 @@ public final class JavaRunner {
                 throw new IOException("This JAR needs a valid application manifest (at most 64 KB).");
             try (InputStream stream = jar.getInputStream(entry)) { return new Manifest(stream); }
         }
+    }
+
+    static Properties descriptor(File jar) throws IOException {
+        Properties values = new Properties();
+        Attributes attributes = manifest(jar).getMainAttributes();
+        for (Object key : attributes.keySet()) {
+            Attributes.Name name = (Attributes.Name)key;
+            values.setProperty(name.toString(), attributes.getValue(name));
+        }
+        String name = jar.getName();
+        File jad = new File(jar.getParentFile(), name.substring(0, name.length() - 4) + ".jad");
+        if (jad.isFile() && jad.length() <= 65536) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(jad), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    int colon = line.indexOf(':');
+                    if (colon > 0) values.setProperty(line.substring(0, colon).trim(), line.substring(colon + 1).trim());
+                }
+            }
+        }
+        return values;
+    }
+
+    static int number(Properties values, String... names) {
+        for (String name : names) {
+            String value = values.getProperty(name);
+            if (value == null) continue;
+            try { return Integer.parseInt(value.trim()); } catch (NumberFormatException ignored) { }
+        }
+        return 0;
+    }
+
+    static int[] displaySize(Properties values) {
+        String[] names = {"Nokia-MIDlet-Original-Display-Size", "Nokia-MIDlet-Target-Display-Size",
+                          "MIDlet-Display-Size", "MIDlet-Display-Resolution", "Display-Size"};
+        for (String name : names) {
+            String value = values.getProperty(name);
+            if (value == null) continue;
+            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(\\d+)\\s*[xX,]\\s*(\\d+)").matcher(value);
+            if (matcher.find()) return new int[] {Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2))};
+        }
+        int width = number(values, "MIDlet-Display-Width", "Nokia-MIDlet-Display-Width", "Screen-Width");
+        int height = number(values, "MIDlet-Display-Height", "Nokia-MIDlet-Display-Height", "Screen-Height");
+        return width > 0 && height > 0 ? new int[] {width, height} : new int[] {240, 320};
+    }
+
+    static String j2meConfig(File file) throws IOException {
+        Properties values = descriptor(file);
+        int[] size = displaySize(values);
+        int scale = Math.max(size[0], size[1]) <= 320 ? 2 : 1;
+        int keyLayout = 0;
+        String platform = values.getProperty("Nokia-Platform", "").toLowerCase();
+        if (platform.contains("nokia keyboard")) keyLayout = 6;
+        int fps = number(values, "MIDlet-FPS", "Nokia-MIDlet-FPS");
+        if (fps <= 0) fps = 60;
+        return "J2ME_CONFIG\t" + size[0] + "\t" + size[1] + "\t" + scale + "\t" + keyLayout + "\t" + fps;
     }
 
     /** Classifies a JAR before choosing the desktop or Java ME player. */
@@ -73,6 +131,7 @@ public final class JavaRunner {
             if (args.length != 2) throw new IOException("Choose a Java game from Flashback.");
             File file = new File(args[1]).getCanonicalFile();
             if (args[0].equals("--inspect")) { System.out.println(inspect(file)); return; }
+            if (args[0].equals("--j2me-config")) { System.out.println(j2meConfig(file)); return; }
             if (!args[0].equals("--play")) throw new IOException("Unknown player command.");
             Thread.setDefaultUncaughtExceptionHandler((thread, error) -> {
                 error.printStackTrace();
