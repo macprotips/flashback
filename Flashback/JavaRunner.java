@@ -69,8 +69,11 @@ public final class JavaRunner {
         int[] size = displaySize(values);
         int scale = Math.max(size[0], size[1]) <= 320 ? 2 : 1;
         int keyLayout = 0;
-        String platform = values.getProperty("Nokia-Platform", "").toLowerCase();
-        if (platform.contains("nokia keyboard")) keyLayout = 6;
+        String platform = (values.getProperty("Nokia-Platform", "") + " " +
+                           values.getProperty("MIDlet-Vendor", "")).toLowerCase();
+        if (platform.contains("nokia")) keyLayout = 6;
+        else if (platform.contains("motorola") || platform.contains("softbank")) keyLayout = 2;
+        else if (platform.contains("siemens")) keyLayout = 8;
         int fps = number(values, "MIDlet-FPS", "Nokia-MIDlet-FPS");
         if (fps <= 0) fps = 60;
         return "J2ME_CONFIG\t" + size[0] + "\t" + size[1] + "\t" + scale + "\t" + keyLayout + "\t" + fps;

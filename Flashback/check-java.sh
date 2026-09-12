@@ -35,8 +35,9 @@ test "$($jdk/bin/java -cp "$check/Host.jar" JavaRunner --j2me-config "$check/gam
 cat > "$check/game/Midlet.jad" <<'EOF'
 Nokia-MIDlet-Original-Display-Size: 176x208
 MIDlet-FPS: 30
+Nokia-Platform: Nokia*
 EOF
-test "$($jdk/bin/java -cp "$check/Host.jar" JavaRunner --j2me-config "$check/game/Midlet.jar")" = $'J2ME_CONFIG\t176\t208\t2\t0\t30'
+test "$($jdk/bin/java -cp "$check/Host.jar" JavaRunner --j2me-config "$check/game/Midlet.jar")" = $'J2ME_CONFIG\t176\t208\t2\t6\t30'
 "$jdk/bin/jar" cf "$check/game/Library.jar" -C "$check/game/classes" .
 if "$jdk/bin/java" -cp "$check/Host.jar" JavaRunner --inspect "$check/game/Library.jar" >"$check/error" 2>&1; then
     echo 'FAIL: accepted a library without a Main-Class'; exit 1
