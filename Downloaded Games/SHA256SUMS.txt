@@ -205,6 +205,12 @@ f04c2c4ff1c2d0bf1b1bacb24b53198410e23360010379c60182ecff37366d3f  Java Classics/
 b291021172a12e313ec2cf88bd3819363618dc7c875c5a0fe36f047122fb2b03  Java Classics/Need for Madness/README.txt
 457c4ac3b0fd61b0a1532eaf8a6828de65bee36bae2b00f953bf2732a2785df5  Java Classics/World of Sand/README.txt
 9de7e228bf9b5af5afc2fe1e3659129f55de65fd308615bb7820761691944cf5  Java Classics/World of Sand/World of Sand.jar
+694935bd1bbff64465627f592d1278aaea8aa20958ef169979ee51938081b6f8  Java Mobile Games/Bounce Tales/Bounce Tales 2.0.28 - Nokia C2-05.jad
+c938604a68f575376d1675e30e002d956b26e1bbed06c3c9796cb538cad8c503  Java Mobile Games/Bounce Tales/Bounce Tales 2.0.28 - Nokia C2-05.jar
+69bcf2b70be97acbcdfc9d40e418eca35e563f34b7ff914ae92e5aa40cf55037  Java Mobile Games/Bounce Tales/Bounce Tales 2.0.3 - 240x320.jar
+189a94ec23c79c12c29b0355f6894bdd699f0f52958d7446feeef0bd1a7e6b3f  Java Mobile Games/Bounce Tales/Bounce Tales 2.0.3 - Archived JAR.jar
+560b6df2be990bb5ea20c3a6ab40bb0802f27e9a9a076a532ae4b4b556c4ffce  Java Mobile Games/Bounce Tales/Bounce Tales 2.0.3 - Original Archive.zip
+1ce6c9792f3172514c95c059db8d9a57bd9e720c2c0d45edfddc9c4264207e8a  Java Mobile Games/Bounce Tales/README.md
 7789cd44388e1d83c5e8533cded2782bc829d6fb3b973b1f48ff2f4e4d654ef1  Shockwave Games/Shockwave Classics/LEGO Junkbot/Game/.htaccess
 0fc05f080d8e0c27c0fdc0c4854035c183828e0548e2b9b8b13481a981c43c76  Shockwave Games/Shockwave Classics/LEGO Junkbot/Game/getState.asp
 d133db0657935fd7aeddbf3ee16d92506a9e92af89dda6f9e9af7bc9a0b72049  Shockwave Games/Shockwave Classics/LEGO Junkbot/Game/getTopTen.asp

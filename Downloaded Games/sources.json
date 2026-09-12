@@ -11353,19 +11353,81 @@
         "sha256": "4a0d4ed41c8c0f4cb1039d05abfdfd7874bf1a02533569853db6d46bf8f1fd43"
       },
       "derivation": "Movie extracted unchanged from preserved source ZIP"
+    },
+    {
+      "title": "Bounce Tales (J2ME)",
+      "file": "Java Mobile Games/Bounce Tales/Bounce Tales 2.0.3 - Archived JAR.jar",
+      "bytes": 377083,
+      "md5": "f3c394684ade3b7c83174f23e6f97174",
+      "sha256": "189a94ec23c79c12c29b0355f6894bdd699f0f52958d7446feeef0bd1a7e6b3f",
+      "platform": "Java mobile",
+      "genre": "Platformer",
+      "creator": "Rovio / Nokia",
+      "source_page": "https://archive.org/details/bounce-tales-java-1240994286",
+      "download_url": "https://archive.org/download/bounce-tales-java-1240994286/bounce-tales-1240994286-all.zip",
+      "downloaded": "2026-09-11",
+      "gameplay_tested": false,
+      "collection": "specific-request",
+      "j2me_profile": "MIDP-2.0 / CLDC-1.1",
+      "screen_variants": [
+        "240x320 2.0.3",
+        "240x320 Nokia C2-05 2.0.28"
+      ],
+      "main_class": "RMIDlet",
+      "archive_member": "bounce-tales-1240994286-all.jar",
+      "archive_verification": {
+        "bytes": 371100,
+        "md5": "249aa793e43994ebd6106deb8681197c",
+        "verification": "Internet Archive published byte count and MD5 match; ZIP CRC check passed"
+      },
+      "derivation": "Primary JAR extracted unchanged from the preserved original ZIP; all alternate JAR/JAD files are preserved downloads",
+      "verification": "All downloaded files match Internet Archive metadata; original ZIP CRC check passed; JAR CRC checks passed",
+      "support_files": [
+        {
+          "file": "Java Mobile Games/Bounce Tales/Bounce Tales 2.0.3 - Original Archive.zip",
+          "bytes": 371100,
+          "md5": "249aa793e43994ebd6106deb8681197c",
+          "sha256": "560b6df2be990bb5ea20c3a6ab40bb0802f27e9a9a076a532ae4b4b556c4ffce"
+        },
+        {
+          "file": "Java Mobile Games/Bounce Tales/Bounce Tales 2.0.3 - 240x320.jar",
+          "bytes": 377095,
+          "md5": "316284220c6d038782ea4f73b153f3b3",
+          "sha256": "69bcf2b70be97acbcdfc9d40e418eca35e563f34b7ff914ae92e5aa40cf55037"
+        },
+        {
+          "file": "Java Mobile Games/Bounce Tales/Bounce Tales 2.0.28 - Nokia C2-05.jar",
+          "bytes": 323395,
+          "md5": "768cdcb2ef1597efb322d9bdf445af99",
+          "sha256": "c938604a68f575376d1675e30e002d956b26e1bbed06c3c9796cb538cad8c503"
+        },
+        {
+          "file": "Java Mobile Games/Bounce Tales/Bounce Tales 2.0.28 - Nokia C2-05.jad",
+          "bytes": 652,
+          "md5": "a748f6e3850e581ded32dd175b371aec",
+          "sha256": "694935bd1bbff64465627f592d1278aaea8aa20958ef169979ee51938081b6f8"
+        },
+        {
+          "file": "Java Mobile Games/Bounce Tales/README.md",
+          "bytes": 1829,
+          "md5": "79588da8477003100abb734c88f6b766",
+          "sha256": "1ce6c9792f3172514c95c059db8d9a57bd9e720c2c0d45edfddc9c4264207e8a"
+        }
+      ]
     }
   ],
-  "total_game_packages": 173,
-  "new_game_packages": 163,
+  "total_game_packages": 174,
+  "new_game_packages": 164,
   "platform_counts": {
     "Flash": 58,
     "Windows": 1,
     "Java applet": 2,
     "Java desktop": 4,
-    "Shockwave": 108
+    "Shockwave": 108,
+    "Java mobile": 1
   },
-  "tracked_file_count": 1207,
-  "tracked_bytes": 1993040031,
+  "tracked_file_count": 1213,
+  "tracked_bytes": 1994491185,
   "verification_scope": "File identity and integrity checks only; gameplay has not been tested",
   "shockwave_corpus": {
     "games": 105,

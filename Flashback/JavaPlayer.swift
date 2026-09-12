@@ -62,9 +62,9 @@ import Cocoa
             )
         process.environment = ["TMPDIR":temp.path, "LANG":"en_US.UTF-8", "PATH":"/usr/bin:/bin"]
         if j2me {
-            process.arguments = ["-Xmx512m", "-Dflashback.title=\(game.title)",
+            process.arguments = ["-Xmx512m", "-Dfile.encoding=ISO_8859_1", "-Dflashback.title=\(game.title)",
                 "-Duser.home=\(saves.path)", "-Djava.io.tmpdir=\(temp.path)", "-jar", j2mePlayer.path,
-                j2meMovie.absoluteURL.absoluteString, "240", "320", "2"]
+                j2meMovie.absoluteURL.absoluteString, "0", "240", "320", "2"]
         } else {
             process.arguments = ["-Xmx512m", "-Xdock:name=\(game.title)", "-Xdock:icon=\(resources.appendingPathComponent("AppIcon.icns").path)",
                 "-Djava.security.manager", "-Djava.security.policy==\(resources.appendingPathComponent("Java.policy").path)",

@@ -29,7 +29,8 @@ mkdir -p build/java "$app/Resources/Java"
 "$jdk/bin/jar" cf "$app/Resources/JavaRunner.jar" -C build/java .
 rm -rf build/j2me
 mkdir -p build/j2me/classes "$app/Resources/J2ME"
-find ../vendor/sources/freej2me/src -name '*.java' -print > build/j2me-sources.txt
+find ../vendor/sources/freej2me/src -name '*.java' \
+    -not -path '*/libretro/*' -not -path '*/win32pad/*' -print > build/j2me-sources.txt
 "$jdk/bin/javac" -d build/j2me/classes @build/j2me-sources.txt
 cp -R ../vendor/sources/freej2me/resources/. build/j2me/classes/
 mkdir -p build/j2me/classes/META-INF

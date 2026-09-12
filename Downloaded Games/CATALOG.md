@@ -1,6 +1,6 @@
 # Complete game catalog
 
-**173 game entries**, including **108 Shockwave titles**. The latest addition is the [105-game Shockwave compatibility corpus](Shockwave%20Games/Shockwave%20Compatibility%20Corpus/README.md), with preserved packages, dependencies, and existing probe files.
+**174 game entries**, including **108 Shockwave titles**. The latest addition is the [105-game Shockwave compatibility corpus](Shockwave%20Games/Shockwave%20Compatibility%20Corpus/README.md), with preserved packages, dependencies, and existing probe files.
 
 [Import instructions](README.md) · [Earlier research](RESEARCH.md) · [Exact sources](sources.json)
 
@@ -181,6 +181,12 @@ Gameplay has not been tested during these download tasks. Suggested entry points
 | The World's Hardest Game | [The Worlds Hardest Game.swf](Flash%20Classics/The%20Worlds%20Hardest%20Game/The%20Worlds%20Hardest%20Game.swf) | [Source](https://archive.org/details/theworldshardestgame) |
 | Toss the Turtle | [Toss the Turtle.swf](Flash%20Classics/Toss%20the%20Turtle/Toss%20the%20Turtle.swf) | [Source](https://archive.org/details/flash_tosstheturtle) |
 | Ultimate Flash Sonic | [Ultimate Flash Sonic.swf](Flash%20Classics/Ultimate%20Flash%20Sonic/Ultimate%20Flash%20Sonic.swf) | [Source](https://archive.org/details/flash_ultimateflashsonic) |
+
+## Java mobile
+
+| Game | Local file or folder | Source |
+| --- | --- | --- |
+| Bounce Tales (J2ME) | [Bounce Tales folder](Java%20Mobile%20Games/Bounce%20Tales) | [Internet Archive](https://archive.org/details/bounce-tales-java-1240994286) |
 
 ## Java desktop
 

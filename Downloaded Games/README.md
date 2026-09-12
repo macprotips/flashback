@@ -1,12 +1,13 @@
 # Downloaded internet games
 
-**173 game entries, about 1.99 GB**. The latest addition is a [105-game Shockwave compatibility corpus](Shockwave%20Games/Shockwave%20Compatibility%20Corpus/README.md), bringing Shockwave coverage to 108 titles. It includes complete preserved packages, asset inventories, source hashes, and existing test probes. Earlier downloads and their import instructions remain below. Most files came from Internet Archive or its Wayback Machine; other sources are recorded in the manifest.
+**174 game entries, about 1.99 GB**. The latest addition is a [105-game Shockwave compatibility corpus](Shockwave%20Games/Shockwave%20Compatibility%20Corpus/README.md), bringing Shockwave coverage to 108 titles. It includes complete preserved packages, asset inventories, source hashes, and existing test probes. Earlier downloads and their import instructions remain below. Most files came from Internet Archive or its Wayback Machine; other sources are recorded in the manifest.
 
 [Browse every game](CATALOG.md) · [Read the research and starter picks](RESEARCH.md) · [Exact sources and checksums](sources.json)
 
 | Format | Recent curated/download additions | Total | How to use it |
 | --- | ---: | ---: | --- |
 | Flash | 49 | 58 | Import the `.swf` into Flashback |
+| Java mobile | 1 | 1 | Import the JAR; Flashback launches it through its bundled J2ME/MIDP player |
 | Java desktop | 4 | 4 | Import the runnable JAR or complete package, as below |
 | Java applet | 2 | 2 | Preserved for a legacy applet runtime; unsupported by Flashback |
 | Shockwave | 108 | 108 | Import the movie with its support files; experimental compatibility |
@@ -25,6 +26,7 @@ Try **Bloons Tower Defense, Motherload, Line Rider, The Impossible Quiz, Portal:
 Use **Add Games / ⌘O**, or drag a game into Flashback. The current app supports SWF files, runnable desktop JARs, folders, ZIPs, and experimental Shockwave movies. These are import instructions; gameplay has not been tested.
 
 - **Flash:** Import each game's `.swf`. Most downloads are unchanged archived SWFs. For **N 1.4**, the SWF was extracted verbatim from its original Windows Flash projector; its original ZIP, license, and documentation are also preserved.
+- **Bounce Tales:** Open [the preserved Nokia J2ME folder](Java%20Mobile%20Games/Bounce%20Tales) and import the archived 2.0.3 JAR into Flashback. The Nokia C2-05 JAR/JAD is retained as a later device variant.
 - **Need for Madness:** Import `Java Classics/Need for Madness/Need for Madness - Original.zip`, or the complete `Game/Need for Madness` folder inside it, then select **Game.jar**. Keep its data, music, and stages together. Importing only Game.jar omits game assets.
 - **World of Sand:** Import `Java Classics/World of Sand/World of Sand.jar`. This is Androdome's desktop preservation adaptation of the original applet.
 - **Jet Slalom:** Import `Java Classics/Jet Slalom - Original/Jet Slalom - Desktop.jar`. The untouched original JAR is also preserved; the desktop copy only adds a manifest pointing to its existing launch method. See the included notes for the original desktop mode’s sound limitation.
@@ -41,6 +43,6 @@ The selected **Tanks** is 2DPlay's turn-based artillery game. **Bubble Trouble 2
 
 All 58 SWFs passed signature and full uncompressed-length checks. Internet Archive downloads were compared with published byte counts and MD5 hashes; Wayback downloads were compared with indexed SHA-1 digests. ZIP and JAR contents passed CRC checks, and the three earlier Shockwave movies passed format-signature checks; verification of the additional corpus is documented in its guide. Original packages were retained when extracting or preparing a convenience copy.
 
-`SHA256SUMS.txt` covers 1207 tracked game, archive, support, and package-note files. It does not include unrelated files you may have extracted separately. `sources.json` records each exact download URL, file size, hashes, and any transformation.
+`SHA256SUMS.txt` covers 1213 tracked game, archive, support, and package-note files. It does not include unrelated files you may have extracted separately. `sources.json` records each exact download URL, file size, hashes, and any transformation.
 
 **These checks establish file integrity, not playability.** Gameplay, saves, and old online services have not been tested. Shockwave support is experimental, and the two legacy applets are preserved downloads rather than Flashback-ready games.

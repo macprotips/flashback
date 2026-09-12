@@ -5,6 +5,7 @@ import base64
 import concurrent.futures
 import hashlib
 import json
+import re
 from pathlib import Path
 import tarfile
 import shutil
@@ -20,7 +21,7 @@ REPOS = [
     ('bobba-xtra', 'chameleonxxl/bobba-xtra', '3022f6f924d23ac1838be7b212cf745f52448dcd', '391a1773c40f03f93cf83407603fda8170c12ada7a17026034026d3c39eb3a79'),
     ('groove-xtra', 'chameleonxxl/groove-xtra', '86ea920f3b4d8add58b8f3e07629699cefa1763e', '4e4bfc06fc66abab38e35cffdfcbfcb466ae7b7f0eac875fdbf22bbd600f7f28'),
     ('ruffle', 'ruffle-rs/ruffle', 'v0.6.0', '7011cc529e77e1283ac108170b19f5c3c03dee6101e5bed4ad3779197b792f65'),
-    ('freej2me', 'hex007/freej2me', 'fae9304b85ac1c61d0117f6c8efe528612388278', '4b67326eba243fd3d306fb4ce78c7e6d4d3776fa4eac74cd2da9a2b43a41e36a'),
+    ('freej2me', 'TASEmulators/freej2me-plus', '8f87bf1497e7a9738a32d1909379376a1faca7dd', '831504ba7b60eaf89f33946f41315c15995ed67a85bdaeff2ca8cd242cba23d6'),
 ]
 
 def download(url, path, integrity=None):
@@ -75,7 +76,29 @@ def main():
         if name == 'dirplayer':
             subprocess.run(['patch', '-p1', '-i', str(Path(__file__).with_name('dirplayer-compat.patch'))], cwd=destination, check=True)
         elif name == 'freej2me':
-            subprocess.run(['patch', '-p1', '-i', str(Path(__file__).with_name('freej2me-compat.patch'))], cwd=destination, check=True)
+            # Keep the compatibility edits byte-for-byte friendly with the
+            # upstream CRLF Java sources instead of relying on patch's line
+            # ending heuristics.
+            entry = destination / 'src/org/recompile/freej2me/FreeJ2ME.java'
+            data = entry.read_bytes()
+            data = data.replace(
+                b'Mobile.getPlatform().runJar();\r\n',
+                b'Mobile.getPlatform().runJar();\r\n'
+                b'\t\t\tSystem.out.println("FLASHBACK_READY");\r\n'
+                b'\t\t\tSystem.out.flush();\r\n', 1)
+            data = data.replace(
+                b'main = new Frame("FreeJ2ME-Plus");',
+                b'main = new Frame(System.getProperty("flashback.title", "FreeJ2ME-Plus"));', 1)
+            entry.write_bytes(data)
+            loader = destination / 'src/org/recompile/mobile/MIDletLoader.java'
+            loader_data = loader.read_bytes().replace(
+                b'File file = new File(url.toURI());',
+                b'File file = new File(url.getPath());', 1)
+            loader_data = re.sub(
+                rb'\s*URI jarEntryURI = new URI\("jar:" \+ jarUrl\.toExternalForm\(\) \+ "!/" \+ entryName\);\r?\n\s*return jarEntryURI\.toURL\(\);',
+                b'\n\t\t\t\t\treturn new URL("jar:" + jarUrl.toExternalForm() + "!/" + entryName);',
+                loader_data)
+            loader.write_bytes(loader_data)
         records.append(dict(kind='repository', name=name, url=url, revision=revision, sha256=digest))
     crates = {}
     git_sources = set()
