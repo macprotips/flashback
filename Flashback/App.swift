@@ -43,6 +43,9 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
     @Published var javaSessions: [String:JavaSession] = [:]
     var playerDataStore = WKWebsiteDataStore.default()
     private var pending: [(URL, Bool)] = []
+    private var dialogWindow: NSWindow? {
+        NSApp.mainWindow ?? NSApp.keyWindow ?? (NSApp.delegate as? AppDelegate)?.window
+    }
 
     init(root: URL) {
         library = GameLibrary(root:root)
@@ -74,7 +77,10 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
         let completion: (NSApplication.ModalResponse) -> Void = { [weak self] result in
             if result == .OK { self?.add(panel.urls) }
         }
-        if let window = NSApp.mainWindow ?? NSApp.keyWindow { panel.beginSheetModal(for:window,completionHandler:completion) }
+        if let window = dialogWindow {
+            window.makeKeyAndOrderFront(nil)
+            panel.beginSheetModal(for:window,completionHandler:completion)
+        }
         else { panel.begin(completionHandler:completion) }
     }
 
@@ -199,8 +205,9 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
                 alert = Message(title:"Some games couldn’t be added", body:failures.joined(separator:"\n\n"))
                 status = ""
             } else if !status.isEmpty {
+                let completedStatus = status
                 try? await Task.sleep(nanoseconds:2_000_000_000)
-                status = ""
+                if !isImporting && status == completedStatus { status = "" }
             }
         }
     }
@@ -255,7 +262,8 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
     }
 
     private func confirm(_ alert: NSAlert) async -> NSApplication.ModalResponse {
-        if let window = NSApp.mainWindow ?? NSApp.keyWindow {
+        if let window = dialogWindow {
+            window.makeKeyAndOrderFront(nil)
             return await withCheckedContinuation { continuation in alert.beginSheetModal(for:window) { continuation.resume(returning:$0) } }
         }
         return alert.runModal()
@@ -318,7 +326,10 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
             guard result == .OK, let url = panel.url, let self else { return }
             Task { await self.changeArtwork(url,for:game) }
         }
-        if let window = NSApp.mainWindow ?? NSApp.keyWindow { panel.beginSheetModal(for:window,completionHandler:completion) }
+        if let window = dialogWindow {
+            window.makeKeyAndOrderFront(nil)
+            panel.beginSheetModal(for:window,completionHandler:completion)
+        }
         else { panel.begin(completionHandler:completion) }
     }
 
@@ -468,12 +479,13 @@ struct LibraryView: View {
         }.frame(width:258).background(.bar)
     }
     private var header: some View {
-        HStack(alignment:.center,spacing:20) {
+        let count = model.visibleGames.count
+        return HStack(alignment:.center,spacing:20) {
             VStack(alignment:.leading,spacing:3) {
                 Text(model.filter.rawValue).font(.system(size:25,weight:.semibold))
                     .accessibilityIdentifier("library-heading").auditFrame("heading",model:model)
-                Text("\(model.games.count) \(model.games.count == 1 ? "game" : "games")")
-                    .font(.system(size:13)).foregroundStyle(.secondary)
+                Text("\(count) \(count == 1 ? "game" : "games")")
+                    .font(.system(size:13)).foregroundStyle(.secondary).auditFrame("count",model:model)
             }
             Spacer(minLength:0)
             if !model.games.isEmpty {
@@ -559,10 +571,10 @@ struct GameCard: View {
                         ZStack(alignment:.topTrailing) {
                             VStack(spacing:12) {
                                 Image(systemName:"gamecontroller").font(.system(size:35,weight:.light)).accessibilityHidden(true)
-                            }.foregroundStyle(.secondary.opacity(0.72))
+                            }.foregroundStyle(.white.opacity(0.72))
                                 .frame(maxWidth:.infinity,maxHeight:.infinity)
                             Text(game.format).font(.system(size:10,weight:.medium)).tracking(0.4)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.white.opacity(0.72))
                                 .padding(.horizontal,10).padding(.vertical,6)
                                 .background(.black.opacity(0.25),in:RoundedRectangle(cornerRadius:7))
                                 .padding(10)

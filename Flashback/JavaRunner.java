@@ -5,6 +5,7 @@ import java.lang.reflect.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import java.util.Locale;
 import java.util.jar.*;
 
 /** A small, separately sandboxed host for ordinary Java game applications. */
@@ -50,42 +51,64 @@ public final class JavaRunner {
         return 0;
     }
 
-    static int[] displaySize(Properties values) {
+    static int[] displaySize(Properties values) throws IOException {
         String[] names = {"Nokia-MIDlet-Original-Display-Size", "Nokia-MIDlet-Target-Display-Size",
                           "MIDlet-Display-Size", "MIDlet-Display-Resolution", "Display-Size"};
         for (String name : names) {
             String value = values.getProperty(name);
             if (value == null) continue;
-            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(\\d+)\\s*[xX,]\\s*(\\d+)").matcher(value);
-            if (matcher.find()) return new int[] {Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2))};
+            java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(\\d+)\\s*[xX,]\\s*(\\d+)").matcher(value.trim());
+            if (matcher.matches()) {
+                try { return new int[] {Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2))}; }
+                catch (NumberFormatException invalid) { throw new IOException("Invalid Java ME display size: " + value); }
+            }
+            throw new IOException("Invalid Java ME display size: " + value);
         }
         int width = number(values, "MIDlet-Display-Width", "Nokia-MIDlet-Display-Width", "Screen-Width");
         int height = number(values, "MIDlet-Display-Height", "Nokia-MIDlet-Display-Height", "Screen-Height");
         return width > 0 && height > 0 ? new int[] {width, height} : new int[] {240, 320};
     }
 
-    static String j2meConfig(File file) throws IOException {
+    static String[] j2meArguments(File file) throws IOException {
         Properties values = descriptor(file);
         int[] size = displaySize(values);
+        if (size[0] < 1 || size[0] > 2000 || size[1] < 1 || size[1] > 2000)
+            throw new IOException("The Java ME display dimensions must be between 1 and 2000 pixels.");
         int scale = Math.max(size[0], size[1]) <= 320 ? 2 : 1;
         int keyLayout = 0;
         String platform = (values.getProperty("Nokia-Platform", "") + " " +
-                           values.getProperty("MIDlet-Vendor", "")).toLowerCase();
-        if (platform.contains("nokia")) keyLayout = 6;
-        else if (platform.contains("motorola") || platform.contains("softbank")) keyLayout = 2;
-        else if (platform.contains("siemens")) keyLayout = 8;
+                           values.getProperty("MIDlet-Vendor", "")).toLowerCase(Locale.ROOT);
+        // Standard already uses Nokia's numeric keypad; NokiaKeyboard is QWERTY.
+        if (platform.contains("motorola")) keyLayout = 2;
+        else if (platform.contains("siemens")) keyLayout = 7;
         int fps = number(values, "MIDlet-FPS", "Nokia-MIDlet-FPS");
         if (fps <= 0) fps = 60;
-        return "J2ME_CONFIG\t" + size[0] + "\t" + size[1] + "\t" + scale + "\t" + keyLayout + "\t" + fps;
+        if (fps > 120) throw new IOException("The Java ME frame rate must be at most 120 FPS.");
+        return new String[] {file.toURI().toASCIIString(), "0", "" + size[0], "" + size[1],
+                             "" + scale, "" + keyLayout, "" + fps, "0"};
+    }
+
+    static String j2meConfig(File file) throws IOException {
+        String[] args = j2meArguments(file);
+        return "J2ME_CONFIG\t" + String.join("\t", java.util.Arrays.copyOfRange(args, 2, 7));
     }
 
     /** Classifies a JAR before choosing the desktop or Java ME player. */
     public static String inspect(File file) throws IOException {
         Manifest manifest = manifest(file);
         Attributes attributes = manifest.getMainAttributes();
-        if (attributes.getValue("MIDlet-1") != null ||
-            attributes.getValue("MicroEdition-Profile") != null ||
-            attributes.getValue("MicroEdition-Configuration") != null) return "J2ME";
+        String midlet = attributes.getValue("MIDlet-1");
+        if (midlet != null) {
+            String[] fields = midlet.split(",", -1);
+            String entry = fields.length == 3 ? fields[2].trim() : "";
+            if (!entry.matches("[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*"))
+                throw new IOException("The Java ME manifest needs a valid MIDlet-1 class.");
+            try (JarFile jar = new JarFile(file)) {
+                if (jar.getJarEntry(entry.replace('.', '/') + ".class") == null)
+                    throw new IOException("The game's MIDlet class is missing from this JAR.");
+            }
+            return "J2ME";
+        }
         String name = attributes.getValue(Attributes.Name.MAIN_CLASS);
         if (name == null || !name.matches("[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*"))
             throw new IOException("This is not a standalone Java game. Use a runnable JAR with a Main-Class or a Java ME JAR with a MIDlet manifest.");
@@ -104,6 +127,11 @@ public final class JavaRunner {
     }
 
     static void launch(File file) throws Exception {
+        if (inspect(file).equals("J2ME")) {
+            Class.forName("org.recompile.freej2me.FreeJ2ME").getMethod("main", String[].class)
+                .invoke(null, (Object)j2meArguments(file));
+            return;
+        }
         String name = mainClass(file);
         URLClassLoader loader = new Wiz3Display(file);
         Thread.currentThread().setContextClassLoader(loader);
@@ -136,6 +164,7 @@ public final class JavaRunner {
             if (args[0].equals("--inspect")) { System.out.println(inspect(file)); return; }
             if (args[0].equals("--j2me-config")) { System.out.println(j2meConfig(file)); return; }
             if (!args[0].equals("--play")) throw new IOException("Unknown player command.");
+            final boolean phone = inspect(file).equals("J2ME");
             Thread.setDefaultUncaughtExceptionHandler((thread, error) -> {
                 error.printStackTrace();
                 System.exit(1);
@@ -154,7 +183,7 @@ public final class JavaRunner {
                         EventQueue.invokeAndWait(() -> {
                             boolean visible = false;
                             for (Window window : Window.getWindows()) visible |= window.isShowing();
-                            if (visible && !opened[0]) {
+                            if (visible && !opened[0] && (!phone || Boolean.getBoolean("flashback.j2me.started"))) {
                                 opened[0] = true;
                                 System.out.println("FLASHBACK_READY");
                                 System.out.flush();

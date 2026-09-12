@@ -326,7 +326,7 @@ extension View {
         guard (cards.map { $0.1.width }.max() ?? 0) - (cards.map { $0.1.width }.min() ?? 0) < 1 else { throw LibraryError("\(name): artwork makes cards wider than their grid columns") }
         for i in cards.indices {
             let id = String(cards[i].0.dropFirst(5)), card = cards[i].1
-            guard card.width >= 204, card.width <= 301, let grid = frames["grid"],
+            guard card.width >= 219.5, card.width <= 320.5, let grid = frames["grid"],
                   card.minX >= grid.minX-0.5, card.maxX <= grid.maxX+0.5 else { throw LibraryError("\(name): a card escaped its grid column") }
             for part in ["play-", "caption-", "favorite-"] {
                 guard let frame = frames[part + id], card.insetBy(dx:-0.5,dy:-0.5).contains(frame) else { throw LibraryError("\(name): \(part) escaped its card") }
@@ -337,7 +337,7 @@ extension View {
                 if cards[i].1.intersects(cards[j].1) { throw LibraryError("\(name): game buttons overlap: \(cards[i].1), \(cards[j].1)") }
                 if abs(card.minY-cards[j].1.minY) < 1 {
                     let gap = max(card.minX,cards[j].1.minX)-min(card.maxX,cards[j].1.maxX)
-                    if gap < 19.5 { throw LibraryError("\(name): the gap between cards disappeared") }
+                    if gap < 23.5 { throw LibraryError("\(name): the gap between cards disappeared") }
                 }
             }
         }
@@ -347,7 +347,7 @@ extension View {
         for pair in [("heading","search"),("status","count")] {
             if let first = frames[pair.0], let second = frames[pair.1], first.intersects(second) { throw LibraryError("\(name): \(pair.0) overlaps \(pair.1)") }
         }
-        if let countFrame = frames["count"], countFrame.height > 16 { throw LibraryError("\(name): the game count wraps in the footer") }
+        if let countFrame = frames["count"], countFrame.height > 16 { throw LibraryError("\(name): the game count wraps") }
         for id in ["heading","search","status","count"] {
             if let frame = frames[id], !view.bounds.insetBy(dx:-1,dy:-1).contains(frame) { throw LibraryError("\(name): \(id) goes outside the window") }
         }

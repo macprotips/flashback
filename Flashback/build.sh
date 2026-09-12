@@ -23,6 +23,7 @@ cp ../vendor/ruffle-web/*.js ../vendor/ruffle-web/*.wasm ../vendor/ruffle-web/LI
 cp Info.plist "$app/Info.plist"
 jdk='../vendor/java/liberica/arm64/jdk8u504.jdk'
 rm -rf "$app/Resources/Java"
+rm -rf build/java
 mkdir -p build/java "$app/Resources/Java"
 # Use the ASM copy already included in this pinned JDK/JRE.
 "$jdk/bin/javac" -XDignore.symbol.file -d build/java JavaRunner.java Wiz3Display.java GameArchive.java
@@ -44,6 +45,7 @@ mkdir -p build/archive-check
 "$jdk/bin/javac" -cp build/java -d build/archive-check ArchiveChecks.java
 "$jdk/bin/java" -cp build/java:build/archive-check ArchiveChecks
 cp Java.policy "$app/Resources/"
+sh ./check-java.sh
 ditto "$jdk/jre" "$app/Resources/Java/arm64"
 cp -f "$jdk/LICENSE" "$jdk/ASSEMBLY_EXCEPTION" "$jdk/THIRD_PARTY_README" "$jdk/readme.txt" "$jdk/release" "$app/Resources/Java/arm64/"
 ditto '../vendor/java/liberica/x86_64/jre8u504.jre' "$app/Resources/Java/x86_64"

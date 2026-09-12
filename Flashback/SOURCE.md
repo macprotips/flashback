@@ -37,11 +37,11 @@ for this supplied-source distribution arrangement.
   HotSpot, native libraries, build scripts, and notices. This is the vendor's
   source release, not the Java-class-only `src.zip` from a JDK.
 - `vendor/sources/freej2me/`: the pinned FreeJ2ME-Plus 1.52 MIDP/CLDC player source and
-  its ObjectWeb ASM notices. `fetch-sources.py` applies the small Flashback title
-  and readiness integration used by the native launcher.
+  its ObjectWeb ASM notices. `fetch-sources.py` applies Flashback's title,
+  startup, display-argument, saved-setting, and file-URI fixes, checking each patch target.
 
-DirPlayer includes Flashback compatibility changes; the other engine sources
-are unchanged. Unrelated game binaries,
+DirPlayer and FreeJ2ME include Flashback compatibility changes; the other engine
+sources are unchanged. Unrelated game binaries,
 visual regression fixtures, and reference screenshots are omitted; test
 harness source and build files remain. See `fetch-sources.py` for the explicit
 filter. The omitted DirPlayer reference-screenshot submodule is test data and
@@ -127,11 +127,14 @@ assembly exception, third-party readme, and version metadata when replacing
 either bundled runtime. The host's Java 8 API/ASM dependencies must remain
 available; run `check-java.sh` and the app's Java checks after replacement.
 
-The native Java host classifies a JAR from its manifest. Desktop applications
-use `JavaRunner`; MIDP/CLDC archives with `MIDlet-1` use the bundled FreeJ2ME-Plus
-AWT player. `build.sh` compiles FreeJ2ME from `vendor/sources/freej2me/` and
+The native Java host classifies a JAR from its manifest. `JavaRunner` launches
+desktop applications or the bundled FreeJ2ME-Plus AWT player for MIDP/CLDC
+archives with `MIDlet-1`. Both paths use the restricted Java policy and the
+same parent-connection and window monitoring. `build.sh` compiles FreeJ2ME from `vendor/sources/freej2me/` and
 packages its resources into `Flashback.app/Contents/Resources/J2ME/freej2me.jar`.
-Run `check-java.sh` to verify both manifest paths.
+Run `check-java.sh` to verify descriptors, desktop permissions, and real MIDlet
+startup, display size, escaped resource paths, saved records, permissions, and
+parent shutdown. The build runs these checks automatically.
 
 ## Attribution and changes
 

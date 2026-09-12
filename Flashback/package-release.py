@@ -103,7 +103,7 @@ def main():
     # unrelated vendor applications out of the public source archive.
     own_files = [p for p in SOURCE.iterdir() if p.is_file() and
                  (p.suffix in ('.swift','.java','.sh','.py','.html','.policy','.plist','.md','.patch') or p.name in ('LICENSE','shockwave-host-probe.json','compatibility-results.json','skeleton-corpus.json','shockwave-galidor-fixtures.json','featured-catalog.json'))]
-    source_paths = own_files + [SOURCE/'Licenses', JAVA_SOURCE]
+    source_paths = own_files + [SOURCE/'Licenses', JAVA_SOURCE, PROJECT/'USER-GUIDE.md']
     source_paths += [UPSTREAM/name for name in ('dirplayer','dirplayer-ruffle','bobba-xtra','groove-xtra','ruffle','freej2me','dependencies',
                                                'MANIFEST.json','JAVASCRIPT-SOURCES.json','SOURCE-TREE.json')]
     def filter_source(member):
@@ -125,11 +125,13 @@ def main():
             assert f'{top}/Flashback/{name}' in names
         assert f'{top}/vendor/sources/freej2me/LICENSE' in names
         assert f'{top}/vendor/sources/freej2me/src/org/recompile/freej2me/FreeJ2ME.java' in names
+        assert f'{top}/USER-GUIDE.md' in names
         assert f'{top}/vendor/java/liberica/{JAVA_SOURCE.name}' in names
         assert not any('/Flashback/build/' in name or '/java-games/' in name or '/shockwave-games/' in name for name in names)
         assert not any(Path(name).suffix.lower() in ('.swf','.dcr','.dir','.dxr','.cct','.cst') for name in names)
         assert not any('texttwist' in name.lower() for name in names)
     run('ditto', str(APP), str(release/'Flashback.app'))
+    shutil.copy2(PROJECT/'USER-GUIDE.md', release/'USER-GUIDE.md')
     for name in ('LICENSE', 'SOURCE.md', 'DISTRIBUTION-AUDIT.md', 'RELEASING.md', 'SHOCKWAVE-COMPATIBILITY.md', 'COMPATIBILITY-RESEARCH.md', 'compatibility-results.json', 'skeleton-corpus.json'):
         shutil.copy2(SOURCE/name, release/name)
     (release/'README.txt').write_text(f'''Flashback {VERSION}

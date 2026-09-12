@@ -3,6 +3,9 @@
 grant codeBase "${flashback.runner}" {
     permission java.security.AllPermission;
 };
+grant codeBase "${flashback.j2me}" {
+    permission java.security.AllPermission;
+};
 grant {
     permission java.io.FilePermission "${flashback.game}", "read";
     permission java.io.FilePermission "${flashback.game}/-", "read";

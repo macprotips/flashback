@@ -37,11 +37,25 @@ Nokia-MIDlet-Original-Display-Size: 176x208
 MIDlet-FPS: 30
 Nokia-Platform: Nokia*
 EOF
-test "$($jdk/bin/java -cp "$check/Host.jar" JavaRunner --j2me-config "$check/game/Midlet.jar")" = $'J2ME_CONFIG\t176\t208\t2\t6\t30'
+test "$($jdk/bin/java -cp "$check/Host.jar" JavaRunner --j2me-config "$check/game/Midlet.jar")" = $'J2ME_CONFIG\t176\t208\t2\t0\t30'
+sed -i '' 's/Nokia\*/Siemens/' "$check/game/Midlet.jad"
+test "$($jdk/bin/java -cp "$check/Host.jar" JavaRunner --j2me-config "$check/game/Midlet.jar")" = $'J2ME_CONFIG\t176\t208\t2\t7\t30'
+for size in 0x320 999999999999999999999x320 invalid; do
+    printf 'MIDlet-Display-Size: %s\n' "$size" > "$check/game/Midlet.jad"
+    if "$jdk/bin/java" -cp "$check/Host.jar" JavaRunner --j2me-config "$check/game/Midlet.jar" >"$check/error" 2>&1; then
+        echo 'FAIL: accepted an invalid Java ME display'; exit 1
+    fi
+done
+sed -i '' 's/Check,,JavaPolicyCheck/Check,,MissingMIDlet/' "$check/midlet.mf"
+"$jdk/bin/jar" cfm "$check/game/Missing.jar" "$check/midlet.mf" -C "$check/game/classes" .
+if "$jdk/bin/java" -cp "$check/Host.jar" JavaRunner --inspect "$check/game/Missing.jar" >"$check/error" 2>&1; then
+    echo 'FAIL: accepted a missing MIDlet class'; exit 1
+fi
 "$jdk/bin/jar" cf "$check/game/Library.jar" -C "$check/game/classes" .
 if "$jdk/bin/java" -cp "$check/Host.jar" JavaRunner --inspect "$check/game/Library.jar" >"$check/error" 2>&1; then
     echo 'FAIL: accepted a library without a Main-Class'; exit 1
 fi
+python3 check-j2me.py "$check/Host.jar"
 if [ "$#" = 2 ]; then
     mkdir -p "$2"
     rm -f "$2/Result.txt"

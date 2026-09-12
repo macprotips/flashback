@@ -5,7 +5,6 @@ import base64
 import concurrent.futures
 import hashlib
 import json
-import re
 from pathlib import Path
 import tarfile
 import shutil
@@ -63,6 +62,58 @@ def source_tree_manifest():
             if path.is_file(): files[str(path.relative_to(ROOT))] = hashlib.sha256(path.read_bytes()).hexdigest()
     (ROOT/'SOURCE-TREE.json').write_text(json.dumps(files, indent=2) + '\n')
 
+def patch_freej2me(destination):
+    """Apply checked edits to the pinned source, preserving its CRLF endings."""
+    def replace(path, before, after, count=1):
+        data = path.read_bytes()
+        old, new = before.encode(), after.encode()
+        assert data.count(old) == count, f'FreeJ2ME patch target changed: {path}: {before}'
+        path.write_bytes(data.replace(old, new, count))
+
+    entry = destination / 'src/org/recompile/freej2me/FreeJ2ME.java'
+    replace(entry, 'main = new Frame("FreeJ2ME-Plus");',
+            'main = new Frame(System.getProperty("flashback.title", "FreeJ2ME-Plus"));')
+    # URI escaping is UTF-8 and must not use the emulated phone's text encoding.
+    replace(entry, 'getFormattedLocation(URLDecoder.decode(args[0], Mobile.textEncoding))',
+            'getFormattedLocation(args[0])')
+    replace(entry, 'loc.startsWith("file://")', 'loc.startsWith("file:")')
+    replace(entry, 'lcdWidth = Integer.parseInt(args[1]);\r\n\t\t\t\tlcdHeight = Integer.parseInt(args[2]);',
+            'lcdWidth = Integer.parseInt(args[2]);\r\n\t\t\t\tlcdHeight = Integer.parseInt(args[3]);')
+    # Descriptor values seed a new profile; explicit choices in the player's
+    # settings must survive the next launch. These are Config's actual keys.
+    replace(entry, '/* Allows FreeJ2ME to set the width and height passed as cmd arguments. */',
+            'if (Mobile.config.newConfig) {\r\n'
+            '\t\t\t/* Initialize this game from the launch descriptor once. */')
+    replace(entry, 'settings.put("width",  ""+lcdWidth)', 'settings.put("scrwidth", ""+lcdWidth)')
+    replace(entry, 'settings.put("height", ""+lcdHeight)', 'settings.put("scrheight", ""+lcdHeight)')
+    replace(entry, 'settingsChanged();\r\n\r\n\t\t\tMobile.getPlatform().runJar();',
+            'Mobile.config.saveConfig();\r\n\t\t\t}\r\n'
+            '\t\t\tsettingsChanged();\r\n\r\n\t\t\tMobile.getPlatform().runJar();')
+    config = destination / 'src/org/recompile/freej2me/Config.java'
+    replace(config, 'private File sFile;', 'private File sFile;\r\n\tpublic boolean newConfig;')
+    replace(config, 'if(!cFile.exists())', 'newConfig = !cFile.exists();\r\n\t\t\tif(newConfig)')
+
+    platform = destination / 'src/org/recompile/mobile/MobilePlatform.java'
+    replace(platform, 'URLDecoder.decode(preparedFileName, Mobile.textEncoding)',
+            'new File(new URI(fileName)).getPath()')
+    loader = destination / 'src/org/recompile/mobile/MIDletLoader.java'
+    replace(loader, 'new File(url.getFile()).getName()', 'new File(url.toURI()).getName()')
+    replace(loader, 'URI jarEntryURI = new URI("jar:" + jarUrl.toExternalForm() + "!/" + entryName);',
+            'URL jarEntryURL = new URL("jar:" + jarUrl.toExternalForm() + "!/" + '
+            'new URI(null, null, "/" + entryName, null).getRawPath().substring(1));', count=2)
+    replace(loader, 'return jarEntryURI.toURL();', 'return jarEntryURL;', count=2)
+    # A window alone does not prove that the MIDlet started. The shared host
+    # emits readiness only after startApp succeeds, and watches the parent pipe.
+    replace(loader, 'start.invoke(Mobile.isDoJa ? IAppliInst : midletInst);',
+            'start.invoke(Mobile.isDoJa ? IAppliInst : midletInst);\r\n'
+            '\t\t\tSystem.setProperty("flashback.j2me.started", "true");')
+    replace(loader, 'e.printStackTrace();\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\ttry\r\n\t\t{\r\n\t\t\twhile (start',
+            'e.printStackTrace();\r\n\t\t\tthrow new MIDletStateChangeException(e.toString());\r\n\t\t}\r\n\r\n\t\ttry\r\n\t\t{\r\n\t\t\twhile (start')
+    replace(loader, 'e.printStackTrace();\r\n\t\t\treturn;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic static void parseDescriptorInto',
+            'e.printStackTrace();\r\n\t\t\tthrow new MIDletStateChangeException(e.toString());\r\n\t\t}\r\n\t}\r\n\r\n\tpublic static void parseDescriptorInto')
+    replace(platform, '"Error Running Jar");\r\n\t\t\te.printStackTrace();',
+            '"Error Running Jar");\r\n\t\t\tthrow new IllegalStateException("Unable to start MIDlet", e);')
+
 def main():
     records = []
     for name, repo, revision, expected in REPOS:
@@ -76,29 +127,7 @@ def main():
         if name == 'dirplayer':
             subprocess.run(['patch', '-p1', '-i', str(Path(__file__).with_name('dirplayer-compat.patch'))], cwd=destination, check=True)
         elif name == 'freej2me':
-            # Keep the compatibility edits byte-for-byte friendly with the
-            # upstream CRLF Java sources instead of relying on patch's line
-            # ending heuristics.
-            entry = destination / 'src/org/recompile/freej2me/FreeJ2ME.java'
-            data = entry.read_bytes()
-            data = data.replace(
-                b'Mobile.getPlatform().runJar();\r\n',
-                b'Mobile.getPlatform().runJar();\r\n'
-                b'\t\t\tSystem.out.println("FLASHBACK_READY");\r\n'
-                b'\t\t\tSystem.out.flush();\r\n', 1)
-            data = data.replace(
-                b'main = new Frame("FreeJ2ME-Plus");',
-                b'main = new Frame(System.getProperty("flashback.title", "FreeJ2ME-Plus"));', 1)
-            entry.write_bytes(data)
-            loader = destination / 'src/org/recompile/mobile/MIDletLoader.java'
-            loader_data = loader.read_bytes().replace(
-                b'File file = new File(url.toURI());',
-                b'File file = new File(url.getPath());', 1)
-            loader_data = re.sub(
-                rb'\s*URI jarEntryURI = new URI\("jar:" \+ jarUrl\.toExternalForm\(\) \+ "!/" \+ entryName\);\r?\n\s*return jarEntryURI\.toURL\(\);',
-                b'\n\t\t\t\t\treturn new URL("jar:" + jarUrl.toExternalForm() + "!/" + entryName);',
-                loader_data)
-            loader.write_bytes(loader_data)
+            patch_freej2me(destination)
         records.append(dict(kind='repository', name=name, url=url, revision=revision, sha256=digest))
     crates = {}
     git_sources = set()

@@ -4,7 +4,7 @@ Flashback is a native macOS library for playing supported Flash, Java, HTML5, an
 
 ## Start here
 
-When Flashback opens for the first time, the welcome window explains the three ways to begin:
+When Flashback opens for the first time, the welcome window introduces the library and website importer:
 
 - **Open Library** closes the welcome window and shows your collection.
 - **Add from Website…** opens the website recovery workflow.
@@ -87,7 +87,9 @@ The player toolbar’s **Library** button returns to the collection. If a player
 
 Flash local saves and HTML local storage are kept separately for each game. Flashback does not create save states for games that never supported saving. Games that depend on browser cookies, hard-coded external paths, or live services may not preserve progress offline.
 
-Java ME games run in a phone-sized emulated screen. Flashback uses the game’s JAD display settings when supplied, and maps the number keys and arrow keys to the emulated phone keypad. Support depends on the APIs used by each game. Java ME settings and record-store data are kept in that game’s private save folder.
+Java ME games run in a phone-sized emulated screen. To include JAD display settings, import a folder or ZIP containing both the JAR and its matching JAD with the same base filename. Those settings initialize a new game profile; later changes in the player's **Settings** menu are retained. Support depends on the APIs used by each game. Java ME settings and record-store data are kept in that game’s private save folder.
+
+The default Java ME controls use the arrow keys, Return for fire/confirm, Q and W for the left and right softkeys, and the numeric keypad for phone buttons. Use **Settings → Manage Inputs** to change bindings, especially on keyboards without a numeric keypad.
 
 ## Menus and shortcuts
 

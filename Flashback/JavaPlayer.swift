@@ -2,13 +2,6 @@
 import Cocoa
 
 @MainActor final class JavaSession {
-    private struct J2MEConfig {
-        let width: Int
-        let height: Int
-        let scale: Int
-        let keyLayout: Int
-        let fps: Int
-    }
     let process = Process()
     let output = Pipe()
     let keepAlive = Pipe()
@@ -17,7 +10,6 @@ import Cocoa
     private var detail = ""
     private var ready = false
     private var stopping = false
-    private var j2me = false
     private var timeout: Task<Void, Never>?
     var onReady: (() -> Void)?
     var onExit: ((String?) -> Void)?
@@ -52,16 +44,18 @@ import Cocoa
         guard !stopping else { onExit?(nil); return }
         let movie = try library.movie(for:game)
         try GameLibrary.validateGame(movie)
-        let kind = try Self.inspectKind(executable:executable, runner:runner, movie:movie)
-        j2me = kind == "J2ME"
-        let j2meConfig = j2me ? try Self.readJ2MEConfig(executable:executable, runner:runner, movie:movie) : nil
+        let kind = try await Task.detached(priority:.userInitiated) {
+            try Self.inspectKind(executable:executable, runner:runner, movie:movie)
+        }.value
+        guard !stopping else { onExit?(nil); return }
+        let j2me = kind == "J2ME"
         let j2mePlayer = resources.appendingPathComponent("J2ME/freej2me.jar")
         if j2me { guard FileManager.default.isReadableFile(atPath:j2mePlayer.path) else {
             throw LibraryError("The Java ME player is missing. Reinstall the complete Flashback app.")
         } }
         let j2meData = saves.appendingPathComponent("J2ME", isDirectory:true)
         if j2me { try FileManager.default.createDirectory(at:j2meData, withIntermediateDirectories:true) }
-        let j2meMovie = j2me ? try GameLibrary.contained(game.entry,in:working) : movie
+        let launchMovie = j2me ? try GameLibrary.contained(game.entry,in:working) : movie
         process.executableURL = executable
         // Saved files stay writable even when the app is installed in Applications.
         let entryParent = (game.entry as NSString).deletingLastPathComponent
@@ -69,19 +63,14 @@ import Cocoa
             ? try GameLibrary.contained(entryParent,in:working) : working
             )
         process.environment = ["TMPDIR":temp.path, "LANG":"en_US.UTF-8", "PATH":"/usr/bin:/bin"]
-        if j2me {
-            let config = j2meConfig ?? J2MEConfig(width:240, height:320, scale:2, keyLayout:0, fps:60)
-            process.arguments = ["-Xmx512m", "-Dfile.encoding=ISO_8859_1", "-Dflashback.title=\(game.title)",
-                "-Duser.home=\(saves.path)", "-Djava.io.tmpdir=\(temp.path)", "-jar", j2mePlayer.path,
-                j2meMovie.absoluteURL.absoluteString, "0", "\(config.width)", "\(config.height)",
-                "\(config.scale)", "\(config.keyLayout)", "\(config.fps)", "0"]
-        } else {
-            process.arguments = ["-Xmx512m", "-Xdock:name=\(game.title)", "-Xdock:icon=\(resources.appendingPathComponent("AppIcon.icns").path)",
-                "-Djava.security.manager", "-Djava.security.policy==\(resources.appendingPathComponent("Java.policy").path)",
-                "-Dflashback.runner=\(runner.absoluteString)", "-Dflashback.game=\(library.folder(for:game).path)",
-                "-Duser.home=\(saves.path)", "-Djava.io.tmpdir=\(temp.path)",
-                "-cp", runner.path, "JavaRunner", "--play", movie.path]
-        }
+        process.arguments = ["-Xmx512m", "-Xdock:name=\(game.title)", "-Xdock:icon=\(resources.appendingPathComponent("AppIcon.icns").path)",
+            "-Djava.security.manager", "-Djava.security.policy==\(resources.appendingPathComponent("Java.policy").path)",
+            "-Dflashback.runner=\(runner.absoluteString)", "-Dflashback.j2me=\(j2mePlayer.absoluteString)",
+            "-Dflashback.game=\(library.folder(for:game).path)", "-Dflashback.title=\(game.title)",
+            "-Duser.home=\(saves.path)", "-Djava.io.tmpdir=\(temp.path)"]
+        if j2me { process.arguments! += ["-Dfile.encoding=ISO_8859_1"] }
+        process.arguments! += ["-cp", j2me ? runner.path + ":" + j2mePlayer.path : runner.path,
+            "JavaRunner", "--play", launchMovie.path]
         process.standardOutput = output
         process.standardError = output
         process.standardInput = keepAlive
@@ -103,7 +92,7 @@ import Cocoa
         }
     }
 
-    private static func inspectKind(executable: URL, runner: URL, movie: URL) throws -> String {
+    nonisolated private static func inspectKind(executable: URL, runner: URL, movie: URL) throws -> String {
         let probe = Process(), output = Pipe()
         probe.executableURL = executable
         probe.arguments = ["-Xmx128m", "-Djava.awt.headless=true", "-cp", runner.path, "JavaRunner", "--inspect", movie.path]
@@ -118,27 +107,6 @@ import Cocoa
             throw LibraryError("This JAR cannot launch as a desktop or Java ME game. \(String(text.prefix(400)))")
         }
         return String(kind)
-    }
-
-    private static func readJ2MEConfig(executable: URL, runner: URL, movie: URL) throws -> J2MEConfig {
-        let probe = Process(), output = Pipe()
-        probe.executableURL = executable
-        probe.arguments = ["-Xmx128m", "-Djava.awt.headless=true", "-cp", runner.path, "JavaRunner", "--j2me-config", movie.path]
-        probe.environment = ["PATH":"/usr/bin:/bin", "LANG":"en_US.UTF-8"]
-        probe.standardOutput = output; probe.standardError = output
-        try probe.run()
-        let data = output.fileHandleForReading.readDataToEndOfFile()
-        probe.waitUntilExit()
-        let line = String(decoding:data, as:UTF8.self).split(whereSeparator:\.isNewline).last.map(String.init) ?? ""
-        let fields = line.split(separator:"\t").map(String.init)
-        guard probe.terminationStatus == 0, fields.count == 6, fields[0] == "J2ME_CONFIG",
-              let width = Int(fields[1]), let height = Int(fields[2]), let scale = Int(fields[3]),
-              let keyLayout = Int(fields[4]), let fps = Int(fields[5]),
-              (1...2000).contains(width), (1...2000).contains(height), (1...8).contains(scale),
-              (0...11).contains(keyLayout), (1...120).contains(fps) else {
-            throw LibraryError("This Java ME game has an invalid display or device descriptor.")
-        }
-        return J2MEConfig(width:width, height:height, scale:scale, keyLayout:keyLayout, fps:fps)
     }
 
     private func receive(_ data: Data) {

@@ -208,7 +208,7 @@ import WebKit
         process.environment = ["PATH":"/usr/bin:/bin","LANG":"en_US.UTF-8"]
         process.standardOutput = output; process.standardError = output
         try process.run(); let message = output.fileHandleForReading.readDataToEndOfFile(); process.waitUntilExit()
-        guard process.terminationStatus == 0 else { throw LibraryError("This JAR cannot launch as a desktop game. It may be an applet or library. " + String(String(decoding:message,as:UTF8.self).prefix(400))) }
+        guard process.terminationStatus == 0 else { throw LibraryError("This JAR cannot launch as a desktop or Java ME game. It may be an applet or library. " + String(String(decoding:message,as:UTF8.self).prefix(400))) }
     }
     func cancel() {
         guard phase != .adding else { return }
