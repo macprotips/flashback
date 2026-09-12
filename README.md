@@ -16,6 +16,12 @@ games.
 Claude was used as a development aid for parts of the implementation and
 documentation. The project author reviewed and maintains the resulting work.
 
+## User guide
+
+See the [Flashback user guide](USER-GUIDE.md) for importing games, using
+**Add from Website…**, browsing **Discover**, managing library cards, and
+using every app button and keyboard shortcut.
+
 ## Features
 
 - Import SWF, JAR, HTML, Shockwave movies, folders, and ZIP archives.
