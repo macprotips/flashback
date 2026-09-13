@@ -1,0 +1,621 @@
+{
+  "schema": 1,
+  "status": "locked-source-inputs",
+  "version": "2026.3.0",
+  "main_source": "vendor/sources/scummvm-2026.3.0.tar.xz",
+  "main_source_sha256": "b863a81e1598df8bc4aa0c33e3d9b1c8bbede1879d94d91568a4f200057677e7",
+  "vcpkg_baseline": "6283825b81bb60f952af1d0703638df1de611243",
+  "source_date_epoch": 1781985600,
+  "macos_deployment_target": "11.0",
+  "configure_flags": "Flashback/scummvm-build/configure-flags.json",
+  "dependencies": [
+    {
+      "name": "brotli",
+      "version": "1.2.0",
+      "license": "MIT",
+      "sources": [
+        "scummvm-google-brotli-v1.2.0.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/brotli"
+    },
+    {
+      "name": "bzip2",
+      "version": "1.0.8#6",
+      "license": "bzip2-1.0.6",
+      "sources": [
+        "scummvm-bzip2-1.0.8.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/bzip2"
+    },
+    {
+      "name": "faad2",
+      "version": "2.11.2",
+      "license": "GPL-2.0-or-later",
+      "sources": [
+        "scummvm-knik0-faad2-2.11.2.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/faad2"
+    },
+    {
+      "name": "fluidsynth",
+      "version": "2.5.2",
+      "license": "LGPL-2.1-or-later",
+      "sources": [
+        "fluidsynth-2.5.2.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/fluidsynth"
+    },
+    {
+      "name": "freetype",
+      "version": "2.13.3",
+      "license": "(FTL OR GPL-2.0-or-later)",
+      "sources": [
+        "scummvm-freetype-freetype-VER-2-13-3.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/freetype"
+    },
+    {
+      "name": "fribidi",
+      "version": "1.0.16",
+      "license": "LGPL-2.1-or-later",
+      "sources": [
+        "scummvm-fribidi-fribidi-v1.0.16.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/fribidi"
+    },
+    {
+      "name": "gcem",
+      "version": "1.18.0",
+      "license": "Apache-2.0",
+      "sources": [
+        "gcem-1.18.0.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/gcem"
+    },
+    {
+      "name": "giflib",
+      "version": "5.2.2#2",
+      "license": "MIT",
+      "sources": [
+        "scummvm-giflib-5.2.2.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/giflib"
+    },
+    {
+      "name": "liba52",
+      "version": "0.7.4",
+      "license": "GPL-2.0-or-later",
+      "sources": [
+        "scummvm-a52dec-0.7.4.tar.gz"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/liba52"
+    },
+    {
+      "name": "libflac",
+      "version": "1.5.0",
+      "license": "BSD-3-Clause",
+      "sources": [
+        "scummvm-xiph-flac-1.5.0.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libflac"
+    },
+    {
+      "name": "libjpeg-turbo",
+      "version": "3.1.3",
+      "license": "BSD-3-Clause",
+      "sources": [
+        "scummvm-libjpeg-turbo-libjpeg-turbo-3.1.3.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libjpeg-turbo"
+    },
+    {
+      "name": "libmad",
+      "version": "0.16.4#4",
+      "license": "NOASSERTION",
+      "sources": [
+        "scummvm-tenacityteam-libmad-0.16.4.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libmad"
+    },
+    {
+      "name": "libmikmod",
+      "version": "3.3.11.1#14",
+      "license": "LGPL-2.1-or-later",
+      "sources": [
+        "scummvm-libmikmod-3.3.11.1.tar.gz"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libmikmod"
+    },
+    {
+      "name": "libmpeg2",
+      "version": "0.5.1#5",
+      "license": "GPL-2.0-or-later",
+      "sources": [
+        "scummvm-libmpeg2-0.5.1.tar.gz"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libmpeg2"
+    },
+    {
+      "name": "libogg",
+      "version": "1.3.6#1",
+      "license": "BSD-3-Clause",
+      "sources": [
+        "libogg-1.3.6.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libogg"
+    },
+    {
+      "name": "libopenmpt",
+      "version": "0.7.13",
+      "license": "BSD-3-Clause",
+      "sources": [
+        "scummvm-OpenMPT-openmpt-libopenmpt-0.7.13.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libopenmpt"
+    },
+    {
+      "name": "libpng",
+      "version": "1.6.54",
+      "license": "libpng-2.0",
+      "sources": [
+        "libpng-1.6.54.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libpng"
+    },
+    {
+      "name": "libtheora",
+      "version": "1.2.0",
+      "license": "LicenseRef-vcpkg-null",
+      "sources": [
+        "scummvm-xiph-theora-v1.2.0.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libtheora"
+    },
+    {
+      "name": "libvorbis",
+      "version": "1.3.7#4",
+      "license": "BSD-3-Clause",
+      "sources": [
+        "scummvm-xiph-vorbis-v1.3.7.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libvorbis"
+    },
+    {
+      "name": "libvpx",
+      "version": "1.15.2#3",
+      "license": "BSD-3-Clause",
+      "sources": [
+        "scummvm-webmproject-libvpx-v1.15.2.tar.gz"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libvpx"
+    },
+    {
+      "name": "mpg123",
+      "version": "1.33.4",
+      "license": "LGPL-2.1-or-later",
+      "sources": [
+        "scummvm-mpg123-1.33.4.tar.bz2"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/mpg123"
+    },
+    {
+      "name": "retrowave",
+      "version": "e6bf60eed2d2bd1deff688d645be71a32bbf05bb",
+      "license": "AGPL-3.0-or-later",
+      "sources": [
+        "scummvm-RetroWave-e6bf60eed2d2bd1deff688d645be71a32bbf05bb.tar.gz"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/retrowave"
+    },
+    {
+      "name": "sdl2",
+      "version": "2.32.10",
+      "license": "Zlib",
+      "sources": [
+        "sdl2-2.32.10.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sdl2"
+    },
+    {
+      "name": "sdl2-net",
+      "version": "2.2.0#3",
+      "license": "Zlib",
+      "sources": [
+        "scummvm-libsdl-org-SDL_net-669e75b84632e2c6cc5c65974ec9e28052cb7a4e.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sdl2-net"
+    },
+    {
+      "name": "sonivox",
+      "version": "4.0.0",
+      "license": "Apache-2.0",
+      "sources": [
+        "scummvm-EmbeddedSynth-sonivox-v4.0.0.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sonivox"
+    },
+    {
+      "name": "zlib",
+      "version": "1.3.1",
+      "license": "Zlib",
+      "sources": [
+        "zlib-1.3.1.tar.gz"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/zlib"
+    }
+  ],
+  "sources": [
+    {
+      "name": "ScummVM dependency brotli",
+      "file": "scummvm-google-brotli-v1.2.0.tar.gz",
+      "url": "https://github.com/google/brotli/archive/v1.2.0.tar.gz",
+      "sha256": "816c96e8e8f193b40151dad7e8ff37b1221d019dbcb9c35cd3fadbfe6477dfec",
+      "upstream_sha512": "f94542afd2ecd96cc41fd21a805a3da314281ae558c10650f3e6d9ca732b8425bba8fde312823f0a564c7de3993bdaab5b43378edab65ebb798cefb6fd702256",
+      "license": "MIT",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/brotli",
+      "build_cache_name": "google-brotli-v1.2.0.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency bzip2",
+      "file": "scummvm-bzip2-1.0.8.tar.gz",
+      "url": "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
+      "sha256": "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+      "upstream_sha512": "083f5e675d73f3233c7930ebe20425a533feedeaaa9d8cc86831312a6581cefbe6ed0d08d2fa89be81082f2a5abdabca8b3c080bf97218a1bd59dc118a30b9f3",
+      "license": "bzip2-1.0.6",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/bzip2",
+      "build_cache_name": "bzip2-1.0.8.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency faad2",
+      "file": "scummvm-knik0-faad2-2.11.2.tar.gz",
+      "url": "https://github.com/knik0/faad2/archive/2.11.2.tar.gz",
+      "sha256": "3fcbd305e4abd34768c62050e18ca0986f7d9c5eca343fb98275418013065c0e",
+      "upstream_sha512": "fd140c0f4e7946e95a49a8652e26f33b138fc3375da34d5e3a55cdde8a74be429eb6fe0180bd434841022cee3c2ec65fe40dda7440fe0dd2761622174f992490",
+      "license": "GPL-2.0-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/faad2",
+      "build_cache_name": "knik0-faad2-2.11.2.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency fluidsynth",
+      "file": "fluidsynth-2.5.2.tar.gz",
+      "url": "https://github.com/FluidSynth/fluidsynth/archive/v2.5.2.tar.gz",
+      "sha256": "1dcb13308b3aa383db658c60a7b63d73d0ff4601ccee589582ba7a816475410e",
+      "upstream_sha512": "5c376d9bf6388f04e5d48375a70682f9d7edcd65809383afc0190c77140b086492abc17a8d3a2aa07e59dde681ab17a919e9b8b7e174a91a2951c30b262c10e4",
+      "license": "LGPL-2.1-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/fluidsynth",
+      "build_cache_name": "FluidSynth-fluidsynth-v2.5.2.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency freetype",
+      "file": "scummvm-freetype-freetype-VER-2-13-3.tar.gz",
+      "url": "https://gitlab.freedesktop.org/freetype/freetype/-/archive/VER-2-13-3/freetype-VER-2-13-3.tar.gz",
+      "sha256": "bc5c898e4756d373e0d991bab053036c5eb2aa7c0d5c67e8662ddc6da40c4103",
+      "upstream_sha512": "fccfaa15eb79a105981bf634df34ac9ddf1c53550ec0b334903a1b21f9f8bf5eb2b3f9476e554afa112a0fca58ec85ab212d674dfd853670efec876bacbe8a53",
+      "license": "(FTL OR GPL-2.0-or-later)",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/freetype",
+      "build_cache_name": "freetype-freetype-VER-2-13-3.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency fribidi",
+      "file": "scummvm-fribidi-fribidi-v1.0.16.tar.gz",
+      "url": "https://github.com/fribidi/fribidi/archive/v1.0.16.tar.gz",
+      "sha256": "5a1d187a33daa58fcee2ad77f0eb9d136dd6fa4096239199ba31e850d397e8a8",
+      "upstream_sha512": "13d7104f80e1b480d65a4c47fd694f5930222f3db843b8b6c1b6af58c43ee74b08635ce6166d005451498d060e549e4c666aa30c46d4df003d9ad63dba1d854a",
+      "license": "LGPL-2.1-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/fribidi",
+      "build_cache_name": "fribidi-fribidi-v1.0.16.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency gcem",
+      "file": "gcem-1.18.0.tar.gz",
+      "url": "https://github.com/kthohr/gcem/archive/v1.18.0.tar.gz",
+      "sha256": "8e71a9f5b62956da6c409dda44b483f98c4a98ae72184f3aa4659ae5b3462e61",
+      "upstream_sha512": "b9bbf16cfc3488a99ab371db36879bdde1699f0890db609278c03fb161cdffef0fbd34dbbf6004d6352e9e90c49e08e6b77357c4a424b0b5e174198b42dc049c",
+      "license": "Apache-2.0",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/gcem",
+      "build_cache_name": "kthohr-gcem-v1.18.0.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency giflib",
+      "file": "scummvm-giflib-5.2.2.tar.gz",
+      "url": "https://sourceforge.net/projects/giflib/files//giflib-5.2.2.tar.gz",
+      "sha256": "be7ffbd057cadebe2aa144542fd90c6838c6a083b5e8a9048b8ee3b66b29d5fb",
+      "upstream_sha512": "0865ab2b1904fa14640c655fdb14bb54244ad18a66e358565c00287875d00912343f9be8bfac7658cc0146200d626f7ec9160d7a339f20ba3be6b9941d73975f",
+      "license": "MIT",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/giflib",
+      "build_cache_name": "giflib-5.2.2.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency liba52",
+      "file": "scummvm-a52dec-0.7.4.tar.gz",
+      "url": "https://download.videolan.org/pub/contrib/a52/a52dec-0.7.4.tar.gz",
+      "sha256": "a21d724ab3b3933330194353687df82c475b5dfb997513eef4c25de6c865ec33",
+      "upstream_sha512": "4b26fe9492f218b775fb190b76ecf06edaeb656adfe6dcbd24d0a0f86871c3ba917edb88a398eb12dccedaa1605b6f0a0be06b09f9fddd9a46e457b7dd244848",
+      "license": "GPL-2.0-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/liba52",
+      "build_cache_name": "a52dec-0.7.4.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libflac",
+      "file": "scummvm-xiph-flac-1.5.0.tar.gz",
+      "url": "https://github.com/xiph/flac/archive/1.5.0.tar.gz",
+      "sha256": "aea54ed186ad07a34750399cb27fc216a2b62d0ffcd6dc2e3064a3518c3146f8",
+      "upstream_sha512": "c8e119462205cfd8bbe22b0aff112625d3e51ca11de97e4de06a46fb43a0768d7ec9c245b299b09b7aa4d811c6fc7b57856eaa1c217e82cca9b3ad1c0e545cbe",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libflac",
+      "build_cache_name": "xiph-flac-1.5.0.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libjpeg-turbo",
+      "file": "scummvm-libjpeg-turbo-libjpeg-turbo-3.1.3.tar.gz",
+      "url": "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/3.1.3.tar.gz",
+      "sha256": "3a13a5ba767dc8264bc40b185e41368a80d5d5f945944d1dbaa4b2fb0099f4e5",
+      "upstream_sha512": "d95bf0689fb2862ad5ea9e902b73724098d911d9c312aa69157bec9de77f32e4d5ac7dfa105d844110cc66dbdb0336056ba7f96781fcbc848b72fd0661604d50",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libjpeg-turbo",
+      "build_cache_name": "libjpeg-turbo-libjpeg-turbo-3.1.3.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libmad",
+      "file": "scummvm-tenacityteam-libmad-0.16.4.tar.gz",
+      "url": "https://codeberg.org/tenacityteam/libmad/releases/download/0.16.4/libmad-0.16.4.tar.gz",
+      "sha256": "0f6bfb36c554075494b5fc2c646d08de7364819540f23bab30ae73fa1b5cfe65",
+      "upstream_sha512": "5b0a826408395e8b6b8a33953401355d6c2f1b33ec5085530b4ac8a538c39ffa903ce2e6845e9dcad73936933078959960b2f3fbba11ae091fda5bc5ee310df5",
+      "license": "NOASSERTION",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libmad",
+      "build_cache_name": "tenacityteam-libmad-0.16.4.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libmikmod",
+      "file": "scummvm-libmikmod-3.3.11.1.tar.gz",
+      "url": "https://downloads.sourceforge.net/project/mikmod/libmikmod/3.3.11.1/libmikmod-3.3.11.1.tar.gz",
+      "sha256": "ad9d64dfc8f83684876419ea7cd4ff4a41d8bcd8c23ef37ecb3a200a16b46d19",
+      "upstream_sha512": "f2439e2b691613847cd0787dd4e050116683ce7b05c215b8afecde5c6add819ea6c18e678e258c0a80786bef463f406072de15127f64368f694287a5e8e1a9de",
+      "license": "LGPL-2.1-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libmikmod",
+      "build_cache_name": "libmikmod-3.3.11.1.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libmpeg2",
+      "file": "scummvm-libmpeg2-0.5.1.tar.gz",
+      "url": "https://download.videolan.org/contrib/libmpeg2/libmpeg2-0.5.1.tar.gz",
+      "sha256": "dee22e893cb5fc2b2b6ebd60b88478ab8556cb3b93f9a0d7ce8f3b61851871d4",
+      "upstream_sha512": "3648a2b3d7e2056d5adb328acd2fb983a1fa9a05ccb6f9388cc686c819445421811f42e8439418a0491a13080977f074a0d8bf8fa6bc101ff245ddea65a46fbc",
+      "license": "GPL-2.0-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libmpeg2",
+      "build_cache_name": "libmpeg2-0.5.1.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libogg",
+      "file": "libogg-1.3.6.tar.gz",
+      "url": "https://github.com/xiph/ogg/archive/v1.3.6.tar.gz",
+      "sha256": "95b643da661155d79db9de2fca55daed3a8d491039829def246aacb3d9201c81",
+      "upstream_sha512": "c247e1da8b12f8b33272fafb6d7c171a1a2687c3632977439fa60b96ccc2ad751d88a2931bb3e18e1ddf2eea2e82cdd0aab087b2ec5393a9228c703476fa0167",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libogg",
+      "build_cache_name": "xiph-ogg-v1.3.6.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libopenmpt",
+      "file": "scummvm-OpenMPT-openmpt-libopenmpt-0.7.13.tar.gz",
+      "url": "https://github.com/OpenMPT/openmpt/archive/libopenmpt-0.7.13.tar.gz",
+      "sha256": "319f77b22b03e6babb852a64b57f6b4a8cc42fdf29f187d88b600e3c7868b305",
+      "upstream_sha512": "a82cc543074c5688a8a02d6bcbc378204c1962c1f4a44b9399b3cc708b4d0f660498bf496c446dd5a6dce48110e78eb2754a1454c451bb22de6664f18a8ddbc1",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libopenmpt",
+      "build_cache_name": "OpenMPT-openmpt-libopenmpt-0.7.13.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libpng",
+      "file": "libpng-1.6.54.tar.gz",
+      "url": "https://github.com/pnggroup/libpng/archive/v1.6.54.tar.gz",
+      "sha256": "ba7efce137409079989df4667706c339bebfbb10e9f413474718012a13c8cd4c",
+      "upstream_sha512": "f09e41c5e05714760b8dd05bd11bfe8b6b5840c277e5377a3854f5260879b69709c708f9581c07bdc2ffafda45796066ec258b67b0e96af64614b12346bedb1b",
+      "license": "libpng-2.0",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libpng",
+      "build_cache_name": "pnggroup-libpng-v1.6.54.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libtheora",
+      "file": "scummvm-xiph-theora-v1.2.0.tar.gz",
+      "url": "https://github.com/xiph/theora/archive/v1.2.0.tar.gz",
+      "sha256": "e0c35771b425c32a052ffb358a2aed14219340ab850b48dc85b01939c0513a31",
+      "upstream_sha512": "b2aac15528f0ef8258c0902e33e8211e8858c3c7e6e9eeb708cce5922de5f0e412255ddaf540a50c0ebf601df6c4376fd24a0bdd7f8de4432c4ae6e5d6ffe2b6",
+      "license": "LicenseRef-vcpkg-null",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libtheora",
+      "build_cache_name": "xiph-theora-v1.2.0.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libvorbis",
+      "file": "scummvm-xiph-vorbis-v1.3.7.tar.gz",
+      "url": "https://github.com/xiph/vorbis/archive/v1.3.7.tar.gz",
+      "sha256": "270c76933d0934e42c5ee0a54a36280e2d87af1de3cc3e584806357e237afd13",
+      "upstream_sha512": "bfb6f5dbfd49ed38b2b08b3667c06d02e68f649068a050f21a3cc7e1e56b27afd546aaa3199c4f6448f03f6e66a82f9a9dc2241c826d3d1d4acbd38339b9e9fb",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libvorbis",
+      "build_cache_name": "xiph-vorbis-v1.3.7.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libvpx",
+      "file": "scummvm-webmproject-libvpx-v1.15.2.tar.gz",
+      "url": "https://github.com/webmproject/libvpx/archive/v1.15.2.tar.gz",
+      "sha256": "26fcd3db88045dee380e581862a6ef106f49b74b6396ee95c2993a260b4636aa",
+      "upstream_sha512": "824fe8719e4115ec359ae0642f5e1cea051d458f09eb8c24d60858cf082f66e411215e23228173ab154044bafbdfbb2d93b589bb726f55b233939b91f928aae0",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libvpx",
+      "build_cache_name": "webmproject-libvpx-v1.15.2.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency mpg123",
+      "file": "scummvm-mpg123-1.33.4.tar.bz2",
+      "url": "https://downloads.sourceforge.net/project/mpg123/mpg123/1.33.4/mpg123-1.33.4.tar.bz2",
+      "sha256": "3ae8c9ff80a97bfc0e22e89fbcd74687eca4fc1db315b12607f27f01cb5a47d9",
+      "upstream_sha512": "9b7aa93b692132da7eb8dcfef12ce91bf66bf8475af50e9c57d7b80225f96c0e74264e518e558371af1f4cf6d2afda5b3dfc844949fd747db7ac7c44d0e9f6ad",
+      "license": "LGPL-2.1-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/mpg123",
+      "build_cache_name": "mpg123-1.33.4.tar.bz2"
+    },
+    {
+      "name": "ScummVM dependency retrowave",
+      "file": "scummvm-RetroWave-e6bf60eed2d2bd1deff688d645be71a32bbf05bb.tar.gz",
+      "url": "https://codeload.github.com/SudoMaker/RetroWave/tar.gz/e6bf60eed2d2bd1deff688d645be71a32bbf05bb",
+      "sha256": "f1ecf577f9f40029549276d7f6ceef879ea845d7b4de4237e714866d6bd68464",
+      "upstream_sha512": "559dab35498b0b8e4438fbf044212982c076be0b7acff1b0ecb02bc3978e7d42002a2e510347461441d682461f9819ff1492791931dd4f806bb343737a431a8f",
+      "license": "AGPL-3.0-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/retrowave",
+      "build_cache_name": "RetroWave-e6bf60eed2d2bd1deff688d645be71a32bbf05bb.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency sdl2",
+      "file": "sdl2-2.32.10.tar.gz",
+      "url": "https://github.com/libsdl-org/SDL/archive/release-2.32.10.tar.gz",
+      "sha256": "03f9d7c191a837525c9cda6406af2f2e48be02b5e7eb03d949cc9f1e9ca41c8b",
+      "upstream_sha512": "d5622d6bb7266f7942a7b8ad43e8a22524893bf0c2ea1af91204838d9b78d32768843f6faa248757427b8404b8c6443776d4afa6b672cd8571a4e0c03a829383",
+      "license": "Zlib",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sdl2",
+      "build_cache_name": "libsdl-org-SDL-release-2.32.10.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency sdl2-net",
+      "file": "scummvm-libsdl-org-SDL_net-669e75b84632e2c6cc5c65974ec9e28052cb7a4e.tar.gz",
+      "url": "https://github.com/libsdl-org/SDL_net/archive/669e75b84632e2c6cc5c65974ec9e28052cb7a4e.tar.gz",
+      "sha256": "df296cbf1cd2e159a509e62f51453614a5109036855db70d1d24e3adc6a5ebe8",
+      "upstream_sha512": "180c757d704c72dc7fcc392c13942214c87b90de22e32045ec9eb6cde5da2b762516e14120d8bee52f7f4a59ad8e30d4f71e313918432ae07ef71df8e9380e4b",
+      "license": "Zlib",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sdl2-net",
+      "build_cache_name": "libsdl-org-SDL_net-669e75b84632e2c6cc5c65974ec9e28052cb7a4e.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency sonivox",
+      "file": "scummvm-EmbeddedSynth-sonivox-v4.0.0.tar.gz",
+      "url": "https://github.com/EmbeddedSynth/sonivox/archive/v4.0.0.tar.gz",
+      "sha256": "bd07e384041df010576b2bc1626625465f93ac6ae2e96ae792d0994b816880b1",
+      "upstream_sha512": "d9f8fb18f151ef3ba2352bcd66a97bc71056aab8ab9f78a061ffa475f68a80ede3c2c0deb374ad21eb2c1cb1d7521c3d7f8eeda72640e11f71c3526b275f5468",
+      "license": "Apache-2.0",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sonivox",
+      "build_cache_name": "EmbeddedSynth-sonivox-v4.0.0.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency zlib",
+      "file": "zlib-1.3.1.tar.gz",
+      "url": "https://github.com/madler/zlib/archive/v1.3.1.tar.gz",
+      "sha256": "17e88863f3600672ab49182f217281b6fc4d3c762bde361935e436a95214d05c",
+      "upstream_sha512": "8c9642495bafd6fad4ab9fb67f09b268c69ff9af0f4f20cf15dfc18852ff1f312bd8ca41de761b3f8d8e90e77d79f2ccacd3d4c5b19e475ecf09d021fdfe9088",
+      "license": "Zlib",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/zlib",
+      "build_cache_name": "madler-zlib-v1.3.1.tar.gz"
+    }
+  ],
+  "unused_declared_resources": [
+    {
+      "port": "libpng",
+      "resource": "https://downloads.sourceforge.net/project/libpng-apng/libpng16/1.6.54/${LIBPNG_APNG_PATCH_NAME}.gz",
+      "sha512": "217449d76fab45707a696ee5926039c6091196abfc33b4e3bec0a5f63d5b17fd4a7e48af41c4cc2536edc527837dc10fe718092d5b1ffc89ee4dc66883e7267a",
+      "reason": "Declared optional port resource was not downloaded or used by this build."
+    }
+  ]
+}

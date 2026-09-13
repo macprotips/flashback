@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "purpose": "General-purpose build tools, not linked runtime source inputs; baseline source retains tool acquisition recipes and patches.",
+  "prerequisites": {
+    "python3": {
+      "path": "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "sha256": "2f474ddf576be46e1ecc940407cbb80728e7ebf7d27a47e05572c970524c0487",
+      "version": "Python 3.14.2"
+    },
+    "pkg-config": {
+      "path": "/opt/homebrew/Cellar/pkgconf/3.0.7/bin/pkgconf",
+      "sha256": "1f3beefb56b473037af764da65297c3527e50533294891a07dfe91f0279150fd",
+      "version": "3.0.7"
+    },
+    "autoconf": {
+      "path": "/opt/homebrew/Cellar/autoconf/2.73/bin/autoconf",
+      "sha256": "6766e3225a3ac3b51b39c18149f94990c42c11793271f3c1e314bb29215dc4b8",
+      "version": "autoconf (GNU Autoconf) 2.73"
+    },
+    "autoheader": {
+      "path": "/opt/homebrew/Cellar/autoconf/2.73/bin/autoheader",
+      "sha256": "e93b69c5dcf5c4afc22b592e369652d98e98b01d203a982db6bea97d755ca848",
+      "version": "autoheader (GNU Autoconf) 2.73"
+    },
+    "autoreconf": {
+      "path": "/opt/homebrew/Cellar/autoconf/2.73/bin/autoreconf",
+      "sha256": "8bf81bce870b88247ad5ef08fd579bc339c7422e1ef710028b24cc0393cdc529",
+      "version": "autoreconf (GNU Autoconf) 2.73"
+    },
+    "automake": {
+      "path": "/opt/homebrew/Cellar/automake/1.18.1_1/bin/automake",
+      "sha256": "39f18fa43ac3c453f930f11c16499deca97eb0eb5edef3e031da6c9c0549359f",
+      "version": "automake (GNU automake) 1.18.1"
+    },
+    "aclocal": {
+      "path": "/opt/homebrew/Cellar/automake/1.18.1_1/bin/aclocal",
+      "sha256": "3540788a4b97f59d66c75073b159e7d843dd5060f0fb333b41c2df046461bc53",
+      "version": "aclocal (GNU automake) 1.18.1"
+    },
+    "glibtool": {
+      "path": "/opt/homebrew/Cellar/libtool/2.6.2/bin/glibtool",
+      "sha256": "fc6e142fbc1ea33bc2adba86655d8bc972271261e4aff6622118b9db16c6ec86",
+      "version": "glibtool (GNU libtool) 2.6.2"
+    },
+    "glibtoolize": {
+      "path": "/opt/homebrew/Cellar/libtool/2.6.2/bin/glibtoolize",
+      "sha256": "027165d46aea5c21f06b4b616be6a04d42de9c6d3b043c5d6d627ae1f6f8eb04",
+      "version": "glibtoolize (GNU libtool) 2.6.2"
+    },
+    "nasm": {
+      "path": "/opt/homebrew/Cellar/nasm/3.02/bin/nasm",
+      "sha256": "5d22db7ed80aee4eb0e1cb5ff8a87e40294012f6ddf943601556922d5128b725",
+      "version": "NASM version 3.02 compiled on Jun 29 2026"
+    },
+    "xcode": "Xcode 27.0\nBuild version 27A5194q\n",
+    "sdk": "27.0",
+    "clang": "Apple clang version 21.0.0 (clang-2100.3.20.102)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Volumes/Mac mini Hub/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n"
+  },
+  "baseline_managed_tools": [
+    {
+      "name": "cmake",
+      "os": "osx",
+      "version": "3.31.10",
+      "executable": "cmake-3.31.10-macos-universal/CMake.app/Contents/bin/cmake",
+      "url": "https://github.com/Kitware/CMake/releases/download/v3.31.10/cmake-3.31.10-macos-universal.tar.gz",
+      "sha512": "5960326dee8227bf27cdd2d94c336835b7bf1b11c443c35ecf2b50a811c7874fcc3400a3b793e4720ef6505d66aed597ecdaf6c77b12db69abafcccd0659182d",
+      "archive": "cmake-3.31.10-macos-universal.tar.gz",
+      "sha256": "be9f3faeeaf7921cc2d77cea711dd5e6f72c63af2810cacd9205b3ce8d1593c9"
+    },
+    {
+      "name": "ninja",
+      "os": "osx",
+      "version": "1.13.2",
+      "executable": "ninja",
+      "url": "https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-mac.zip",
+      "sha512": "bf71f820791bb2ef97da6e7f8376aaa1c51f3860884df1acde692d2df4c0747a2e167d843dcd5537813da2e5d14457d6ee3f48df13cdd678cea87e68fe73e9f0",
+      "archive": "ninja-mac-1.13.2.zip",
+      "sha256": "c99048673aa765960a99cf10c6ddb9f1fad506099ff0a0e137ad8960a88f321b"
+    },
+    {
+      "name": "meson",
+      "version": "1.9.0",
+      "url": "https://github.com/mesonbuild/meson/archive/1.9.0.tar.gz",
+      "sha256": "12ca5979a3a625c8944e093c17c32c4c2bd03a48c8877354d88a7077860ef740",
+      "sha512": "ecd69b6734be14c467f7db67dd88c0e57ebfad83ce3ddada131ff3e43ac964523e1083d7c7f3803033a9a76adbc32ad26dd2e3aca69884269000ca64130bde07",
+      "recipe": "baseline:scripts/cmake/vcpkg_find_acquire_program(MESON).cmake; ports/vcpkg-tool-meson patches"
+    }
+  ],
+  "vcpkg_bootstrap": {
+    "version": "2025-12-16-44bb3ce006467fc13ba37ca099f64077b8bbf84d",
+    "url": "https://github.com/microsoft/vcpkg-tool/releases/download/2025-12-16/vcpkg-macos",
+    "sha256": "f4f8f6abbcb2dab5bb7591bb5f9e704be261196eee66e1b92189ba830ce5e356",
+    "sha512": "efd8242570893ba89e9ceede5f9ad9f5220863cd149f9749ff61f09ba5106ce4f523dcf05e69a57e3576645fd9ea623d8820521321d7964aaa8f9794dbfd4c19",
+    "recipe": "baseline:scripts/bootstrap.sh and scripts/vcpkg-tool-metadata.txt"
+  }
+}

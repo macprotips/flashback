@@ -1,8 +1,8 @@
-# Flashback 1.10.0 distribution record
+# Flashback 1.11.0 distribution record
 
-Prepared September 10, 2026. This supersedes the 1.3.0 audit: the source,
-licensing, attribution, and icon issues identified there have been addressed
-in the 1.10.0 release package. This is an engineering license inventory and
+Prepared September 12, 2026. This supersedes the 1.10.0 audit and records the
+current 1.11.0 release-candidate state. Native corresponding-source closure is complete; account-authenticated signing/notarization
+steps and actual-Intel-Mac NativeHost qualification remain. This is an engineering license inventory and
 verification record, not a legal opinion or a trademark clearance.
 
 ## Changes completed
@@ -15,14 +15,18 @@ verification record, not a legal opinion or a trademark clearance.
 | DirPlayer at 68376fb | Rebuilt with the supplied Flashback compatibility patch under GPL-3.0-only. The patched source, original upstream revision, Ruffle fork, Bobba/Groove Xtra revisions, shared SDK, build scripts, and dependency source archives are supplied. |
 | BellSoft Liberica 8u504+1 | Replaces Zulu with the same Java update from a vendor publishing its complete corresponding source. Both Mac architectures preserve their GPLv2/Classpath Exception, assembly exception, third-party notices, and vendor signatures. The matching complete vendor source archive accompanies the binaries. |
 | FreeJ2ME-Plus at 8f87bf14 | Bundled GPLv3 Java ME/MIDP player, built from the pinned source with Flashback's title, startup, display-argument, saved-setting, and file-URI fixes. Its ObjectWeb ASM notices and complete source accompany the app. |
+| Apache Commons Compress 1.28.0 | Adds legacy ZIP decoding, including Implode method 6, with Commons IO 2.20.0 and Commons Lang 3.18.0. Runtime and corresponding-source artifacts are checksum-pinned; Apache-2.0 licenses and notices accompany the app and source package. |
+| DOSBox Staging 0.83.0 | The checksum-pinned universal upstream application runs DOS games from private working copies. The optional Nuked-SC55 plug-in is removed because its license restricts commercial use; the transformed app is signed locally with its JIT entitlement. The matching DOSBox source, build recipes, dependency sources, and notices accompany the app. |
+| ScummVM 2026.3.0 | Universal Director-only runtime rebuilt from the official release source and 26 pinned dependency archives. Both clean offline architecture builds pass source/recipe and static-library architecture checks; retained code preserves the selected media/text/audio/MIDI features. All source, overlays, patches, notices and build records accompany the app. ScummVM is GPL-3.0-or-later; RetroWave is AGPL-3.0-or-later. Sparkle/updating and the Dock tile plug-in are absent. |
+| Java applet and JNLP host | Flashback's GPLv3 Java host parses local descriptors without running game code, rejects elevated/native/platform-specific requests, and executes imported bytecode under the existing restricted Java policy. |
 | Dependency notices | Original notices are preserved in the source archives and indexed in `Licenses/DEPENDENCIES.json` and `.txt`, including build dependencies present only in the source cache. |
 | In-app disclosure | Flashback → Licenses and Source opens the GPL terms, no-warranty notice, component credits, and instructions for obtaining the supplied source. |
 | Game files and personal data | Commercial games, imported game artwork, saves, personal covers, the separate TextTwist 2 app, and development verification screenshots are excluded from the distributable. |
 
 Flashback retains each third party's license; choosing GPLv3 for the host does
 not relicense their independent code or games. The corresponding-source route
-is actual supplied source, rather than relying on a forwarded vendor source
-offer. The complete release archive keeps source and binaries together.
+uses actual supplied source, rather than a forwarded vendor source offer.
+Packaging keeps verified source and binaries together.
 For separately hosted downloads, follow `SOURCE.md` and keep matching source
 available beside the binary without an additional charge.
 
@@ -46,6 +50,13 @@ available beside the binary without an additional charge.
   `5f0f636c81c522048de98c7b2d582776d0125f2ca4636e365c114faf5461eeab`.
 - Complete Liberica source: SHA-256
   `037fe8766504a21ed4727599ca5c8af4988232082352d9c596dc2898049f2c42`.
+- DOSBox Staging 0.83.0 macOS DMG: SHA-256
+  `d8a771adfb8010fa6b5f7fb5351abfba659273ad01c89f03675a92bdbdae8167`.
+- Source-built ScummVM universal executable (before release signing): SHA-256
+  `08f0eaf5d8b321884ba0932f9ca54a93114fcf331d86024fa94081058f1f418a`.
+  `DOS-SCUMMVM-PROVENANCE.json` records both signing-independent slice hashes,
+  full build receipt, source/recipe hashes and integration evidence. The
+  superseded official DMG identity is retained only as historical evidence.
 
 `vendor/sources/MANIFEST.json` records the source/dependency archives and their
 checksums. `JAVASCRIPT-SOURCES.json` additionally maps browser-library packages
@@ -61,7 +72,13 @@ No claim of bit-identical reproduction across compiler versions is made.
 ## Verification
 
 The release build passes importer and ZIP checks and verifies both native
-architectures. Liberica passes restricted Java permissions, manifest checks,
+architectures. DOS and ScummVM run through a separate supervisor and macOS
+sandbox that deny external files, networking, process creation, and executable
+game mappings. An authored DOS program verifies private saves and repeat launch;
+ScummVM's hash-pinned Director 3 test movie verifies detection and actual Lingo
+startup. ARM passes through NativeHost; Intel plays under Rosetta outside the
+sandbox and still needs NativeHost qualification on an actual Intel Mac.
+Liberica passes restricted Java permissions, manifest checks,
 and real Wiz 3 opening gameplay, input, resize, and minimize/restore checks.
 The rebuilt app passes Java import/launch/process lifecycle checks and the
 library audit across five sizes, light/dark appearances, click targets, and
@@ -80,11 +97,23 @@ also compares the bundled HTML players and Java policy to their source files.
 
 The packaging check verifies source presence, checksums, preserved runtime
 notices, no symbol-derived branding, and exclusion of personal data and game
-fixtures. This does not assert compatibility with every game or every level.
+fixtures. A real legacy Implode-compressed game ZIP also extracts through the
+final packaged Java helper. This does not assert compatibility with every game
+or every level.
 
 ## Delivery status and limits
 
-The local release is Developer ID signed with hardened runtime; signing
+This candidate is not distributable yet. `package-release.py` refuses to run
+while `NATIVE-SOURCES.json` reports the `SCUMMVM-MACOS-STATIC-SOURCES` blocker.
+It also rejects the unfinished Classic Windows prototype; ordinary builds omit
+that runtime and its File-menu command unless a developer opts in explicitly.
+`Licenses/DOS-SCUMMVM-PROVENANCE.md` records the missing evidence and the two
+acceptable resolution paths. Run `python3 Flashback/fetch-native-sources.py
+--verify-only --audit-scummvm-runtime --require-complete` for the source audit;
+its nonzero exit after successful hash and identity checks is expected until one
+of those paths supplies the missing closure.
+
+The release candidate must be Developer ID signed with hardened runtime; signing
 status is checked by the packaging script. Apple notarization needs developer-account
 authentication, which is not saved in the default keychain. `RELEASING.md`
 gives the remaining submission/stapling commands; no public site or store
@@ -117,6 +146,11 @@ Discover adds a native Internet Archive search and download interface using syst
 frameworks and existing import code. No additional third-party library, Archive
 game, or Archive image is bundled. The source package includes the catalog and
 its authored fixture tests. Existing player runtime and license inventories apply.
+
+The current Discover view also rotates the curated Archive order weekly and links
+to reviewed provider pages outside the Archive. These are ordinary HTTPS
+links with documented terms; no external game, artwork, or provider code is
+included in Flashback.
 
 Version 1.7.1 adds original pixel lettering beside the in-app rewind logo.
 It is part of Flashback's GPLv3 artwork and introduces no font dependency.

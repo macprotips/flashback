@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-only
-"""Authored local fixtures; no downloaded games or third-party game content."""
+"""Authored local fixtures; no third-party game content."""
 import http.server
 import json
 import struct
@@ -20,7 +20,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
-        path = urllib.parse.urlsplit(self.path).path
+        path = urllib.parse.unquote(urllib.parse.urlsplit(self.path).path)
         host = f"http://127.0.0.1:{self.server.server_port}"
         other = f"http://localhost:{self.server.server_port}"
         routes = {
@@ -53,6 +53,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             "/dynamic": ("text/html", """<title>Dynamic Game</title><div id="game"></div><script>
               window.swfobject={embedSWF(){document.querySelector('#game').textContent='Flash plug-in required';}};
               setTimeout(()=>{swfobject.embedSWF('/flash/'+'main.'+'swf','game',640,480,'9',null,{language:'dynamic'})},800);</script>"""),
+            "/java/applet.html": ("text/html", '<title>Applet Check</title><applet codebase="lib%20space/" code="FixtureApplet" archive="main.jar, helper.jar" width="300" height="180"><param name="level" value="two words"/></applet>'),
+            "/java/lib space/main.jar": ("application/java-archive", b"main jar"),
+            "/java/lib space/helper.jar": ("application/java-archive", b"helper jar"),
+            "/java/direct.jnlp": ("application/x-java-jnlp-file", '<jnlp codebase="lib%20space/"><resources><jar href="main.jar"/><jar href="helper.jar"/></resources><application-desc main-class="FixtureMain"><argument>one</argument><argument>two words</argument></application-desc></jnlp>'),
         }
         if path == "/html/data.json":
             value = int(urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query)["v"][0])

@@ -1,10 +1,9 @@
-# Shockwave compatibility — Flashback 1.10.0
+# Shockwave compatibility — Flashback 1.11.0 development build
 
-The 1.10.0 runtime repairs Director score parsing, a movie property read
-through call syntax, and vector component indexing. Every recorded result in
-this release — the launch survey as well as the gameplay cases — was produced
-by the runtime the application ships. See `COMPATIBILITY-RESEARCH.md` for the
-investigation.
+The current runtime adds a shared invalid-member type fix and repeatable
+nonvisual health reports to the 1.10.0 Director repairs. Every recorded result
+must identify the exact runtime that produced it. See
+`COMPATIBILITY-RESEARCH.md` for the investigation.
 
 Checked September 10, 2026 on Apple Silicon. Shockwave remains experimental.
 Flashback rebuilds [DirPlayer source revision 68376fb](https://github.com/igorlira/dirplayer-rs/tree/68376fbb4494a6bbad4c70081ecdcb99814a74c9)
@@ -13,6 +12,24 @@ sources, dependency archives, and rebuild instructions accompany the release.
 See `SOURCE.md`; the companion assets retain their pinned 0.8.1 versions.
 
 ## Changes
+
+- Treat a missing cast-member reference as `#void` when Lingo reads `.ilk`,
+  while retaining `#member` for a valid reference. Redline Rumble Revolution
+  used that check while constructing its menu data; the old runtime raised on
+  the invalid reference before the menu could open. The shared VM fix has unit
+  coverage for invalid and valid cast references.
+- Load optional per-game launch profiles only by an exact SHA-256 match on the
+  imported entry movie. The versioned registry rejects duplicate identities,
+  malformed hashes, unsafe values, `src` replacement, and oversized input.
+  Profile use is included in runtime diagnostics. The initial registry is
+  empty: no title currently needs a profile to conceal a runtime failure.
+- Write a `Health.json` report for every collection and corpus probe. It records
+  exact errors, call stacks, missing resources, frame/image/game-state changes,
+  delivered input, and audio evidence. Only an authored input-driven game-state
+  assertion is called gameplay; a moving title screen remains active evidence.
+- Add a clipboard compatibility report to the Shockwave player so a user can
+  return the exact entry hash, runtime state, errors, recent console output,
+  call stack, and applied profile immediately after a problem.
 
 - Validate a score entry's header before reading it as a sprite span. Fifteen
   titles contain a 40/48-byte entry holding text rather than a span; each one
@@ -135,7 +152,7 @@ python3 Flashback/check-shockwave-corpus.py /tmp/flashback-shockwave-corpus
 The first command downloads four original fixtures and verifies their hashes.
 The second verifies twenty additional game cases from original archived
 movies and packages. It prints per-game results and writes `Results.json`, screenshots,
-input/state snapshots, and the exact `Probe.json` sequence. Known limited cases
+input/state snapshots, `Health.json`, and the exact `Probe.json` sequence. Known limited cases
 are reported as LIMITED and do not become PASS merely because a movie opens.
 The collection launch survey is separate: `check-shockwave-collection.py`
 records opening observations, with `--wait 15` for slower preloaders.
@@ -147,6 +164,16 @@ Fixtures, screenshots, and temporary libraries stay outside the release.
 Each run writes `Runtime.json` recording the runtime that produced it, and every
 result in `compatibility-results.json` carries that hash — a recorded result
 only means something beside the build it came from.
+
+To summarize an individual native probe without looking at its screenshots:
+
+```sh
+python3 Flashback/shockwave_health.py /path/to/probe-output
+```
+
+`FAIL` preserves runtime exceptions, unexpected missing resources, and early
+initialization stacks. `STALLED_EVIDENCE`, `ACTIVE_EVIDENCE`, and
+`OPENED_UNVERIFIED` guide investigation but are not passes.
 
 The Shockwave runtime's own source is checked separately:
 

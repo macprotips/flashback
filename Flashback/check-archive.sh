@@ -14,5 +14,5 @@ if [ ! -f ../Flashback.app/Contents/Resources/JavaRunner.jar ]; then
     echo 'Build Flashback first; catalog ZIP checks use its bundled archive reader.' >&2
     exit 1
 fi
-swiftc -sdk "$sdk" Library.swift WebPage.swift WebTransfer.swift WebImport.swift Archive.swift ArchiveChecks.swift -o build/archive-checks
+swiftc -sdk "$sdk" Library.swift LegacyImport.swift WebPage.swift WebTransfer.swift WebImport.swift Archive.swift ArchiveChecks.swift -o build/archive-checks
 build/archive-checks "$(cat "$fixture/address")"

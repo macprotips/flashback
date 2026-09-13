@@ -42,15 +42,22 @@ import Foundation
             let second = try await service.search("Archive",filter:.all,page:2)
             try require(second.items.first?.id == "page-two","Pagination failed")
             // Discover's featured list is browsed a screen of identifiers at a
-            // time, so a curated list longer than one page has to keep its
-            // order, report the whole list as the total, and end cleanly.
+            // time. The current UTC week chooses a deterministic starting
+            // screen, while the injected week keeps this check date-independent.
             let curated = (1...30).map { "featured-\($0)" }
-            let browser = ArchiveService(base:base,allowLocal:true,featuredIDs:curated)
+            let firstOrder = ArchiveService.featuredOrder(curated,week:0)
+            let nextOrder = ArchiveService.featuredOrder(curated,week:1)
+            try require(firstOrder.count == curated.count && Set(firstOrder) == Set(curated),"Featured rotation duplicated or lost an identifier")
+            try require(Array(firstOrder.prefix(24)) != Array(nextOrder.prefix(24)),"Adjacent featured weeks did not change the first screen")
+            var reachedTop = Set<String>()
+            for week in 0..<curated.count { reachedTop.formUnion(ArchiveService.featuredOrder(curated,week:week).prefix(24)) }
+            try require(reachedTop == Set(curated),"A featured identifier never reached the top screen")
+            let browser = ArchiveService(base:base,allowLocal:true,featuredIDs:curated,featuredWeek:0)
             let firstPage = try await browser.search("",filter:.all)
-            try require(firstPage.items.map(\.id) == Array(curated.prefix(24)),"Featured page 1 lost its curated order")
+            try require(firstPage.items.map(\.id) == Array(firstOrder.prefix(24)),"Featured page 1 lost its rotated curated order")
             try require(firstPage.total == 30 && firstPage.nextPage == 2,"Featured paging reported the wrong extent")
             let lastPage = try await browser.search("",filter:.all,page:2)
-            try require(lastPage.items.map(\.id) == Array(curated.dropFirst(24)),"Featured page 2 returned the wrong slice")
+            try require(lastPage.items.map(\.id) == Array(firstOrder.dropFirst(24)),"Featured page 2 returned the wrong slice")
             try require(lastPage.nextPage == nil,"Featured paging ran past the end of the list")
             let beyond = try await browser.search("",filter:.all,page:3)
             try require(beyond.items.isEmpty && beyond.nextPage == nil,"Featured paging past the end was not empty")

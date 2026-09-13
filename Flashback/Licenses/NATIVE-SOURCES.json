@@ -1,0 +1,719 @@
+{
+  "schema": 1,
+  "purpose": "Pinned source inputs for the native DOSBox Staging and ScummVM runtime bundles.",
+  "coverage": {
+    "status": "complete",
+    "statement": "DOSBox Staging release source closure and the locally rebuilt ScummVM Director-only universal runtime source/build closure are retained and checksum verified. Compatibility qualification on an actual Intel Mac remains separate from source coverage.",
+    "blockers": [],
+    "details": "DOS-SCUMMVM-BUILD.md"
+  },
+  "runtime_provenance": [
+    {
+      "component": "DOSBox Staging 0.83.0 macOS",
+      "main_source": "vendor/sources/dosbox-staging-v0.83.0.tar.gz",
+      "external_dependency_recipe": "dosbox-staging-ext v0.83.0-4",
+      "vcpkg_baseline": "6283825b81bb60f952af1d0703638df1de611243",
+      "observed_dynamic_libraries": [
+        "libslirp",
+        "glib",
+        "gthread",
+        "libintl",
+        "pcre2"
+      ],
+      "removed_before_bundle": "Contents/PlugIns/Nuked-SC55.clap",
+      "coverage_status": "complete",
+      "release_build_system": "CMake and vcpkg; the older subprojects/*.wrap files are not the macOS release dependency pins",
+      "release_recipe": "dosbox-staging-v0.83.0.tar.gz:.github/workflows/macos.yml",
+      "static_and_header_dependencies": [
+        "asio-1.32.0.tar.gz",
+        "iir1-1.10.0.tar.gz",
+        "libmt32emu-2.7.3.tar.gz",
+        "libpng-1.6.54.tar.gz",
+        "opusfile-0.12-20221121.tar.gz",
+        "fluidsynth-2.5.2.tar.gz",
+        "sdl2-2.32.10.tar.gz",
+        "sdl2-image-2.8.8.tar.gz",
+        "speexdsp-1.2.1.tar.gz",
+        "zlib-ng-2.3.3.tar.gz",
+        "libogg-1.3.6.tar.gz",
+        "opus-1.5.2.tar.gz",
+        "gcem-1.18.0.tar.gz",
+        "zlib-1.3.1.tar.gz"
+      ],
+      "additional_build_inputs": [
+        "gtest-1.17.0.tar.gz",
+        "libffi-3.5.2.tar.gz"
+      ],
+      "embedded_sources": "src/libs and licenses in the main source archive",
+      "patches": "All exact vcpkg port patches are retained in the baseline archive; the SDL2 overlay (including macos-color-space-hint.patch) is retained in the main source archive; the libslirp overlay is retained in dosbox-staging-ext.",
+      "bundled_dos_resource_sources": {
+        "archive": "dosbox-staging-v0.83.0.tar.gz",
+        "upstream_evidence": "LICENSE and extras/dos-programs/README.md",
+        "snapshots": [
+          {
+            "path": "extras/dos-programs/DEBUGX v2.50.zip",
+            "sha256": "4c9652d59dd731f66339888eee3e4f5e841243b60fb9992b0e0dc61ca60a9279",
+            "contents": "source and upstream build materials"
+          },
+          {
+            "path": "extras/dos-programs/XCOPY DOSBox-X 2025.05.03.zip",
+            "sha256": "075aa13f83608df7709a5660d6420046cf67783f5e44f6a6f893ff781ae522f7",
+            "contents": "source and upstream build materials"
+          },
+          {
+            "path": "extras/dos-programs/cpi-master.zip",
+            "sha256": "5fe044a6bfff29664ed6a61b7984c3237fc77ea29dd9c8ee4daa5998b4310e11",
+            "contents": "original bitmap-font packs and documentation"
+          },
+          {
+            "path": "extras/dos-programs/cpidos-master.zip",
+            "sha256": "66ab29df054b698729e020477b721a8c64e4475249d126351f175cf225257260",
+            "contents": "original bitmap-font packs and documentation"
+          },
+          {
+            "path": "extras/dos-programs/deltree102g.zip",
+            "sha256": "1c2a9c1c69fcde7254078b88a167862f6ad90006b2e93073fffd22f97f6f3fb4",
+            "contents": "source and upstream build materials"
+          },
+          {
+            "path": "extras/dos-programs/keyb_lay-master.zip",
+            "sha256": "d5910d640f11589b37b05ef287cf159337bce12e2da35298c429844860c6fad4",
+            "contents": "source and upstream build materials"
+          }
+        ]
+      }
+    },
+    {
+      "component": "ScummVM 2026.3.0 macOS",
+      "main_source": "vendor/sources/scummvm-2026.3.0.tar.xz",
+      "main_source_release_tag": "v2026.3.0",
+      "main_source_release_commit": "fed42f2068dcafc6aafa1c28c77e4c88def74b66",
+      "coverage_status": "complete",
+      "origin": "retained-source-build",
+      "engine": "director",
+      "source_lock": "Flashback/Licenses/DOS-SCUMMVM-BUILD-LOCK.json",
+      "external_dependency_sources": [
+        "scummvm-google-brotli-v1.2.0.tar.gz",
+        "scummvm-bzip2-1.0.8.tar.gz",
+        "scummvm-knik0-faad2-2.11.2.tar.gz",
+        "fluidsynth-2.5.2.tar.gz",
+        "scummvm-freetype-freetype-VER-2-13-3.tar.gz",
+        "scummvm-fribidi-fribidi-v1.0.16.tar.gz",
+        "gcem-1.18.0.tar.gz",
+        "scummvm-giflib-5.2.2.tar.gz",
+        "scummvm-a52dec-0.7.4.tar.gz",
+        "scummvm-xiph-flac-1.5.0.tar.gz",
+        "scummvm-libjpeg-turbo-libjpeg-turbo-3.1.3.tar.gz",
+        "scummvm-tenacityteam-libmad-0.16.4.tar.gz",
+        "scummvm-libmikmod-3.3.11.1.tar.gz",
+        "scummvm-libmpeg2-0.5.1.tar.gz",
+        "libogg-1.3.6.tar.gz",
+        "scummvm-OpenMPT-openmpt-libopenmpt-0.7.13.tar.gz",
+        "libpng-1.6.54.tar.gz",
+        "scummvm-xiph-theora-v1.2.0.tar.gz",
+        "scummvm-xiph-vorbis-v1.3.7.tar.gz",
+        "scummvm-webmproject-libvpx-v1.15.2.tar.gz",
+        "scummvm-mpg123-1.33.4.tar.bz2",
+        "scummvm-RetroWave-e6bf60eed2d2bd1deff688d645be71a32bbf05bb.tar.gz",
+        "sdl2-2.32.10.tar.gz",
+        "scummvm-libsdl-org-SDL_net-669e75b84632e2c6cc5c65974ec9e28052cb7a4e.tar.gz",
+        "scummvm-EmbeddedSynth-sonivox-v4.0.0.tar.gz",
+        "zlib-1.3.1.tar.gz"
+      ],
+      "recipe": "Flashback/build-scummvm.py and Flashback/scummvm-build/",
+      "evidence": "DOS-SCUMMVM-PROVENANCE.json",
+      "build_record": "vendor/sources/scummvm-build/build-provenance.json",
+      "identity_audit": "python3 Flashback/fetch-native-sources.py --verify-only --require-complete --audit-scummvm-runtime",
+      "not_linked": "Sparkle/updater and Dock tile plug-in",
+      "license_note": "ScummVM GPL-3.0-or-later; linked RetroWave AGPL-3.0-or-later; other dependency terms retained"
+    }
+  ],
+  "fetch": [
+    {
+      "name": "DOSBox Staging external-dependency build recipe",
+      "file": "dosbox-staging-ext-v0.83.0-4.tar.gz",
+      "url": "https://codeload.github.com/dosbox-staging/dosbox-staging-ext/tar.gz/refs/tags/v0.83.0-4",
+      "sha256": "6ce8bfb0634206a9d69a70ac87ff9d50c91d0d2d7db1b5a054789bf778a3cd70",
+      "license": "MIT",
+      "role": "build-recipe"
+    },
+    {
+      "name": "vcpkg baseline",
+      "file": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz",
+      "url": "https://github.com/microsoft/vcpkg/archive/6283825b81bb60f952af1d0703638df1de611243.tar.gz",
+      "sha256": "452f195096c5813fe48be1beac407a47cac7f92e7f05ad2f6c1294c95915b910",
+      "license": "MIT",
+      "role": "build-recipe"
+    },
+    {
+      "name": "libslirp overlay source",
+      "file": "libslirp-b9321c6ece41940466c24fbea7a0cf3b7cf04aba.tar.gz",
+      "url": "https://gitlab.freedesktop.org/slirp/libslirp/-/archive/b9321c6ece41940466c24fbea7a0cf3b7cf04aba/libslirp-b9321c6ece41940466c24fbea7a0cf3b7cf04aba.tar.gz",
+      "sha256": "c552c2cd30adfd3eb5a8a55d15d9ad9762e0c72e8efd48ae3f5a6ed18d23fd07",
+      "upstream_sha512": "80a9a500f80dd82ff3aeadd8c3f911d76904e8ab8b478f0d4657f12f9a1caa6e85f847e488a9046bf7f8a1a7c8f006111477eaafc8df11f8acf7f9d79e8d1b8c",
+      "license": "BSD-3-Clause",
+      "role": "source"
+    },
+    {
+      "name": "GLib",
+      "file": "glib-2.86.3.tar.xz",
+      "url": "https://download.gnome.org/sources/glib/2.86/glib-2.86.3.tar.xz",
+      "sha256": "b3211d8d34b9df5dca05787ef0ad5d7ca75dec998b970e1aab0001d229977c65",
+      "upstream_sha512": "2b53aba22eef2d21cb40334fe55715bf0ca5009e5e105c462cdedfb45da96cca35e7edc95af27022893832feb5bfc0b0ee554382c8c8f55a2a777b864cfc53ba",
+      "license": "LGPL-2.1-or-later",
+      "role": "source"
+    },
+    {
+      "name": "gettext/libintl",
+      "file": "gettext-0.22.5.tar.gz",
+      "url": "https://ftp.gnu.org/pub/gnu/gettext/gettext-0.22.5.tar.gz",
+      "sha256": "ec1705b1e969b83a9f073144ec806151db88127f5e40fe5a94cb6c8fa48996a0",
+      "upstream_sha512": "d8b22d7fba10052a2045f477f0a5b684d932513bdb3b295c22fbd9dfc2a9d8fccd9aefd90692136c62897149aa2f7d1145ce6618aa1f0be787cb88eba5bc09be",
+      "license": "LGPL-2.1-or-later (bundled libintl component)",
+      "role": "source"
+    },
+    {
+      "name": "PCRE2",
+      "file": "pcre2-10.47.tar.gz",
+      "url": "https://github.com/PCRE2Project/pcre2/archive/pcre2-10.47.tar.gz",
+      "sha256": "409c443549b13b216da40049850a32f3e6c57d4224ab11553ab5a786878a158e",
+      "upstream_sha512": "4deef8ce95711e65fe07624e6b2aace794594adb15e8363a0279a7b947bf5c75a5858fbdc5251d0a28a7ca97ae8bba561aa5f85805d5c07d417d3e7b3b3486a4",
+      "license": "BSD-3-Clause",
+      "role": "source"
+    },
+    {
+      "name": "SLJIT used by PCRE2",
+      "file": "sljit-45f910b78c6605ebf5b53d3ec7cb00f2312fe417.tar.gz",
+      "url": "https://github.com/zherczeg/sljit/archive/45f910b78c6605ebf5b53d3ec7cb00f2312fe417.tar.gz",
+      "sha256": "ea5a6fb45e050f813f070ecaa098fe0389068beea61ac7dce5410a0c642ccfa3",
+      "upstream_sha512": "c05c83cc762f430c01e2aaf876aaac41a70b67ed8b91bc81102ad527c8921c5e75b41bab35bb8237dd5f53fecd7b8f31206865efffce2ea0a1aa9c87079fc643",
+      "license": "BSD-3-Clause",
+      "role": "source"
+    },
+    {
+      "name": "Sparkle corresponding source",
+      "file": "Sparkle-2.6.4-source.tar.gz",
+      "url": "https://codeload.github.com/sparkle-project/Sparkle/tar.gz/refs/tags/2.6.4",
+      "sha256": "f95ee6be2e22a1eb2216e8eb8e9a6567796d3584778bbafb6c34fbcad5117e41",
+      "license": "MIT and included third-party notices",
+      "role": "superseded official-runtime reference source; not linked by the replacement",
+      "source_tree": "0ef1ee0220239b3776f433314515fd849025673f",
+      "source_markers": [
+        "Sparkle-2.6.4/Sparkle.xcodeproj/project.pbxproj",
+        "Sparkle-2.6.4/Sparkle/SUUpdater.m"
+      ],
+      "used_by": []
+    },
+    {
+      "name": "asio",
+      "file": "asio-1.32.0.tar.gz",
+      "url": "https://github.com/chriskohlhoff/asio/archive/asio-1-32-0.tar.gz",
+      "upstream_sha512": "9374ff97bd4af7b5b41754970b2bcb468f450fee46a80c9c3344f732c64091f2ac5a73ebf4ac1831c623793c08a3c109ae90b601273c40d062bfd4f026f1d94d",
+      "license": "BSL-1.0",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/asio",
+      "role": "source",
+      "sha256": "f1b94b80eeb00bb63a3c8cef5047d4e409df4d8a3fe502305976965827d95672"
+    },
+    {
+      "name": "gtest",
+      "file": "gtest-1.17.0.tar.gz",
+      "url": "https://github.com/google/googletest/archive/v1.17.0.tar.gz",
+      "upstream_sha512": "0f57e9ef06925e5b7722df1eb92ef5850e8dce79220ea16a8aaff586a71c0b01460ef1713649ee24ffedb2e6ad5a51e9198c5a5ae1b2789e43feb1f494e7d45c",
+      "license": "BSD-3-Clause",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/gtest",
+      "role": "build-test dependency",
+      "sha256": "65fab701d9829d38cb77c14acdc431d2108bfdbf8979e40eb8ae567edf10b27c"
+    },
+    {
+      "name": "iir1",
+      "file": "iir1-1.10.0.tar.gz",
+      "url": "https://github.com/berndporr/iir1/archive/1.10.0.tar.gz",
+      "upstream_sha512": "f50b925394f79662ae021c02e60667273a5d4615f2ef9f88d256c3c6dbb0f7d851207b65e2da56b69a97e576b3bb611653fde421df4ae0a952615d29be2f33a6",
+      "license": "MIT",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/iir1",
+      "role": "source",
+      "sha256": "13b53f14d276adf6cafd3564fcda1d4b3e72342108d1c40ec4b4f0c7fc3ac95a"
+    },
+    {
+      "name": "libmt32emu",
+      "file": "libmt32emu-2.7.3.tar.gz",
+      "url": "https://github.com/munt/munt/archive/libmt32emu_2_7_3.tar.gz",
+      "upstream_sha512": "9ec78d57d93bdac9ec7097b03eef7efb79bfa8837a9f04746a89f508adc6482f2da0977db3f7e5def6629cc613fa58c4bf23c752af251e417a5303cf14fe96ad",
+      "license": "GPL-2.0-or-later",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libmt32emu",
+      "role": "source",
+      "sha256": "e51f3475771c9d07116e6cb5ae2e095ef3b11b3107d92c01d3a1dc03be13ff98"
+    },
+    {
+      "name": "libpng",
+      "file": "libpng-1.6.54.tar.gz",
+      "url": "https://github.com/pnggroup/libpng/archive/v1.6.54.tar.gz",
+      "upstream_sha512": "f09e41c5e05714760b8dd05bd11bfe8b6b5840c277e5377a3854f5260879b69709c708f9581c07bdc2ffafda45796066ec258b67b0e96af64614b12346bedb1b",
+      "license": "libpng-2.0",
+      "used_by": [
+        "DOSBox Staging 0.83.0",
+        "ScummVM 2026.3.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libpng",
+      "role": "source",
+      "sha256": "ba7efce137409079989df4667706c339bebfbb10e9f413474718012a13c8cd4c",
+      "scummvm_recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libpng"
+    },
+    {
+      "name": "opusfile",
+      "file": "opusfile-0.12-20221121.tar.gz",
+      "url": "https://github.com/xiph/opusfile/archive/9d718345ce03b2fad5d7d28e0bcd1cc69ab2b166.tar.gz",
+      "upstream_sha512": "17e323d6c031330f10b045a1438cd7ba44e2ac313ec7b3d69a8041dfa927c3f501d04246d974109fbd68dfa1a8d7b63584d96caed69ad5e38b68358aa35af65a",
+      "license": "BSD-3-Clause",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/opusfile",
+      "role": "source",
+      "sha256": "69be13745ce58cf2351bd05d5beb49389550b1114c99667dac23045cd3888728"
+    },
+    {
+      "name": "fluidsynth",
+      "file": "fluidsynth-2.5.2.tar.gz",
+      "url": "https://github.com/FluidSynth/fluidsynth/archive/v2.5.2.tar.gz",
+      "upstream_sha512": "5c376d9bf6388f04e5d48375a70682f9d7edcd65809383afc0190c77140b086492abc17a8d3a2aa07e59dde681ab17a919e9b8b7e174a91a2951c30b262c10e4",
+      "license": "LGPL-2.1-or-later",
+      "used_by": [
+        "DOSBox Staging 0.83.0",
+        "ScummVM 2026.3.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/fluidsynth",
+      "role": "source",
+      "sha256": "1dcb13308b3aa383db658c60a7b63d73d0ff4601ccee589582ba7a816475410e",
+      "scummvm_recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/fluidsynth"
+    },
+    {
+      "name": "sdl2",
+      "file": "sdl2-2.32.10.tar.gz",
+      "url": "https://github.com/libsdl-org/SDL/archive/release-2.32.10.tar.gz",
+      "upstream_sha512": "d5622d6bb7266f7942a7b8ad43e8a22524893bf0c2ea1af91204838d9b78d32768843f6faa248757427b8404b8c6443776d4afa6b672cd8571a4e0c03a829383",
+      "license": "Zlib",
+      "used_by": [
+        "DOSBox Staging 0.83.0",
+        "ScummVM 2026.3.0"
+      ],
+      "recipe": "dosbox-staging-v0.83.0.tar.gz:vcpkg-ports/sdl2",
+      "role": "source",
+      "sha256": "03f9d7c191a837525c9cda6406af2f2e48be02b5e7eb03d949cc9f1e9ca41c8b",
+      "scummvm_recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sdl2"
+    },
+    {
+      "name": "sdl2-image",
+      "file": "sdl2-image-2.8.8.tar.gz",
+      "url": "https://github.com/libsdl-org/SDL_image/archive/release-2.8.8.tar.gz",
+      "upstream_sha512": "3fef846eb0ad51a8b346bb421c87eb81f0e2f186d700a219ebf17146397da404b3683853322989ed939b1672cc36b799582f24bc58a0393fc6c698a65cda2b82",
+      "license": "Zlib",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sdl2-image",
+      "role": "source",
+      "sha256": "2bd2c17cab3744ebfe7351ded8c70dc2078d8c7c24eb9f4ebb1b26a623e2a747"
+    },
+    {
+      "name": "speexdsp",
+      "file": "speexdsp-1.2.1.tar.gz",
+      "url": "https://downloads.xiph.org/releases/speex/speexdsp-1.2.1.tar.gz",
+      "upstream_sha512": "41b5f37b48db5cb8c5a0f6437a4a8266d2627a5b7c1088de8549fe0bf0bb3105b7df8024fe207eef194096e0726ea73e2b53e0a4293d8db8e133baa0f8a3bad3",
+      "license": "BSD-3-Clause",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/speexdsp",
+      "role": "source",
+      "sha256": "8c777343e4a6399569c72abc38a95b24db56882c83dbdb6c6424a5f4aeb54d3d"
+    },
+    {
+      "name": "zlib-ng",
+      "file": "zlib-ng-2.3.3.tar.gz",
+      "url": "https://github.com/zlib-ng/zlib-ng/archive/2.3.3.tar.gz",
+      "upstream_sha512": "e2057c764f1d5aaee738edee7e977182c5b097e3c95489dcd8de813f237d92a05daaa86d68d44b331d9fec5d1802586a8f6cfb658ba849874aaa14e72a8107f5",
+      "license": "Zlib",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/zlib-ng",
+      "role": "source",
+      "sha256": "f9c65aa9c852eb8255b636fd9f07ce1c406f061ec19a2e7d508b318ca0c907d1"
+    },
+    {
+      "name": "libogg",
+      "file": "libogg-1.3.6.tar.gz",
+      "url": "https://github.com/xiph/ogg/archive/v1.3.6.tar.gz",
+      "upstream_sha512": "c247e1da8b12f8b33272fafb6d7c171a1a2687c3632977439fa60b96ccc2ad751d88a2931bb3e18e1ddf2eea2e82cdd0aab087b2ec5393a9228c703476fa0167",
+      "license": "BSD-3-Clause",
+      "used_by": [
+        "DOSBox Staging 0.83.0",
+        "ScummVM 2026.3.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libogg",
+      "role": "source",
+      "sha256": "95b643da661155d79db9de2fca55daed3a8d491039829def246aacb3d9201c81",
+      "scummvm_recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libogg"
+    },
+    {
+      "name": "opus",
+      "file": "opus-1.5.2.tar.gz",
+      "url": "https://github.com/xiph/opus/archive/v1.5.2.tar.gz",
+      "upstream_sha512": "4ffefd9c035671024f9720c5129bfe395dea04f0d6b730041c2804e89b1db6e4d19633ad1ae58855afc355034233537361e707f26dc53adac916554830038fab",
+      "license": "BSD-3-Clause",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/opus",
+      "role": "source",
+      "sha256": "9480e329e989f70d69886ded470c7f8cfe6c0667cc4196d4837ac9e668fb7404"
+    },
+    {
+      "name": "gcem",
+      "file": "gcem-1.18.0.tar.gz",
+      "url": "https://github.com/kthohr/gcem/archive/v1.18.0.tar.gz",
+      "upstream_sha512": "b9bbf16cfc3488a99ab371db36879bdde1699f0890db609278c03fb161cdffef0fbd34dbbf6004d6352e9e90c49e08e6b77357c4a424b0b5e174198b42dc049c",
+      "license": "Apache-2.0",
+      "used_by": [
+        "DOSBox Staging 0.83.0",
+        "ScummVM 2026.3.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/gcem",
+      "role": "source",
+      "sha256": "8e71a9f5b62956da6c409dda44b483f98c4a98ae72184f3aa4659ae5b3462e61",
+      "scummvm_recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/gcem"
+    },
+    {
+      "name": "zlib",
+      "file": "zlib-1.3.1.tar.gz",
+      "url": "https://github.com/madler/zlib/archive/v1.3.1.tar.gz",
+      "upstream_sha512": "8c9642495bafd6fad4ab9fb67f09b268c69ff9af0f4f20cf15dfc18852ff1f312bd8ca41de761b3f8d8e90e77d79f2ccacd3d4c5b19e475ecf09d021fdfe9088",
+      "license": "Zlib",
+      "used_by": [
+        "DOSBox Staging 0.83.0",
+        "ScummVM 2026.3.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/zlib",
+      "role": "source",
+      "sha256": "17e88863f3600672ab49182f217281b6fc4d3c762bde361935e436a95214d05c",
+      "scummvm_recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/zlib"
+    },
+    {
+      "name": "libffi",
+      "file": "libffi-3.5.2.tar.gz",
+      "url": "https://github.com/libffi/libffi/releases/download/v3.5.2/libffi-3.5.2.tar.gz",
+      "upstream_sha512": "76974a84e3aee6bbd646a6da2e641825ae0b791ca6efdc479b2d4cbcd3ad607df59cffcf5031ad5bd30822961a8c6de164ac8ae379d1804acd388b1975cdbf4d",
+      "license": "MIT",
+      "used_by": [
+        "DOSBox Staging 0.83.0"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libffi",
+      "role": "source",
+      "sha256": "f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc"
+    },
+    {
+      "name": "ScummVM dependency brotli",
+      "file": "scummvm-google-brotli-v1.2.0.tar.gz",
+      "url": "https://github.com/google/brotli/archive/v1.2.0.tar.gz",
+      "sha256": "816c96e8e8f193b40151dad7e8ff37b1221d019dbcb9c35cd3fadbfe6477dfec",
+      "upstream_sha512": "f94542afd2ecd96cc41fd21a805a3da314281ae558c10650f3e6d9ca732b8425bba8fde312823f0a564c7de3993bdaab5b43378edab65ebb798cefb6fd702256",
+      "license": "MIT",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/brotli",
+      "build_cache_name": "google-brotli-v1.2.0.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency bzip2",
+      "file": "scummvm-bzip2-1.0.8.tar.gz",
+      "url": "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
+      "sha256": "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+      "upstream_sha512": "083f5e675d73f3233c7930ebe20425a533feedeaaa9d8cc86831312a6581cefbe6ed0d08d2fa89be81082f2a5abdabca8b3c080bf97218a1bd59dc118a30b9f3",
+      "license": "bzip2-1.0.6",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/bzip2",
+      "build_cache_name": "bzip2-1.0.8.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency faad2",
+      "file": "scummvm-knik0-faad2-2.11.2.tar.gz",
+      "url": "https://github.com/knik0/faad2/archive/2.11.2.tar.gz",
+      "sha256": "3fcbd305e4abd34768c62050e18ca0986f7d9c5eca343fb98275418013065c0e",
+      "upstream_sha512": "fd140c0f4e7946e95a49a8652e26f33b138fc3375da34d5e3a55cdde8a74be429eb6fe0180bd434841022cee3c2ec65fe40dda7440fe0dd2761622174f992490",
+      "license": "GPL-2.0-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/faad2",
+      "build_cache_name": "knik0-faad2-2.11.2.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency freetype",
+      "file": "scummvm-freetype-freetype-VER-2-13-3.tar.gz",
+      "url": "https://gitlab.freedesktop.org/freetype/freetype/-/archive/VER-2-13-3/freetype-VER-2-13-3.tar.gz",
+      "sha256": "bc5c898e4756d373e0d991bab053036c5eb2aa7c0d5c67e8662ddc6da40c4103",
+      "upstream_sha512": "fccfaa15eb79a105981bf634df34ac9ddf1c53550ec0b334903a1b21f9f8bf5eb2b3f9476e554afa112a0fca58ec85ab212d674dfd853670efec876bacbe8a53",
+      "license": "(FTL OR GPL-2.0-or-later)",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/freetype",
+      "build_cache_name": "freetype-freetype-VER-2-13-3.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency fribidi",
+      "file": "scummvm-fribidi-fribidi-v1.0.16.tar.gz",
+      "url": "https://github.com/fribidi/fribidi/archive/v1.0.16.tar.gz",
+      "sha256": "5a1d187a33daa58fcee2ad77f0eb9d136dd6fa4096239199ba31e850d397e8a8",
+      "upstream_sha512": "13d7104f80e1b480d65a4c47fd694f5930222f3db843b8b6c1b6af58c43ee74b08635ce6166d005451498d060e549e4c666aa30c46d4df003d9ad63dba1d854a",
+      "license": "LGPL-2.1-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/fribidi",
+      "build_cache_name": "fribidi-fribidi-v1.0.16.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency giflib",
+      "file": "scummvm-giflib-5.2.2.tar.gz",
+      "url": "https://sourceforge.net/projects/giflib/files//giflib-5.2.2.tar.gz",
+      "sha256": "be7ffbd057cadebe2aa144542fd90c6838c6a083b5e8a9048b8ee3b66b29d5fb",
+      "upstream_sha512": "0865ab2b1904fa14640c655fdb14bb54244ad18a66e358565c00287875d00912343f9be8bfac7658cc0146200d626f7ec9160d7a339f20ba3be6b9941d73975f",
+      "license": "MIT",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/giflib",
+      "build_cache_name": "giflib-5.2.2.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency liba52",
+      "file": "scummvm-a52dec-0.7.4.tar.gz",
+      "url": "https://download.videolan.org/pub/contrib/a52/a52dec-0.7.4.tar.gz",
+      "sha256": "a21d724ab3b3933330194353687df82c475b5dfb997513eef4c25de6c865ec33",
+      "upstream_sha512": "4b26fe9492f218b775fb190b76ecf06edaeb656adfe6dcbd24d0a0f86871c3ba917edb88a398eb12dccedaa1605b6f0a0be06b09f9fddd9a46e457b7dd244848",
+      "license": "GPL-2.0-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/liba52",
+      "build_cache_name": "a52dec-0.7.4.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libflac",
+      "file": "scummvm-xiph-flac-1.5.0.tar.gz",
+      "url": "https://github.com/xiph/flac/archive/1.5.0.tar.gz",
+      "sha256": "aea54ed186ad07a34750399cb27fc216a2b62d0ffcd6dc2e3064a3518c3146f8",
+      "upstream_sha512": "c8e119462205cfd8bbe22b0aff112625d3e51ca11de97e4de06a46fb43a0768d7ec9c245b299b09b7aa4d811c6fc7b57856eaa1c217e82cca9b3ad1c0e545cbe",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libflac",
+      "build_cache_name": "xiph-flac-1.5.0.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libjpeg-turbo",
+      "file": "scummvm-libjpeg-turbo-libjpeg-turbo-3.1.3.tar.gz",
+      "url": "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/3.1.3.tar.gz",
+      "sha256": "3a13a5ba767dc8264bc40b185e41368a80d5d5f945944d1dbaa4b2fb0099f4e5",
+      "upstream_sha512": "d95bf0689fb2862ad5ea9e902b73724098d911d9c312aa69157bec9de77f32e4d5ac7dfa105d844110cc66dbdb0336056ba7f96781fcbc848b72fd0661604d50",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libjpeg-turbo",
+      "build_cache_name": "libjpeg-turbo-libjpeg-turbo-3.1.3.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libmad",
+      "file": "scummvm-tenacityteam-libmad-0.16.4.tar.gz",
+      "url": "https://codeberg.org/tenacityteam/libmad/releases/download/0.16.4/libmad-0.16.4.tar.gz",
+      "sha256": "0f6bfb36c554075494b5fc2c646d08de7364819540f23bab30ae73fa1b5cfe65",
+      "upstream_sha512": "5b0a826408395e8b6b8a33953401355d6c2f1b33ec5085530b4ac8a538c39ffa903ce2e6845e9dcad73936933078959960b2f3fbba11ae091fda5bc5ee310df5",
+      "license": "NOASSERTION",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libmad",
+      "build_cache_name": "tenacityteam-libmad-0.16.4.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libmikmod",
+      "file": "scummvm-libmikmod-3.3.11.1.tar.gz",
+      "url": "https://downloads.sourceforge.net/project/mikmod/libmikmod/3.3.11.1/libmikmod-3.3.11.1.tar.gz",
+      "sha256": "ad9d64dfc8f83684876419ea7cd4ff4a41d8bcd8c23ef37ecb3a200a16b46d19",
+      "upstream_sha512": "f2439e2b691613847cd0787dd4e050116683ce7b05c215b8afecde5c6add819ea6c18e678e258c0a80786bef463f406072de15127f64368f694287a5e8e1a9de",
+      "license": "LGPL-2.1-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libmikmod",
+      "build_cache_name": "libmikmod-3.3.11.1.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libmpeg2",
+      "file": "scummvm-libmpeg2-0.5.1.tar.gz",
+      "url": "https://download.videolan.org/contrib/libmpeg2/libmpeg2-0.5.1.tar.gz",
+      "sha256": "dee22e893cb5fc2b2b6ebd60b88478ab8556cb3b93f9a0d7ce8f3b61851871d4",
+      "upstream_sha512": "3648a2b3d7e2056d5adb328acd2fb983a1fa9a05ccb6f9388cc686c819445421811f42e8439418a0491a13080977f074a0d8bf8fa6bc101ff245ddea65a46fbc",
+      "license": "GPL-2.0-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libmpeg2",
+      "build_cache_name": "libmpeg2-0.5.1.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libopenmpt",
+      "file": "scummvm-OpenMPT-openmpt-libopenmpt-0.7.13.tar.gz",
+      "url": "https://github.com/OpenMPT/openmpt/archive/libopenmpt-0.7.13.tar.gz",
+      "sha256": "319f77b22b03e6babb852a64b57f6b4a8cc42fdf29f187d88b600e3c7868b305",
+      "upstream_sha512": "a82cc543074c5688a8a02d6bcbc378204c1962c1f4a44b9399b3cc708b4d0f660498bf496c446dd5a6dce48110e78eb2754a1454c451bb22de6664f18a8ddbc1",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libopenmpt",
+      "build_cache_name": "OpenMPT-openmpt-libopenmpt-0.7.13.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libtheora",
+      "file": "scummvm-xiph-theora-v1.2.0.tar.gz",
+      "url": "https://github.com/xiph/theora/archive/v1.2.0.tar.gz",
+      "sha256": "e0c35771b425c32a052ffb358a2aed14219340ab850b48dc85b01939c0513a31",
+      "upstream_sha512": "b2aac15528f0ef8258c0902e33e8211e8858c3c7e6e9eeb708cce5922de5f0e412255ddaf540a50c0ebf601df6c4376fd24a0bdd7f8de4432c4ae6e5d6ffe2b6",
+      "license": "LicenseRef-vcpkg-null",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libtheora",
+      "build_cache_name": "xiph-theora-v1.2.0.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libvorbis",
+      "file": "scummvm-xiph-vorbis-v1.3.7.tar.gz",
+      "url": "https://github.com/xiph/vorbis/archive/v1.3.7.tar.gz",
+      "sha256": "270c76933d0934e42c5ee0a54a36280e2d87af1de3cc3e584806357e237afd13",
+      "upstream_sha512": "bfb6f5dbfd49ed38b2b08b3667c06d02e68f649068a050f21a3cc7e1e56b27afd546aaa3199c4f6448f03f6e66a82f9a9dc2241c826d3d1d4acbd38339b9e9fb",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/libvorbis",
+      "build_cache_name": "xiph-vorbis-v1.3.7.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency libvpx",
+      "file": "scummvm-webmproject-libvpx-v1.15.2.tar.gz",
+      "url": "https://github.com/webmproject/libvpx/archive/v1.15.2.tar.gz",
+      "sha256": "26fcd3db88045dee380e581862a6ef106f49b74b6396ee95c2993a260b4636aa",
+      "upstream_sha512": "824fe8719e4115ec359ae0642f5e1cea051d458f09eb8c24d60858cf082f66e411215e23228173ab154044bafbdfbb2d93b589bb726f55b233939b91f928aae0",
+      "license": "BSD-3-Clause",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/libvpx",
+      "build_cache_name": "webmproject-libvpx-v1.15.2.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency mpg123",
+      "file": "scummvm-mpg123-1.33.4.tar.bz2",
+      "url": "https://downloads.sourceforge.net/project/mpg123/mpg123/1.33.4/mpg123-1.33.4.tar.bz2",
+      "sha256": "3ae8c9ff80a97bfc0e22e89fbcd74687eca4fc1db315b12607f27f01cb5a47d9",
+      "upstream_sha512": "9b7aa93b692132da7eb8dcfef12ce91bf66bf8475af50e9c57d7b80225f96c0e74264e518e558371af1f4cf6d2afda5b3dfc844949fd747db7ac7c44d0e9f6ad",
+      "license": "LGPL-2.1-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/mpg123",
+      "build_cache_name": "mpg123-1.33.4.tar.bz2"
+    },
+    {
+      "name": "ScummVM dependency retrowave",
+      "file": "scummvm-RetroWave-e6bf60eed2d2bd1deff688d645be71a32bbf05bb.tar.gz",
+      "url": "https://codeload.github.com/SudoMaker/RetroWave/tar.gz/e6bf60eed2d2bd1deff688d645be71a32bbf05bb",
+      "sha256": "f1ecf577f9f40029549276d7f6ceef879ea845d7b4de4237e714866d6bd68464",
+      "upstream_sha512": "559dab35498b0b8e4438fbf044212982c076be0b7acff1b0ecb02bc3978e7d42002a2e510347461441d682461f9819ff1492791931dd4f806bb343737a431a8f",
+      "license": "AGPL-3.0-or-later",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "Flashback/scummvm-build/ports/retrowave",
+      "build_cache_name": "RetroWave-e6bf60eed2d2bd1deff688d645be71a32bbf05bb.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency sdl2-net",
+      "file": "scummvm-libsdl-org-SDL_net-669e75b84632e2c6cc5c65974ec9e28052cb7a4e.tar.gz",
+      "url": "https://github.com/libsdl-org/SDL_net/archive/669e75b84632e2c6cc5c65974ec9e28052cb7a4e.tar.gz",
+      "sha256": "df296cbf1cd2e159a509e62f51453614a5109036855db70d1d24e3adc6a5ebe8",
+      "upstream_sha512": "180c757d704c72dc7fcc392c13942214c87b90de22e32045ec9eb6cde5da2b762516e14120d8bee52f7f4a59ad8e30d4f71e313918432ae07ef71df8e9380e4b",
+      "license": "Zlib",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sdl2-net",
+      "build_cache_name": "libsdl-org-SDL_net-669e75b84632e2c6cc5c65974ec9e28052cb7a4e.tar.gz"
+    },
+    {
+      "name": "ScummVM dependency sonivox",
+      "file": "scummvm-EmbeddedSynth-sonivox-v4.0.0.tar.gz",
+      "url": "https://github.com/EmbeddedSynth/sonivox/archive/v4.0.0.tar.gz",
+      "sha256": "bd07e384041df010576b2bc1626625465f93ac6ae2e96ae792d0994b816880b1",
+      "upstream_sha512": "d9f8fb18f151ef3ba2352bcd66a97bc71056aab8ab9f78a061ffa475f68a80ede3c2c0deb374ad21eb2c1cb1d7521c3d7f8eeda72640e11f71c3526b275f5468",
+      "license": "Apache-2.0",
+      "role": "source",
+      "used_by": [
+        "ScummVM 2026.3.0 Flashback source build"
+      ],
+      "recipe": "vcpkg-6283825b81bb60f952af1d0703638df1de611243.tar.gz:ports/sonivox",
+      "build_cache_name": "EmbeddedSynth-sonivox-v4.0.0.tar.gz"
+    }
+  ],
+  "excluded_component": {
+    "name": "Nuked-SC55-CLAP v0.11.0",
+    "reason": "Removed from the fetched DOSBox Staging app because its original MAME license prohibits commercial product or activity use.",
+    "source_url": "https://codeload.github.com/johnnovak/Nuked-SC55-CLAP/tar.gz/refs/tags/v0.11.0",
+    "source_sha256": "ba16e3246fc649fcea3e4f6a4ab2ac815848318ecc5e6d8c92fccf807526d3e0"
+  },
+  "superseded_binary_sdk": {
+    "file": "Sparkle-2.6.4.tar.xz",
+    "sha256": "50612a06038abc931f16011d7903b8326a362c1074dabccb718404ce8e585f0b",
+    "reason": "This release asset is a binary SDK, not corresponding source. It is no longer a source input."
+  }
+}

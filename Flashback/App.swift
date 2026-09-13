@@ -35,12 +35,20 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
     @Published var alert: Message?
     @Published var coverRevision = 0
     var canWrite = true
+    /// Installed only when this build includes the experimental runtime.
+    /// Keeping the route here lets Add Games enter the guided setup without
+    /// making Classic Windows appear in ordinary shipping builds.
+    var classicWindowsRequest: ((Game) -> Void)?
     var auditsLayout = false
     var layoutFrames: [String:CGRect] = [:]
     var windows: [String:GameWindow] = [:]
     var websiteWindow: WebsiteImportWindow?
     var helpWindow: HelpWindow?
     @Published var javaSessions: [String:JavaSession] = [:]
+    @Published var nativeSessions: [String:NativeSession] = [:]
+    var dosSettingsWindows: [String:DOSSettingsWindow] = [:]
+    @Published var dosMaintenance: Set<String> = []
+    private var dosRestartRequests: Set<String> = []
     var playerDataStore = WKWebsiteDataStore.default()
     private var pending: [(URL, Bool)] = []
     private var dialogWindow: NSWindow? {
@@ -69,10 +77,14 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
     func chooseFiles() {
         let panel = NSOpenPanel()
         panel.title = "Add games"
-        panel.message = "Choose a Flash, Java, HTML, or Shockwave game. Add its ZIP or entire folder to include graphics and sounds."
+        panel.message = classicWindowsRequest == nil
+            ? "Choose a Flash, Java, HTML, DOS, or Director game. Add its ZIP or entire folder to include graphics and sounds."
+            : "Choose a Flash, Java, HTML, DOS, Director, or Classic Windows game. For Windows, choose its ISO or complete folder."
         panel.prompt = "Add to Library"
         panel.canChooseDirectories = true; panel.canChooseFiles = true; panel.allowsMultipleSelection = true
-        panel.allowedContentTypes = [UTType(filenameExtension:"swf") ?? .data, UTType(filenameExtension:"jar") ?? .data, UTType(filenameExtension:"dcr") ?? .data, UTType(filenameExtension:"dir") ?? .data, UTType(filenameExtension:"dxr") ?? .data, .html, .zip, .folder]
+        var types = [UTType(filenameExtension:"swf") ?? .data, UTType(filenameExtension:"jar") ?? .data, UTType(filenameExtension:"dcr") ?? .data, UTType(filenameExtension:"dir") ?? .data, UTType(filenameExtension:"dxr") ?? .data, .html, .zip, .folder] + ["jnlp","exe","com","bat","scummvm"].map { UTType(filenameExtension:$0) ?? .data }
+        if classicWindowsRequest != nil { types.append(UTType(filenameExtension:"iso") ?? .data) }
+        panel.allowedContentTypes = types
         if auditsLayout { panel.directoryURL = library.root }
         let completion: (NSApplication.ModalResponse) -> Void = { [weak self] result in
             if result == .OK { self?.add(panel.urls) }
@@ -182,6 +194,11 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
                 let scoped = url.startAccessingSecurityScopedResource()
                 defer { if scoped { url.stopAccessingSecurityScopedResource() } }
                 status = "Adding \(url.lastPathComponent)…"
+                if let request = ClassicWindowsImport.directRequest(url), let route = classicWindowsRequest {
+                    do { route(try await addClassicWindows(request)) }
+                    catch { failures.append("\(url.lastPathComponent): \(error.localizedDescription)") }
+                    continue
+                }
                 do {
                     let storage = library
                     guard let resources = Bundle.main.resourceURL else { throw LibraryError("The player is missing. Reinstall Flashback.") }
@@ -198,7 +215,15 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
                     }
                     query = ""; filter = .all; showingDiscover = false
                     if autoPlay && pending.isEmpty { play(game) }
-                } catch { failures.append("\(url.lastPathComponent): \(error.localizedDescription)") }
+                } catch {
+                    if let request = ClassicWindowsImport.requestAfterStandardImportFailed(url),
+                       let route = classicWindowsRequest {
+                        do { route(try await addClassicWindows(request)) }
+                        catch { failures.append("\(url.lastPathComponent): \(error.localizedDescription)") }
+                    } else {
+                        failures.append("\(url.lastPathComponent): \(error.localizedDescription)")
+                    }
+                }
             }
             isImporting = false
             if !failures.isEmpty {
@@ -212,6 +237,23 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
         }
     }
 
+    private func addClassicWindows(_ request: ClassicWindowsImportRequest) async throws -> Game {
+        status = "Adding \(request.displayName)…"
+        let storage = library
+        let imported = try await Task.detached(priority:.userInitiated) { try storage.importClassicWindows(request) }.value
+        let game: Game
+        if let existing = games.first(where:{ $0.id == imported.id }) {
+            game = existing
+            status = "\(existing.title) is already in your library."
+        } else {
+            try commit(games + [imported])
+            game = imported
+            status = "\(imported.title) added."
+        }
+        query = ""; filter = .all; showingDiscover = false
+        return game
+    }
+
     func addRecoveredGame(_ recovery: WebRecovery, title: String) async throws -> (game: Game, alreadyPresent: Bool)? {
         guard let resources = Bundle.main.resourceURL else { throw LibraryError("The player resources are missing.") }
         let storage = library
@@ -219,11 +261,11 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
         defer { if let temp = plan.temporaryDirectory { try? FileManager.default.removeItem(at:temp) } }
         plan.suggestedTitle = title
         let choice: String?
-        if let entry = recovery.entry { choice = entry } else { choice = await selectEntry(plan) }
+        if let entry = recovery.entry, plan.movies.contains(entry) { choice = entry } else { choice = await selectEntry(plan) }
         guard let entry = choice else { return nil }
         let importPlan = plan
         let imported = try await Task.detached(priority:.userInitiated) {
-            if (entry as NSString).pathExtension.lowercased() == "jar" {
+            if ["jar","jnlp"].contains((entry as NSString).pathExtension.lowercased()) {
                 let base = importPlan.isFolder ? importPlan.source : importPlan.source.deletingLastPathComponent()
                 try WebsiteImportModel.inspectJava(GameLibrary.contained(entry,in:base),resources:resources)
             }
@@ -271,12 +313,67 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
 
     func commit(_ next: [Game]) throws { try library.save(next); games = next }
 
-    func play(_ game: Game) {
+    func showDOSSettings(_ game: Game) {
+        if let existing = dosSettingsWindows[game.id] { existing.showWindow(nil); existing.window?.makeKeyAndOrderFront(nil); return }
+        let controller = DOSSettingsWindow(game:game,model:self)
+        controller.onClose = { [weak self] in self?.dosSettingsWindows[game.id] = nil }
+        dosSettingsWindows[game.id] = controller
+        controller.showWindow(nil); controller.window?.makeKeyAndOrderFront(nil)
+    }
+
+    func restartDOS(_ game: Game) {
+        guard game.isDOS, !dosMaintenance.contains(game.id), !dosRestartRequests.contains(game.id) else { return }
+        guard let session = nativeSessions[game.id] else { play(game); return }
+        dosRestartRequests.insert(game.id)
+        let dialog = NSAlert()
+        dialog.messageText = "Restart “\(game.title)”?"
+        dialog.informativeText = "Progress you have not saved in the game will be lost. Saved game files will be kept."
+        dialog.addButton(withTitle:"Cancel")
+        dialog.addButton(withTitle:"Restart Game")
+        Task { [self] in
+            defer { dosRestartRequests.remove(game.id) }
+            guard await confirm(dialog) == .alertSecondButtonReturn,
+                  nativeSessions[game.id] === session,
+                  games.contains(where: { $0.id == game.id }) else { return }
+            let previous = session.onExit
+            session.onExit = { [weak self] error in
+                previous?(error)
+                guard let self, self.games.contains(where: { $0.id == game.id }) else { return }
+                self.play(game)
+            }
+            session.stop()
+        }
+    }
+
+    func play(_ game: Game, dosMode: DOSLaunchMode = .game) {
+        guard !dosMaintenance.contains(game.id) else { show(LibraryError("Please wait for this game’s data operation to finish.")); return }
+        if game.isClassicWindows {
+            guard let route = classicWindowsRequest else {
+                show(LibraryError("Classic Windows support is not included in this build.")); return
+            }
+            route(game)
+            return
+        }
         if let window = windows[game.id] { window.showWindow(nil); window.window?.makeKeyAndOrderFront(nil); return }
         if let session = javaSessions[game.id] { session.activate(); return }
+        if let session = nativeSessions[game.id] { session.activate(); return }
         do {
             try GameLibrary.validateGame(library.movie(for:game))
             guard let resources = Bundle.main.resourceURL else { throw LibraryError("The player is missing from this app. Reinstall Flashback.") }
+            if game.isNative {
+                let session = NativeSession(game:game)
+                session.onReady = { [weak self] in self?.markPlayed(game) }
+                session.onExit = { [weak self] error in
+                    self?.nativeSessions[game.id] = nil
+                    if let error { self?.show(LibraryError(error)) }
+                }
+                nativeSessions[game.id] = session
+                Task {
+                    do { try await session.start(library:library,resources:resources,dosMode:dosMode) }
+                    catch { nativeSessions[game.id] = nil; show(error) }
+                }
+                return
+            }
             if game.isJava {
                 let session = JavaSession(game:game)
                 session.onReady = { [weak self] in self?.markPlayed(game) }
@@ -296,6 +393,7 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
             window.onClose = { [weak self] in self?.windows[game.id] = nil }
             session.onCover = { [weak self] in self?.coverRevision += 1 }
             session.onReady = { [weak self] in self?.markPlayed(game) }
+            session.onVolumeChange = { [weak self] volume in self?.setVolume(volume,for:game) }
             windows[game.id] = window
             window.showWindow(nil); window.window?.makeKeyAndOrderFront(nil)
             session.start()
@@ -306,6 +404,36 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
         guard let index = games.firstIndex(where:{ $0.id == game.id }) else { return }
         var next = games; next[index].lastPlayed = Date()
         do { try commit(next) } catch { show(error) }
+    }
+
+    func setVolume(_ volume: Double, for game: Game) {
+        guard let index = games.firstIndex(where:{ $0.id == game.id }) else { return }
+        var next = games
+        next[index].volume = min(max(volume,0),1)
+        do { try commit(next) } catch { show(error) }
+    }
+
+    func chooseVolume(_ game: Game) {
+        guard canWrite else { return }
+        let panel = NSAlert()
+        panel.messageText = "Volume for “\(game.title)”"
+        panel.informativeText = game.isNative && nativeSessions[game.id] != nil
+            ? "The new volume applies the next time you open this game."
+            : "Flashback remembers this setting for this game."
+        panel.addButton(withTitle:"Save Volume")
+        panel.addButton(withTitle:"Cancel")
+        let row = NSStackView(frame:NSRect(x:0,y:0,width:330,height:32))
+        row.orientation = .horizontal; row.spacing = 10
+        let quiet = NSImageView(image:NSImage(systemSymbolName:"speaker.fill",accessibilityDescription:"Quiet")!)
+        let slider = NSSlider(value:game.playbackVolume,minValue:0,maxValue:1,target:nil,action:nil)
+        slider.setAccessibilityLabel("Game volume")
+        let loud = NSImageView(image:NSImage(systemSymbolName:"speaker.wave.3.fill",accessibilityDescription:"Loud")!)
+        row.addArrangedSubview(quiet); row.addArrangedSubview(slider); row.addArrangedSubview(loud)
+        slider.widthAnchor.constraint(equalToConstant:250).isActive = true
+        panel.accessoryView = row
+        Task {
+            if await confirm(panel) == .alertFirstButtonReturn { setVolume(slider.doubleValue,for:game) }
+        }
     }
 
     func favorite(_ game: Game) {
@@ -378,23 +506,25 @@ struct Message: Identifiable { let id = UUID(); let title: String; let body: Str
     }
 
     func remove(_ game: Game) {
-        guard canWrite, !isImporting else { return }
+        guard canWrite, !isImporting, !dosMaintenance.contains(game.id) else { return }
         let dialog = NSAlert()
         dialog.messageText = "Remove “\(game.title)”?"
         dialog.informativeText = "Flashback’s copy will move to the Trash. Your original files and saved game data will be kept."
         dialog.addButton(withTitle:"Remove"); dialog.addButton(withTitle:"Cancel")
         Task {
             guard await confirm(dialog) == .alertFirstButtonReturn, canWrite else { return }
-            guard !isImporting else { show(LibraryError("Wait for the current import to finish, then remove the game.")); return }
+            guard !isImporting, !dosMaintenance.contains(game.id) else { show(LibraryError("Wait for the current import or game data operation to finish, then remove the game.")); return }
             let original = games
             do {
                 javaSessions[game.id]?.stop()
+                nativeSessions[game.id]?.stop()
                 try library.save(games.filter { $0.id != game.id })
                 do {
                     if FileManager.default.fileExists(atPath:library.folder(for:game).path) {
                         try FileManager.default.trashItem(at:library.folder(for:game), resultingItemURL:nil)
                     }
                 } catch { try library.save(original); throw error }
+                dosSettingsWindows[game.id]?.close()
                 windows[game.id]?.close()
                 games.removeAll { $0.id == game.id }
             } catch { show(error) }
@@ -508,7 +638,9 @@ struct LibraryView: View {
             Image(systemName:"gamecontroller").font(.system(size:38,weight:.light)).foregroundStyle(.secondary).accessibilityHidden(true)
             VStack(spacing:8) {
                 Text("No Games Yet").font(.system(size:22,weight:.semibold))
-                Text("Add Flash, Java, HTML5, or Shockwave games.\nDrop a file, folder, or ZIP anywhere in this window.")
+                Text(model.classicWindowsRequest == nil
+                     ? "Add Flash, Java, HTML5, Shockwave, DOS, or Director games.\nDrop a file, folder, or ZIP anywhere in this window."
+                     : "Add Flash, Java, HTML5, Shockwave, DOS, Director, or Classic Windows games.\nDrop a file, folder, ZIP, or Windows game ISO anywhere in this window.")
                     .font(.system(size:13)).foregroundStyle(.secondary).lineSpacing(3).multilineTextAlignment(.center)
             }
             HStack(spacing:10) {
@@ -585,15 +717,15 @@ struct GameCard: View {
                     if hovering {
                         ZStack {
                             Color.black.opacity(0.2)
-                            Image(systemName:"play.fill").font(.system(size:19)).foregroundStyle(.white).frame(width:46,height:46).background(.black.opacity(0.55),in:Circle())
+                            Image(systemName:game.isClassicWindows ? "gearshape.fill" : "play.fill").font(.system(size:19)).foregroundStyle(.white).frame(width:46,height:46).background(.black.opacity(0.55),in:Circle())
                         }
                     }
                 }.aspectRatio(16/9,contentMode:.fit).clipShape(RoundedRectangle(cornerRadius:10)).contentShape(Rectangle())
-            }.buttonStyle(.plain).accessibilityLabel("Play \(game.title)").accessibilityIdentifier("play-\(game.id)").onHover { hovering = $0 }.auditFrame("play-\(game.id)", model:model)
+            }.buttonStyle(.plain).accessibilityLabel(game.isClassicWindows ? "Set up \(game.title)" : "Play \(game.title)").accessibilityIdentifier("play-\(game.id)").onHover { hovering = $0 }.auditFrame("play-\(game.id)", model:model)
             HStack(alignment:.center,spacing:8) {
                 VStack(alignment:.leading,spacing:5) {
                     Text(game.title).font(.system(size:15,weight:.semibold)).lineLimit(1).help(game.title)
-                    Text(model.javaSessions[game.id] != nil ? "Playing" : (game.lastPlayed == nil ? game.format : "Played \(game.lastPlayed!.formatted(.relative(presentation:.named)))"))
+                    Text(game.isClassicWindows ? "Windows 98 · Setup required" : ((model.javaSessions[game.id] != nil || model.nativeSessions[game.id] != nil) ? "Playing" : (game.lastPlayed == nil ? game.format : "Played \(game.lastPlayed!.formatted(.relative(presentation:.named)))")))
                         .font(.system(size:12)).foregroundStyle(.secondary).lineLimit(1)
                 }.frame(maxWidth:.infinity,alignment:.leading).auditFrame("caption-\(game.id)", model:model)
                 Button { model.favorite(game) } label: {
@@ -621,7 +753,12 @@ struct GameCard: View {
         .auditFrame("card-\(game.id)", model:model)
         .contextMenu {
             Button("Play") { model.play(game) }
-            if model.javaSessions[game.id] != nil { Button("Quit Game") { model.javaSessions[game.id]?.stop() } }
+            if game.isDOS {
+                Button("DOS Settings…") { model.showDOSSettings(game) }
+                if model.nativeSessions[game.id] != nil { Button("Restart Game…") { model.restartDOS(game) } }
+            }
+            if game.isFlash || game.isNative { Button("Game Volume…") { model.chooseVolume(game) }.disabled(!model.canWrite) }
+            if model.javaSessions[game.id] != nil || model.nativeSessions[game.id] != nil { Button("Quit Game") { model.javaSessions[game.id]?.stop(); model.nativeSessions[game.id]?.stop() } }
             Button(game.favorite ? "Remove from Favorites" : "Add to Favorites") { model.favorite(game) }.disabled(!model.canWrite)
             Button("Rename…") { model.rename(game) }.disabled(!model.canWrite)
             Button("Change Artwork…") { model.chooseArtwork(game) }.disabled(!model.canWrite)
@@ -648,7 +785,10 @@ struct GameCard: View {
     var websiteCheck: WebsiteUICheck?
     var archiveCheck: ArchiveUICheck?
     var welcomeWindow: WelcomeWindow?
+    var classicWindowsSetupWindow: ClassicWindowsSetupWindow?
+    var storageSettingsWindow: StorageSettingsWindow?
     var preferences = UserDefaults.standard
+    var storageLocation = StorageLocation()
     func applicationDidFinishLaunching(_ notification: Notification) {
         let args = CommandLine.arguments
         let isCheck = args.count == 5 && ["--self-check","--shockwave-probe"].contains(args[1])
@@ -657,16 +797,56 @@ struct GameCard: View {
         let isArchiveCheck = args.count == 4 && args[1] == "--catalog-check"
         let isWelcomeCheck = args.count == 3 && args[1] == "--welcome-check"
         let isInstallationCheck = args.count == 3 && args[1] == "--installation-check"
-        let isAudit = isCheck || isLayoutCheck || isWebsiteCheck || isArchiveCheck || isWelcomeCheck || isInstallationCheck
-        let root = isAudit ? URL(fileURLWithPath:args[isCheck ? 4 : (isWebsiteCheck || isArchiveCheck ? 3 : 2)]).appendingPathComponent("Library")
-            : FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("Flashback",isDirectory:true)
+        let isDOSPreview = args.count == 3 && args[1] == "--dos-settings-preview"
+        let isAudit = isDOSPreview || isCheck || isLayoutCheck || isWebsiteCheck || isArchiveCheck || isWelcomeCheck || isInstallationCheck
+        let root: URL
+        if isAudit { root = URL(fileURLWithPath:args[isCheck ? 4 : (isWebsiteCheck || isArchiveCheck ? 3 : 2)]).appendingPathComponent("Library") }
+        else {
+            if preferences.data(forKey: StorageLocation.bookmarkKey) != nil,
+               storageLocation.selectedRootPreflight() == nil {
+                while true {
+                    let alert = NSAlert(); alert.messageText = "Flashback storage is unavailable"
+                    alert.informativeText = "The selected storage location cannot be opened. Reconnect that volume and choose Retry, choose another existing library, or explicitly use the default location."
+                    alert.addButton(withTitle:"Retry"); alert.addButton(withTitle:"Choose Another…"); alert.addButton(withTitle:"Use Default")
+                    switch alert.runModal() {
+                    case .alertFirstButtonReturn:
+                        if storageLocation.selectedRootPreflight() != nil { break }
+                    case .alertSecondButtonReturn:
+                        let panel = NSOpenPanel(); panel.canChooseDirectories = true; panel.canChooseFiles = false; panel.allowsMultipleSelection = false; panel.prompt = "Use Existing Library"
+                        if panel.runModal() == .OK, let url = panel.url, (try? storageLocation.useExisting(url)) != nil { break }
+                    default:
+                        preferences.removeObject(forKey:StorageLocation.bookmarkKey); preferences.removeObject(forKey:StorageLocation.pathKey); break
+                    }
+                    if storageLocation.selectedRootPreflight() != nil || preferences.data(forKey:StorageLocation.bookmarkKey) == nil { break }
+                }
+            }
+            if preferences.data(forKey: StorageLocation.bookmarkKey) == nil,
+               !preferences.bool(forKey: StorageLocation.promptCompletedKey) {
+                let panel = NSOpenPanel(); panel.title = "Choose Flashback Storage"
+                panel.message = "Choose a folder for imported games, covers, and Java, DOS, and ScummVM saves, or Cancel to use Application Support. App preferences and Flash/HTML browser storage remain in macOS-managed app data."
+                panel.canChooseDirectories = true; panel.canChooseFiles = false; panel.canCreateDirectories = true; panel.allowsMultipleSelection = false
+                panel.prompt = "Use This Folder"
+                if panel.runModal() == .OK, let url = panel.url {
+                    let legacy = storageLocation.defaultRoot
+                    do { _ = try storageLocation.select(url.appendingPathComponent("Flashback", isDirectory:true), movingFrom: FileManager.default.fileExists(atPath:legacy.path) ? legacy : nil) }
+                    catch { NSAlert(error:error).runModal() }
+                }
+                preferences.set(true, forKey: StorageLocation.promptCompletedKey)
+            }
+            root = storageLocation.resolvedRoot()
+        }
         model = LibraryModel(root:root)
+        if let resources = Bundle.main.resourceURL,
+           FileManager.default.isExecutableFile(atPath:resources.appendingPathComponent("ClassicWindows/dosbox-x.app/Contents/MacOS/dosbox-x").path) {
+            model.classicWindowsRequest = { [weak self] game in self?.showClassicWindowsSetup(for:game) }
+        }
         model.auditsLayout = isLayoutCheck || isArchiveCheck
         if isArchiveCheck, let base = URL(string:args[2]) { model.archive = ArchiveModel(libraryModel:model,service:ArchiveService(base:base,allowLocal:["localhost","127.0.0.1"].contains(base.host ?? ""))) }
         let menu = NSMenu()
         let appMenu = NSMenu()
         appMenu.addItem(withTitle:"About Flashback",action:#selector(about),keyEquivalent:"")
         appMenu.addItem(withTitle:"Licenses and Source…",action:#selector(licenses),keyEquivalent:"")
+        appMenu.addItem(withTitle:"Settings…",action:#selector(showStorageSettings),keyEquivalent:",")
         appMenu.addItem(.separator())
         appMenu.addItem(withTitle:"Hide Flashback",action:#selector(NSApplication.hide(_:)),keyEquivalent:"h")
         let hideOthers = appMenu.addItem(withTitle:"Hide Others",action:#selector(NSApplication.hideOtherApplications(_:)),keyEquivalent:"h")
@@ -679,6 +859,10 @@ struct GameCard: View {
         fileMenu.addItem(withTitle:"Add Games…",action:#selector(addGames),keyEquivalent:"o")
         let websiteItem = fileMenu.addItem(withTitle:"Add from Website…",action:#selector(addWebsite),keyEquivalent:"O")
         websiteItem.keyEquivalentModifierMask = [.command,.shift]
+        if let resources = Bundle.main.resourceURL,
+           FileManager.default.isExecutableFile(atPath:resources.appendingPathComponent("ClassicWindows/dosbox-x.app/Contents/MacOS/dosbox-x").path) {
+            fileMenu.addItem(withTitle:"Set Up Classic Windows…",action:#selector(setupClassicWindows),keyEquivalent:"")
+        }
         fileMenu.addItem(withTitle:"Show Library",action:#selector(showLibrary),keyEquivalent:"l")
         fileMenu.addItem(.separator())
         fileMenu.addItem(withTitle:"Close Window",action:#selector(NSWindow.performClose(_:)),keyEquivalent:"w")
@@ -712,6 +896,7 @@ struct GameCard: View {
         window.contentView = NSHostingView(rootView:LibraryView(model:model))
         window.center(); window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps:true)
+        if isDOSPreview, let game = model.games.first(where: { $0.isDOS }) { model.showDOSSettings(game) }
         if isCheck {
             smokeCheck = SmokeCheck(model:model,output:URL(fileURLWithPath:args[4]))
             smokeCheck?.probesShockwave = args[1] == "--shockwave-probe"
@@ -738,7 +923,9 @@ struct GameCard: View {
             smokeCheck?.runInstallation(delegate:self)
         }
         if !launchURLs.isEmpty { model.add(launchURLs); launchURLs = [] }
-        else if !isAudit { showWelcomeIfNeeded() }
+        else if !isAudit {
+            showWelcomeIfNeeded()
+        }
     }
     func showWelcomeIfNeeded() {
         if !preferences.bool(forKey:WelcomeWindow.completedKey) { showWelcome() }
@@ -754,13 +941,63 @@ struct GameCard: View {
         }
         welcomeWindow?.showWindow(nil); welcomeWindow?.window?.makeKeyAndOrderFront(nil)
     }
+    @objc func setupClassicWindows() {
+        showClassicWindowsSetup(for:nil)
+    }
+    func showClassicWindowsSetup(for game: Game?) {
+        if let existing = classicWindowsSetupWindow {
+            if let game { existing.setPendingGame(game) }
+            existing.showWindow(nil); existing.window?.makeKeyAndOrderFront(nil); return
+        }
+        guard let resources = Bundle.main.resourceURL else { return }
+        let controller = ClassicWindowsSetupWindow(storageRoot:model.library.root,resources:resources,pendingGame:game)
+        controller.onClose = { [weak self] in self?.classicWindowsSetupWindow = nil }
+        classicWindowsSetupWindow = controller
+        controller.showWindow(nil); controller.window?.makeKeyAndOrderFront(nil)
+    }
+
+    @objc func chooseStorageLocation() {
+        guard !model.isImporting, model.dosMaintenance.isEmpty, model.windows.isEmpty,
+              model.javaSessions.isEmpty, model.nativeSessions.isEmpty else {
+            model.alert = Message(title:"Storage is busy", body:"Finish imports, maintenance, or running games before moving Flashback storage.")
+            return
+        }
+        let panel = NSOpenPanel()
+        panel.title = "Flashback Storage Location"
+        panel.message = "Current location: \(model.library.root.path)\n\nChoose a new parent folder. Flashback copies and verifies your library before switching; the existing copy is retained."
+        panel.canChooseDirectories = true; panel.canChooseFiles = false; panel.canCreateDirectories = true; panel.allowsMultipleSelection = false
+        panel.prompt = "Move Library"
+        panel.beginSheetModal(for: window) { [weak self] response in
+            guard response == .OK, let self, let url = panel.url else { return }
+            self.model.canWrite = false; self.storageSettingsWindow?.progress("Copying and verifying library…")
+            let destination = url.appendingPathComponent("Flashback", isDirectory:true), source = self.model.library.root, service = self.storageLocation
+            DispatchQueue.global(qos:.userInitiated).async {
+                do {
+                    _ = try service.select(destination, movingFrom: source)
+                    DispatchQueue.main.async { self.storageSettingsWindow?.readyToQuit() }
+                } catch { DispatchQueue.main.async { self.model.canWrite = true; self.storageSettingsWindow?.progress("Couldn’t move storage: \(error.localizedDescription)") } }
+            }
+        }
+    }
+
+    @objc func showStorageSettings() {
+        if storageSettingsWindow == nil {
+            let controller = StorageSettingsWindow(path:model.library.root)
+            controller.change = { [weak self] in self?.chooseStorageLocation() }
+            controller.quit = { NSApp.terminate(nil) }
+            storageSettingsWindow = controller
+        }
+        storageSettingsWindow?.showWindow(nil); storageSettingsWindow?.window?.makeKeyAndOrderFront(nil)
+    }
+
+
     @objc func addGames() { welcomeWindow?.close(); model.chooseFiles() }
     @objc func addWebsite() { welcomeWindow?.close(); model.chooseWebsite() }
     @objc func showLibrary() { model.showingDiscover = false; window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps:true) }
     @objc func findGame() { window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps:true); NotificationCenter.default.post(name:NSNotification.Name("FlashbackFindGame"),object:nil) }
     @objc func showHelp() { model.help() }
     @objc func about() {
-        NSApp.orderFrontStandardAboutPanel(options:[.credits:NSAttributedString(string:"Flash, Java, HTML5, and Shockwave games for Mac.\n\nGPLv3 · Ruffle · OpenJDK · DirPlayer\nLicenses and source are available in the Flashback menu.",attributes:[.font:NSFont.systemFont(ofSize:11),.foregroundColor:NSColor.secondaryLabelColor])])
+        NSApp.orderFrontStandardAboutPanel(options:[.credits:NSAttributedString(string:"Flash, Java, HTML5, Shockwave, DOS, and Director games for Mac.\n\nGPLv3 · Ruffle · OpenJDK · DirPlayer · DOSBox Staging · ScummVM\nLicenses and source are available in the Flashback menu.",attributes:[.font:NSFont.systemFont(ofSize:11),.foregroundColor:NSColor.secondaryLabelColor])])
     }
     @objc func licenses() {
         if let url = Bundle.main.url(forResource:"Licenses",withExtension:"html") { NSWorkspace.shared.open(url) }
@@ -773,7 +1010,14 @@ struct GameCard: View {
         return true
     }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        guard let model, !model.windows.isEmpty || !model.javaSessions.isEmpty else { return .terminateNow }
+        if let model, !model.dosMaintenance.isEmpty {
+            let alert = NSAlert()
+            alert.messageText = "Game data is still being saved"
+            alert.informativeText = "Wait for the disc import, backup, or restore to finish, then quit Flashback."
+            alert.addButton(withTitle:"OK"); alert.runModal()
+            return .terminateCancel
+        }
+        guard let model, !model.windows.isEmpty || !model.javaSessions.isEmpty || !model.nativeSessions.isEmpty else { return .terminateNow }
         let playing = model.windows.values.map(\.session).filter { $0.game.isFlash && !$0.paused && !$0.loading && $0.failure == nil }
         for session in playing { session.togglePause() }
         let alert = NSAlert()
@@ -788,6 +1032,7 @@ struct GameCard: View {
     }
     func applicationWillTerminate(_ notification: Notification) {
         for session in model.javaSessions.values { session.stop() }
+        for session in model.nativeSessions.values { session.stop() }
     }
 }
 
@@ -795,7 +1040,7 @@ struct GameCard: View {
     static func main() {
         if CommandLine.arguments.contains("--version") {
             let version = Bundle.main.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String ?? "development"
-            print("Flashback \(version) · Ruffle 0.6.0 · Java 8u504 · HTML5 · DirPlayer 68376fb (patched)")
+            print("Flashback \(version) · Ruffle 0.6.0 · Java 8u504 · HTML5 · DirPlayer 68376fb (patched) · DOSBox Staging 0.83.0 · ScummVM 2026.3.0")
             return
         }
         let app = NSApplication.shared

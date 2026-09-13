@@ -13,6 +13,16 @@ import WebKit
             do {
                 try FileManager.default.createDirectory(at:output,withIntermediateDirectories:true)
                 model.playerDataStore = .nonPersistent()
+                let sources = GameSourceLink.recommendations
+                let providers = GameSourceProvider.all
+                guard sources.count >= 8,
+                      Set(sources.map(\.id)).count == sources.count,
+                      sources.allSatisfy({ $0.url.scheme == "https" && !$0.title.isEmpty && !$0.source.isEmpty && !$0.terms.isEmpty }),
+                      sources.filter(\.tested).map(\.title) == ["Happyland Adventures"],
+                      providers.map(\.name) == ["Internet Archive","DOS Games Archive","DOSGames.com","itch.io","GOG","ScummVM"],
+                      providers.filter({ $0.url != nil }).allSatisfy({ $0.url?.scheme == "https" }) else {
+                    throw LibraryError("Discover source recommendations are incomplete, duplicated, unsafe, or overstate compatibility")
+                }
                 try await pause(); try await click("discover")
                 for _ in 0..<20 { if catalog.started { break }; try await pause(0.1) }
                 guard model.showingDiscover, catalog.started else { throw LibraryError("Discover button did not open the catalog (visible: \(model.showingDiscover), started: \(catalog.started))") }
@@ -21,6 +31,15 @@ import WebKit
                 try await pause(2)
                 try await snapshot("Catalog-featured-light.png",dark:false)
                 try await snapshot("Catalog-featured-dark.png",dark:true)
+                guard catalog.items.count >= 4 else { throw LibraryError("Discover did not return enough games to test its weekly preview") }
+                try await click("archive-browse-all")
+                guard model.layoutFrames["archive-featured-more"] != nil else { throw LibraryError("Browse all did not reveal the remaining featured games") }
+                try await snapshot("Catalog-featured-all.png",dark:false)
+                try await click("archive-browse-all")
+                let featuredSize = window.contentView?.frame.size ?? NSSize(width:1080,height:720)
+                window.setContentSize(NSSize(width:800,height:578))
+                try await snapshot("Catalog-featured-compact.png",dark:false)
+                window.setContentSize(featuredSize)
                 if live { catalog.query = "alien hominid"; try await click("archive-search-button"); await catalog.searchTask?.value }
                 let item = live ? catalog.items.first(where:{ $0.id == "1100_alien_hominid" }) ?? catalog.items[0] : catalog.items[0]
                 try await pause();try await click("archive-card-" + item.id);await catalog.detailTask?.value
@@ -63,15 +82,21 @@ import WebKit
                     let custom = try Data(contentsOf:model.library.customArtworkURL(game))
                     catalog.download();await catalog.downloadTask?.value
                     guard model.games.count == 1, try Data(contentsOf:model.library.customArtworkURL(game)) == custom else { throw LibraryError("Re-downloading duplicated a game or replaced custom artwork") }
-                    catalog.show(catalog.items.first(where:{ $0.id == "zip-game" })!);await catalog.detailTask?.value;try await pause()
+                    catalog.query = "Archive";catalog.search();await catalog.searchTask?.value
+                    guard let zipItem = catalog.items.first(where:{ $0.id == "zip-game" }),
+                          let slowItem = catalog.items.first(where:{ $0.id == "slow-game" }),
+                          let unsupportedItem = catalog.items.first(where:{ $0.id == "unsupported" }) else {
+                        throw LibraryError("Authored catalog search did not return its ZIP, cancellation, and unsupported fixtures")
+                    }
+                    catalog.show(zipItem);await catalog.detailTask?.value;try await pause()
                     try await click("archive-download",detail:true);await catalog.downloadTask?.value
                     guard model.games.count == 2, catalog.added?.isHTML == true else { throw LibraryError(catalog.detailError ?? "ZIP did not import") }
-                    catalog.show(catalog.items.first(where:{ $0.id == "slow-game" })!);await catalog.detailTask?.value;try await pause()
+                    catalog.show(slowItem);await catalog.detailTask?.value;try await pause()
                     try await click("archive-download",detail:true);try await pause(0.3)
                     try await snapshot("Catalog-downloading.png",dark:false,detail:true)
                     try await click("archive-cancel",detail:true);await catalog.downloadTask?.value
                     guard !catalog.busy, !model.isImporting, model.games.count == 2 else { throw LibraryError("Canceled download changed the library") }
-                    catalog.show(catalog.items.first(where:{ $0.id == "unsupported" })!);await catalog.detailTask?.value
+                    catalog.show(unsupportedItem);await catalog.detailTask?.value
                     try await snapshot("Catalog-unsupported.png",dark:false,detail:true)
                     catalog.detailWindow?.close()
                     window.setContentSize(NSSize(width:800,height:578))

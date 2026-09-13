@@ -1,0 +1,14 @@
+{
+  "name": "libmikmod",
+  "version": "3.3.11.1",
+  "port-version": 14,
+  "description": "Module decoder; Flashback macOS CMake recipe",
+  "license": "LGPL-2.1-or-later",
+  "supports": "osx",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    }
+  ]
+}

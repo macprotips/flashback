@@ -12,6 +12,7 @@ from pathlib import Path
 import subprocess
 import urllib.request
 import zipfile
+from shockwave_health import write_health
 
 FIXTURES = [{'name': 'Backlot.zip', 'url': 'https://archive.org/download/legostudiosbacklot/LEGO%20Studios%20Backlot.zip', 'sha256': 'c2473b1363753d9be8b78c8622c5d0f7dfb71cb14a9be983bcc09ae1b0ed9516'}, {'name': 'Hasbro.zip', 'url': 'https://archive.org/download/hasbrointeractive/Hasbro%20Interactive%20Shockwave%20Games.zip', 'sha256': '2d22644d29824105ac546f2b2c75d36d77b520f01069c41304768cca97a26a40'}, {'name': 'CreepyPong.zip', 'url': 'https://archive.org/download/miniclip_shockwave-games/Miniclip%20Shockwave%20Player%20Games/Creepy%20Pong%20-%20Silent%20Bay%20Studios.zip', 'sha256': 'ef234de6ab12280e8baeb41e5b8a05193cc3839dcb6d3019878192589acae77f'}, {'name': 'MonsterBash.zip', 'url': 'https://archive.org/download/miniclip_shockwave-games/Miniclip%20Shockwave%20Player%20Games/MONSTER%20BASH.zip', 'sha256': 'b6b83c7a81f721236ecde807b021fcfe7da8987bb57bb9d4ecfea5cdf7756cdc'}, {'name': 'Junkbot.zip', 'url': 'https://archive.org/download/legojunkbot/Junkbot.zip', 'referer': '', 'sha256': 'b45c519d7a4dd03708b960439cd0d87889a3fb18b3e6b1b101c4befbeb8f7b81'}, {'name': 'WorldBuilder.zip', 'url': 'https://archive.org/download/lego-world-builder/Lego%20WorldBuilder.zip', 'referer': '', 'sha256': '96a21af4d0de38a34b94d7cb2ee21b34908a58d3f0ca36d01fdb9acf13655d67'}, {'name': 'Merlin2.dcr', 'url': 'https://themetalbox.com/dcr/games/merlin_2.dcr', 'referer': 'https://themetalbox.com/index.php?page=merlin_2', 'sha256': '991eeae0326307f5846a5711c6aa98ce45aca75811d4e299b580a1cd77a5f630'}, {'name': 'BreakoutLite.dcr', 'url': 'https://themetalbox.com/dcr/games/breakout_lite.dcr', 'referer': 'https://themetalbox.com/index.php?page=breakout_lite', 'sha256': 'ebb2f1f59d3bbc9a940c0de62cb9ff4695ccc5f1399a86bebe790a28ceda7e1a'}]
 
@@ -212,7 +213,9 @@ def main():
                 detail=(out/'Result.txt').read_text().strip() if (out/'Result.txt').exists() else 'No result'
             except subprocess.TimeoutExpired:detail='Timed out'
         status='PASS' if detail.startswith('PASS:') else 'LIMITED' if case.get('limited') else 'FAIL'
-        results.append(dict(game=case['name'],status=status,detail=detail))
+        health=write_health(out)
+        results.append(dict(game=case['name'],status=status,detail=detail,
+                            health_assessment=health['assessment'],health_signals=health['signals']))
         print(case['name']+': '+status+' — '+detail,flush=True)
     (root/'Results.json').write_text(json.dumps(results,indent=2)+'\n')
     passed=sum(x['status']=='PASS' for x in results)

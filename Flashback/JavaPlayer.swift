@@ -45,7 +45,7 @@ import Cocoa
         let movie = try library.movie(for:game)
         try GameLibrary.validateGame(movie)
         let kind = try await Task.detached(priority:.userInitiated) {
-            try Self.inspectKind(executable:executable, runner:runner, movie:movie)
+            try Self.inspectKind(executable:executable, runner:runner, movie:movie, root:source)
         }.value
         guard !stopping else { onExit?(nil); return }
         let j2me = kind == "J2ME"
@@ -92,19 +92,13 @@ import Cocoa
         }
     }
 
-    nonisolated private static func inspectKind(executable: URL, runner: URL, movie: URL) throws -> String {
-        let probe = Process(), output = Pipe()
-        probe.executableURL = executable
-        probe.arguments = ["-Xmx128m", "-Djava.awt.headless=true", "-cp", runner.path, "JavaRunner", "--inspect", movie.path]
-        probe.environment = ["PATH":"/usr/bin:/bin", "LANG":"en_US.UTF-8"]
-        probe.standardOutput = output; probe.standardError = output
-        try probe.run()
-        let data = output.fileHandleForReading.readDataToEndOfFile()
-        probe.waitUntilExit()
-        let text = String(decoding:data, as:UTF8.self)
-        guard probe.terminationStatus == 0, let kind = text.split(whereSeparator:\.isNewline).last,
-              kind == "J2ME" || kind.hasPrefix("DESKTOP:") else {
-            throw LibraryError("This JAR cannot launch as a desktop or Java ME game. \(String(text.prefix(400)))")
+    nonisolated private static func inspectKind(executable: URL, runner: URL, movie: URL, root: URL) throws -> String {
+        let result = try ToolResult.run(executable,
+            ["-Xmx128m", "-Djava.awt.headless=true", "-Dflashback.game=\(root.path)",
+             "-cp", runner.path, "JavaRunner", "--inspect", movie.path])
+        guard result.status == 0, let kind = result.text.split(whereSeparator:\.isNewline).last,
+              kind == "J2ME" || kind.hasPrefix("DESKTOP:") || kind.hasPrefix("APPLET:") || ["JNLP:APPLICATION","JNLP:APPLET"].contains(String(kind)) else {
+            throw LibraryError("This Java game cannot launch. \(String(result.text.prefix(500)))")
         }
         return String(kind)
     }
@@ -127,7 +121,7 @@ import Cocoa
         let error: String?
         if stopping || (status == 0 && ready) { error = nil }
         else if detail.contains("not a standalone Java game") {
-            error = "This JAR is an applet or a library. Add a standalone game JAR with a Main-Class or a Java ME JAR with a MIDlet manifest."
+            error = "This archive has no unique game entry. Include its applet page or JNLP descriptor, or choose a runnable desktop or Java ME JAR."
         } else if detail.contains("AccessControlException") {
             error = "This game requested access outside its game and save folders, or a feature the local Java player doesn’t support."
         } else if detail.contains("UnsupportedClassVersionError") {

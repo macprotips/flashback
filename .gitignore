@@ -14,6 +14,17 @@ Flashback/build/
 __pycache__/
 .DS_Store
 
-# Keep the entire downloaded-game collection, including manifests and artwork, local.
-/Downloaded Games/
-java-games/
+# Only project source and documentation belong at the repository root.
+/*
+!/.gitignore
+!/.gitattributes
+!/AGENTS.md
+!/Flashback/
+!/LICENSE
+!/README.md
+!/SETUP.md
+!/USER-GUIDE.md
+!/build.sh
+!/fetch_assets.py
+!/launcher.c
+!/verify.py

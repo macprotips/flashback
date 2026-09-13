@@ -20,15 +20,14 @@ struct WelcomeView: View {
                 feature("Play classic games",icon:"gamecontroller") {
                     HStack(alignment:.top,spacing:23) {
                         format("Flash",detail:".swf")
-                        format("Java",detail:"Desktop and mobile .jar")
+                        format("Java",detail:"Apps, applets, mobile")
                         format("HTML5",detail:".html")
                         format("Shockwave",detail:"Experimental")
                     }.padding(.vertical,2)
-                    Text("Add a game file, folder, or ZIP to include its graphics and sounds.")
+                    Text("DOS and detected classic Director games are also supported. Add a game file, folder, or ZIP to include its graphics and sounds.")
                 }
                 feature("Import from a website",icon:"globe") {
                     Text("Paste a game page. Review the recovered files, then add the game to your library.")
-                    Text("Only extract copyright-free games.").foregroundStyle(.primary)
                 }
                 feature("Keep your library organized",icon:"square.grid.2x2") {
                     Text("Search, save favorites, and find recently played games. Full screen and supported local saves are built in.")

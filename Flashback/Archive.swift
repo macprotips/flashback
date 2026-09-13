@@ -161,10 +161,33 @@ actor ArchiveService {
     /// check supplies its own so featured paging can be exercised against the
     /// local fixture instead of the live Archive.
     let featuredIDs: [String]
+    /// The UTC week chosen when this service is created. Keeping it fixed means
+    /// an open Discover window cannot reorder its cards at a calendar boundary.
+    let featuredWeek: Int
     private var cache: [URL:(Date,Data)] = [:]
     init(base: URL = URL(string:"https://archive.org")!, allowLocal: Bool = false,
-         featuredIDs: [String] = ArchiveService.featured) {
-        self.base = base; self.allowLocal = allowLocal; self.featuredIDs = featuredIDs
+         featuredIDs: [String] = ArchiveService.featured, featuredWeek: Int? = nil) {
+        self.base = base; self.allowLocal = allowLocal
+        var seen = Set<String>()
+        self.featuredIDs = featuredIDs.filter { seen.insert($0).inserted }
+        self.featuredWeek = featuredWeek ?? Self.utcWeek()
+    }
+    /// A stable UTC ISO-week bucket. Tests can supply a bucket directly rather
+    /// than depending on the date when they run.
+    static func utcWeek(for date: Date = Date()) -> Int {
+        var calendar = Calendar(identifier:.iso8601)
+        calendar.timeZone = TimeZone(secondsFromGMT:0)!
+        guard let start = calendar.dateInterval(of:.weekOfYear,for:date)?.start else { return 0 }
+        return Int(floor(start.timeIntervalSinceReferenceDate / (7 * 24 * 60 * 60)))
+    }
+    /// Rotate the complete curated order by a screen each week. The result is
+    /// a permutation, so pagination remains valid and every entry eventually
+    /// reaches the first screen without duplicate cards.
+    static func featuredOrder(_ ids: [String], week: Int) -> [String] {
+        guard ids.count > 1 else { return ids }
+        let stride = min(24,ids.count - 1)
+        let offset = ((week % ids.count) + ids.count) % ids.count * stride % ids.count
+        return Array(ids[offset...]) + Array(ids[..<offset])
     }
     static func query(_ text: String, filter: ArchiveFilter) -> String {
         let scope: String
@@ -182,7 +205,8 @@ actor ArchiveService {
         // one query would build a URL the search endpoint rejects. Page through
         // it here instead, a screen of identifiers at a time, which also keeps
         // the curated order rather than re-sorting the whole list by downloads.
-        let slice = featured ? Array(featuredIDs.dropFirst(max(0,page - 1) * 24).prefix(24)) : []
+        let featuredOrder = Self.featuredOrder(featuredIDs,week:featuredWeek)
+        let slice = featured ? Array(featuredOrder.dropFirst(max(0,page - 1) * 24).prefix(24)) : []
         if featured && slice.isEmpty { return ArchiveResults(items:[],total:featuredIDs.count,nextPage:nil) }
         var parts = URLComponents(url:base.appendingPathComponent("advancedsearch.php"),resolvingAgainstBaseURL:false)!
         let query = featured ? "(" + slice.map { "identifier:" + $0 }.joined(separator:" OR ") + ")" + ArchiveContentFilter.exclusion : Self.query(text,filter:filter)
@@ -214,7 +238,7 @@ actor ArchiveService {
         let visible = Set(checked.0.map(\.id))
         var items = candidates.filter { visible.contains($0.id) }
         if featured {
-            items.sort { (featuredIDs.firstIndex(of:$0.id) ?? Int.max) < (featuredIDs.firstIndex(of:$1.id) ?? Int.max) }
+            items.sort { (featuredOrder.firstIndex(of:$0.id) ?? Int.max) < (featuredOrder.firstIndex(of:$1.id) ?? Int.max) }
             // Paging is over the curated list, not the response: a page whose
             // identifiers are all withheld by the content filter still has
             // pages after it.

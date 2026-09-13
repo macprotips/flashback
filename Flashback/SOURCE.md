@@ -1,11 +1,11 @@
-# Flashback 1.10.0 — source and redistribution
+# Flashback 1.11.0 — source and redistribution
 
 Copyright © 2026 Flashback contributors. Flashback's original source,
 documentation, and artwork are licensed under **GPL-3.0-only**; see `LICENSE`.
 This choice does not relicense third-party components or imported games.
 The source is supplied without warranty under the license's terms.
 
-The release ZIP includes the application and `Flashback-Source-1.10.0.tar.gz`.
+The release ZIP includes the application and `Flashback-Source-1.11.0.tar.gz`.
 Keep them together when redistributing this release. If hosting separate
 downloads, offer the matching source from the same download location with
 equivalent access and no additional charge. Do not replace source with a
@@ -50,12 +50,20 @@ release. The Java source archive is supplied as BellSoft published it.
 
 ## Build Flashback
 
-On an Apple Silicon Mac with Apple's command-line developer tools installed:
+On an Apple Silicon Mac with full Xcode selected and Python 3.12 or newer
+(see [SETUP.md](../SETUP.md)):
 
 ```sh
+sh Flashback/bootstrap-toolchain.sh
+. Flashback/toolchain-env.sh
 ./Flashback/fetch-runtime.sh
 ./Flashback/fetch-java.sh
+python3 Flashback/fetch-archive-dependencies.py
+sh Flashback/fetch-dos.sh
+sh Flashback/fetch-scummvm.sh
+python3 Flashback/fetch-native-sources.py
 python3 Flashback/fetch-sources.py
+python3 Flashback/fetch-js-sources.py
 ./Flashback/fetch-shockwave.sh
 ./Flashback/build.sh
 ```
@@ -195,6 +203,69 @@ search, details, cancellation, and library import using the existing game storag
 service and native UI. This adds no runtime dependency. Archive games and images
 are fetched only on request and are not included in the app or source release.
 
+The weekly featured order is computed locally from a UTC week bucket and the
+curated identifiers. `DISCOVER-SOURCES.md` records the separate link-only DOS
+recommendations and their reviewed source pages. Flashback includes only the link
+metadata; it does not fetch those games until the user visits the source and
+chooses a download.
+
 Flashback 1.7.1 adds original 5×7 pixel lettering for the sidebar brand name.
 The fixed wordmark is drawn by `BrandArtwork.swift`, follows light/dark appearance,
 and retains the accessible name “Flashback”. No font files or dependencies are added.
+
+
+## Additional native players
+
+DOSBox Staging is a checksum-pinned universal upstream application with its
+complete matching source and dependency recipes. ScummVM 2026.3.0 is built
+locally for arm64 and x86_64 from retained sources, using only the Director
+engine while retaining its media, text and audio/MIDI dependencies. See
+`Licenses/DOS-SCUMMVM-BUILD.md` for prerequisites, source pins, exact build
+commands and validation limits; `build-scummvm.py` performs the isolated build.
+`fetch-scummvm.sh` verifies this source-built cache or runs that recipe. It does
+not fall back to the superseded official DMG whose static-source provenance
+was unresolved.
+
+`NativeHost.swift` supervises the selected engine under `Native.policy`; it
+never falls back to unsandboxed execution. The build removes quarantine only
+from verified bundled copies. The restricted DOSBox Nuked-SC55 plug-in is
+removed. ScummVM's Sparkle updater/Dock tile plug-in are disabled; all selected
+runtime code, overlays, patches and dependencies accompany the source package.
+The source-built runtime includes RetroWave under AGPL-3.0-or-later alongside
+ScummVM and each dependency's original license notices.
+
+Run `python3 Flashback/fetch-native-sources.py --verify-only --require-complete
+--audit-scummvm-runtime` (as one command) to verify source archives, the source
+lock, exact build recipes/receipts, integration evidence, and the app's two
+signing-independent code identities. `DOS-SCUMMVM-PROVENANCE.json` records those
+identities. Complete corresponding-source coverage does not establish support
+for every game or bit-identical builds across toolchains. ARM NativeHost and
+Director startup are verified here; Intel playback is verified under Rosetta
+outside the sandbox, with NativeHost qualification still required on an Intel
+Mac. The production host does not relax its sandbox for translation.
+
+Java applet and JNLP support is implemented in `JavaRunner.java` and
+`LegacyImport.swift`; website recovery preserves source downloads and creates a
+separate local launch descriptor. Imported bytecode retains the restricted
+Java policy. Run `check-java-formats.sh` for the additional authored fixtures.
+
+## Experimental Classic Windows runtime
+
+`fetch-classic-windows.py` downloads checksum-pinned DOSBox-X 2026.08.31
+macOS archives and combines their main executables into a universal bundle.
+Upstream engine code is unchanged. Architecture-specific libraries are retained.
+The runtime is development-only and is included by `build.sh` only when
+`FLASHBACK_EXPERIMENTAL_CLASSIC_WINDOWS=1` is set. It contains no Microsoft Windows media,
+product key, game image, or preinstalled guest disk. See the generated
+`vendor/classic-windows/provenance.json` for exact URLs and checksums.
+Upstream source tag: https://github.com/joncampbell123/dosbox-x/tree/dosbox-x-v2026.08.31
+
+Classic Windows is currently a local development setup prototype. Before any
+binary release that includes this runtime, complete the corresponding-source
+and dependency inventory, signed nested-bundle audit, guest shutdown validation,
+and both-architecture runtime tests. The current work does not authorize a release.
+
+DOS settings and media handling are Flashback source in `DOSOptions.swift`,
+`DOSDisc.swift`, `DOSGameData.swift`, `DOSSettingsWindow.swift`, and `DOSDiscsView.swift`.
+Their focused checks plus `DOSLaunchChecks.swift` and `check-native-games.py`
+exercise settings, private media, launch routing, snapshots, and real save persistence.

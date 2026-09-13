@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "compiled": "2026-09-10",
+  "compiled": "2026-09-12",
   "what_this_is": "The identifiers Discover shows before a search is typed. Candidate titles were drawn from the browser-game portals of the Flash/Shockwave era, looked up against the Internet Archive collections Discover already searches, then filtered.",
   "what_this_is_not": "Not a compatibility claim. An entry here means the Archive holds an item under that title with a file Flashback could open \u2014 not that the game runs. Discover labels every listing without a recorded gameplay check as untested, and that labelling is unchanged.",
   "method": {
@@ -17,7 +17,9 @@
     "matched_on_archive": 159,
     "no_archive_match": 102,
     "kept_after_filters": 136,
-    "dropped_by_filters": 23
+    "dropped_by_filters": 23,
+    "manually_promoted": 5,
+    "compiled_entries": 141
   },
   "entries": [
     {
@@ -1243,6 +1245,51 @@
       "downloads": 155,
       "playable_files": 1,
       "example_file": "RoomsTown-WaterScavengerHunt.swf"
+    },
+    {
+      "candidate": "LEGO Junkbot",
+      "group": "Compatibility-tested additions",
+      "identifier": "legojunkbot",
+      "archive_title": "LEGO Junkbot",
+      "downloads": 16199,
+      "playable_files": 1,
+      "example_file": "Junkbot.zip"
+    },
+    {
+      "candidate": "LEGO World Builder",
+      "group": "Compatibility-tested additions",
+      "identifier": "lego-world-builder",
+      "archive_title": "Lego World Builder",
+      "downloads": 386,
+      "playable_files": 1,
+      "example_file": "Lego WorldBuilder.zip"
+    },
+    {
+      "candidate": "LEGO Supersonic RC",
+      "group": "Compatibility-tested additions",
+      "identifier": "legosupersonicrcgame",
+      "archive_title": "LEGO Supersonic RC",
+      "downloads": 27729,
+      "playable_files": 1,
+      "example_file": "Supersonic RC.zip"
+    },
+    {
+      "candidate": "Cannibals and Missionaries",
+      "group": "Manual additions",
+      "identifier": "cannibals-missioneries",
+      "archive_title": "Cannibals & Missioneries",
+      "downloads": 119383,
+      "playable_files": 1,
+      "example_file": "Cannibals_&_Missioneries.swf"
+    },
+    {
+      "candidate": "Alien Hominid",
+      "group": "Compatibility-tested additions",
+      "identifier": "1100_alien_hominid",
+      "archive_title": "Alien Hominid",
+      "downloads": 1688,
+      "playable_files": 1,
+      "example_file": "alien_hominid.swf"
     }
   ],
   "dropped": [

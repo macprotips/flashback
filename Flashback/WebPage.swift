@@ -4,7 +4,13 @@ import CryptoKit
 import Compression
 
 struct WebCandidate: Identifiable, Hashable, Sendable {
-    var id: String { url.absoluteString }
+    var id: String {
+        guard kind == "applet" else { return url.absoluteString }
+        let launch = [baseURL?.absoluteString ?? "", pageURL.absoluteString] +
+            parameters.keys.sorted().flatMap { [$0, parameters[$0]!] } + companions.map(\.absoluteString).sorted()
+        let bytes = try! JSONEncoder().encode(launch)
+        return url.absoluteString + "#applet-" + SHA256.hash(data:bytes).map { String(format:"%02x",$0) }.joined()
+    }
     let url: URL
     var pageURL: URL
     var title: String
@@ -34,7 +40,7 @@ struct WebPage: Sendable {
     var isDirectory = false
     var folders: [URL] = []
 
-    static let games = Set(["swf","dcr","dir","dxr","jar","zip"])
+    static let games = Set(["swf","dcr","dir","dxr","jar","jnlp","zip"])
     static let assets = games.union(["cct","cst","txt","xml","json","ini","cfg","csv","dat","bin","pak","pck","atlas","plist",
         "png","jpg","jpeg","gif","webp","svg","bmp","ico","mp3","wav","ogg","oga","m4a","mp4","webm","flv","swv","swa",
         "js","mjs","css","wasm","data","unityweb","woff","woff2","ttf","otf","fnt"])
@@ -44,7 +50,8 @@ struct WebPage: Sendable {
         if games.contains(ext) { return ext }
         if let name = filename, games.contains((name as NSString).pathExtension.lowercased()) { return (name as NSString).pathExtension.lowercased() }
         return ["application/x-shockwave-flash":"swf", "application/x-director":"dcr", "application/java-archive":"jar",
-                "application/x-java-archive":"jar", "application/zip":"zip", "application/x-zip-compressed":"zip"][mime.lowercased()]
+                "application/x-java-archive":"jar", "application/x-java-jnlp-file":"jnlp", "application/x-java-web-start":"jnlp",
+                "application/zip":"zip", "application/x-zip-compressed":"zip"][mime.lowercased()]
     }
 
     static func text(_ data: Data) -> String {
@@ -112,11 +119,34 @@ struct WebPage: Sendable {
             let item = WebCandidate(url:link,pageURL:url,title:page.title,kind:kind,evidence:evidence,score:score,parameters:params,baseURL:kind == "swf" && score == 100 ? launchBase : nil)
             page.merge(item)
         }
+        func addApplet(_ node: XMLElement) -> Bool {
+            var params: [String:String] = [:]
+            for case let child as XMLElement in (try? node.nodes(forXPath:"./param")) ?? [] {
+                if let name = attr(child,"name"), let value = attr(child,"value") { params[name] = value }
+            }
+            func setting(_ name: String) -> String? { attr(node,name) ?? params.first { $0.key.lowercased() == name }?.value }
+            let type = (attr(node,"type") ?? "").lowercased(), classid = (attr(node,"classid") ?? "").lowercased()
+            guard node.name?.lowercased() == "applet" || type.contains("java") || classid.hasPrefix("java:") || classid.contains("cafee") else { return false }
+            guard var code = setting("code") ?? (classid.hasPrefix("java:") ? String((attr(node,"classid") ?? "").dropFirst(5)) : nil), !code.isEmpty else { return true }
+            if code.hasSuffix(".class") { code = String(code.dropLast(6)) }
+            code = code.replacingOccurrences(of:"/",with:".")
+            let base = setting("codebase").flatMap { WebAddress.resolve($0.hasSuffix("/") ? $0 : $0 + "/",from:page.base) } ?? (page.base.hasDirectoryPath ? page.base : page.base.deletingLastPathComponent())
+            let jars = (setting("archive") ?? "").split(separator:",").compactMap { WebAddress.resolve(String($0).trimmingCharacters(in:.whitespaces),from:base) }
+            guard let first = jars.first ?? WebAddress.resolve(code.replacingOccurrences(of:".",with:"/") + ".class",from:base) else { return true }
+            params["__flashback_java_class"] = code
+            params["__flashback_java_codebase"] = base.absoluteString
+            params["__flashback_java_width"] = setting("width") ?? "640"
+            params["__flashback_java_height"] = setting("height") ?? "480"
+            page.merge(WebCandidate(url:first,pageURL:url,title:page.title,kind:"applet",evidence:"Java applet",score:100,
+                parameters:params,companions:Array(jars.dropFirst()),baseURL:base))
+            return true
+        }
         if let nodes = try? document?.nodes(forXPath:"//*") {
             for case let node as XMLElement in nodes {
                 let tag = node.name?.lowercased() ?? ""
                 switch tag {
                 case "object", "embed":
+                    if addApplet(node) { continue }
                     candidate(attr(node,"data") ?? attr(node,"src"),node:node,evidence:"Embedded game",score:100)
                     add(attr(node,"data") ?? attr(node,"src"),role:"embedded")
                     for case let child as XMLElement in (try? node.nodes(forXPath:"./param")) ?? [] {
@@ -126,10 +156,7 @@ struct WebPage: Sendable {
                         }
                     }
                 case "applet":
-                    let base = attr(node,"codebase").flatMap { WebAddress.resolve($0.hasSuffix("/") ? $0 : $0 + "/",from:page.base) } ?? page.base
-                    let jars = (attr(node,"archive") ?? "").split(separator:",").compactMap { WebAddress.resolve(String($0).trimmingCharacters(in:.whitespaces),from:base) }
-                    for jar in jars { candidate(jar.absoluteString,node:node,evidence:"Java archive — must support standalone launch",score:85) }
-                    for index in page.candidates.indices where jars.contains(page.candidates[index].url) { page.candidates[index].companions = jars.filter { $0 != page.candidates[index].url } }
+                    _ = addApplet(node)
                 case "a":
                     let href = attr(node,"href")
                     candidate(href,node:node,evidence:"Download link",score:65,hint:attr(node,"download"))
@@ -168,7 +195,7 @@ struct WebPage: Sendable {
     }
 
     mutating func merge(_ item: WebCandidate) {
-        if let index = candidates.firstIndex(where:{ $0.url == item.url }) {
+        if let index = candidates.firstIndex(where:{ $0.id == item.id }) {
             var merged = candidates[index]
             if item.score > merged.score { merged.evidence = item.evidence; merged.score = item.score; merged.pageURL = item.pageURL; merged.title = item.title }
             merged.parameters.merge(item.parameters) { old, _ in old }

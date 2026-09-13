@@ -1,0 +1,79 @@
+; SPDX-License-Identifier: GPL-3.0-only
+; All parameters must be absolute, canonical paths (resolve symlinks first).
+; Only trusted bundled executables may be passed as EXECUTABLE/RUNTIME.
+; GAME is immutable imported data; SAVES is this game's private writable home.
+; No network, fork, other executable, Apple Events, or general IPC grants.
+(version 1)
+(deny default)
+
+; dyld on macOS 27 also reads the root directory itself. This literal grant
+; does not grant descendants. Do not grant /System as a whole: it contains
+; /System/Volumes/Data, an alternate route to the user's files.
+(allow file-read-metadata)
+(allow file-read*
+    (literal "/")
+    (subpath "/System/Library")
+    (subpath "/System/Cryptexes")
+    (subpath "/System/Volumes/Preboot")
+    (subpath "/usr/lib")
+    (subpath "/usr/share")
+    (literal "/dev/null")
+    (literal "/dev/random")
+    (literal "/dev/urandom")
+    (subpath (param "RUNTIME"))
+    (subpath (param "GAME"))
+    (subpath (param "SAVES")))
+(allow file-write*
+    (literal "/dev/null")
+    (subpath (param "SAVES")))
+; The initial sandbox-exec transition only; the engine cannot re-exec itself.
+(allow process-exec
+    (require-all (literal (param "EXECUTABLE")) (process-path "/usr/bin/sandbox-exec")))
+(deny file-map-executable (subpath (param "GAME")) (subpath (param "SAVES")))
+(allow sysctl-read)
+
+; AppKit/SDL's window, font, graphics and audio services. Keep this explicit:
+; an unrestricted mach-lookup grant could expose file/network proxy services.
+(allow mach-lookup
+    (global-name "com.apple.coreservices.launchservicesd")
+    (global-name "com.apple.dock.server")
+    (global-name "com.apple.dock.fullscreen")
+    (global-name "com.apple.windowmanager.server")
+    (global-name "com.apple.MenuBarAgent.systemservices")
+    (xpc-service-name "com.apple.MTLCompilerService")
+    (xpc-service-name "com.apple.audio.SandboxHelper")
+    (xpc-service-name "com.apple.hiservices-xpcservice")
+    (global-name "com.apple.windowserver.active")
+    (global-name "com.apple.CARenderServer")
+    (global-name "com.apple.CoreDisplay.master")
+    (global-name "com.apple.CoreDisplay.Notification")
+    (global-name "com.apple.cvmsServ")
+    (global-name "com.apple.FontObjectsServer")
+    (global-name "com.apple.fonts")
+    (global-name "com.apple.lsd.mapdb")
+    (global-name "com.apple.cfprefsd.agent")
+    (global-name "com.apple.cfprefsd.daemon")
+    (local-name "com.apple.cfprefsd.agent")
+    (global-name "com.apple.system.notification_center")
+    (global-name "com.apple.logd")
+    (global-name "com.apple.logd.events")
+    (global-name "com.apple.system.logger")
+    (global-name "com.apple.runningboard")
+    (global-name "com.apple.tsm.uiserver")
+    (global-name "com.apple.audio.AudioComponentPrefs")
+    (global-name "com.apple.audio.AudioComponentRegistrar")
+    (global-name "com.apple.audio.AudioSession")
+    (global-name "com.apple.audio.audiohald")
+    (global-name "com.apple.audio.coreaudiod"))
+(allow ipc-posix-shm-read*
+    (ipc-posix-name "apple.shm.notification_center")
+    (ipc-posix-name-prefix "apple.cfprefs."))
+(allow iokit-open-service
+    (iokit-registry-entry-class "IOAccelerator" "IOSurfaceRoot" "IOFramebuffer"))
+(allow iokit-open-user-client
+    (iokit-connection "IOAccelerator")
+    (iokit-user-client-class "IOAccelerationUserClient"
+        "IOSurfaceAcceleratorClient" "IOSurfaceRootUserClient"
+        "IOSurfaceSendRight" "IOFramebufferSharedUserClient"
+        "AGPMClient" "AppleGraphicsControlClient" "AppleGraphicsPolicyClient"
+        "AppleMGPUPowerControlClient" "IOHIDParamUserClient"))

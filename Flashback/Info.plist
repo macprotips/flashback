@@ -66,6 +66,42 @@
 				<string>com.adobe.director.movie</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Java launch descriptor</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.sun.java-jnlp-file</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>DOS game or Flash projector</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>local.flashback.dos-game</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Detected Director game</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>local.flashback.director-launch</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>Flashback</string>
@@ -78,9 +114,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.10.0</string>
+	<string>1.11.0</string>
 	<key>CFBundleVersion</key>
-	<string>1100</string>
+	<string>1110</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>13.0</string>
 	<key>NSAppTransportSecurity</key>
@@ -151,6 +187,61 @@
 				</array>
 				<key>public.mime-type</key>
 				<string>application/x-director</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Java launch descriptor</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.sun.java-jnlp-file</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>jnlp</string>
+				</array>
+				<key>public.mime-type</key>
+				<string>application/x-java-jnlp-file</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>DOS game or Flash projector</string>
+			<key>UTTypeIdentifier</key>
+			<string>local.flashback.dos-game</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>exe</string>
+					<string>com</string>
+					<string>bat</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Detected Director game</string>
+			<key>UTTypeIdentifier</key>
+			<string>local.flashback.director-launch</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>scummvm</string>
+				</array>
 			</dict>
 		</dict>
 	</array>

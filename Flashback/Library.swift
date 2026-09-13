@@ -11,17 +11,33 @@ struct Game: Codable, Identifiable, Equatable, Sendable {
     let added: Date
     var lastPlayed: Date?
     var favorite = false
-    var isJava: Bool { (entry as NSString).pathExtension.lowercased() == "jar" }
+    /// A nil value is the backward-compatible default for libraries written
+    /// before per-game volume was added. Persist values in the normalized
+    /// 0...1 range so every runtime adapter receives the same setting.
+    var volume: Double? = nil
+    var playbackVolume: Double { min(max(volume ?? 1, 0), 1) }
+    var isJava: Bool { ["jar", "jnlp"].contains((entry as NSString).pathExtension.lowercased()) }
+    var isDOS: Bool { ["exe", "com", "bat"].contains((entry as NSString).pathExtension.lowercased()) }
+    var isScummVM: Bool { (entry as NSString).pathExtension.lowercased() == "scummvm" }
+    var isClassicWindows: Bool { (entry as NSString).pathExtension.lowercased() == "win98" }
+    var isNative: Bool { isDOS || isScummVM }
     var isHTML: Bool { ["html", "htm"].contains((entry as NSString).pathExtension.lowercased()) }
     var isShockwave: Bool { ["dcr", "dir", "dxr"].contains((entry as NSString).pathExtension.lowercased()) }
-    var isFlash: Bool { !isJava && !isHTML && !isShockwave }
-    var format: String { isJava ? "JAVA" : (isHTML ? "HTML5" : (isShockwave ? "SHOCKWAVE" : "SWF")) }
+    var isFlash: Bool { (entry as NSString).pathExtension.lowercased() == "swf" }
+    var format: String { isClassicWindows ? "WINDOWS 98" : isDOS ? "DOS" : isScummVM ? "DIRECTOR · SCUMMVM" : isJava ? "JAVA" : (isHTML ? "HTML5" : (isShockwave ? "SHOCKWAVE" : "SWF")) }
+}
+
+struct ClassicWindowsGameManifest: Codable, Sendable, Equatable {
+    let version: Int
+    let kind: String
+    let payload: String
+    let originalName: String
 }
 
 struct ImportPlan: Sendable {
     let source: URL
     let files: [String]
-    let movies: [String]
+    var movies: [String]
     let bytes: Int64
     let isFolder: Bool
     var temporaryDirectory: URL? = nil
@@ -37,7 +53,7 @@ struct LibraryError: LocalizedError {
 struct GameLibrary: Sendable {
     let root: URL
     private var index: URL { root.appendingPathComponent("Library.json") }
-    private var gamesDirectory: URL { root.appendingPathComponent("Games", isDirectory:true) }
+    var gamesDirectory: URL { root.appendingPathComponent("Games", isDirectory:true) }
 
     func load() throws -> [Game] {
         guard FileManager.default.fileExists(atPath:index.path) else { return [] }
@@ -45,13 +61,19 @@ struct GameLibrary: Sendable {
         guard Set(games.map(\.id)).count == games.count else { throw LibraryError("The library contains duplicate entries.") }
         for game in games {
             guard game.id.count == 64, game.id.allSatisfy({ "0123456789abcdef".contains($0) }),
-                  !game.title.isEmpty, game.bytes >= 0 else { throw LibraryError("The saved library could not be read safely.") }
+                  !game.title.isEmpty, game.bytes >= 0,
+                  game.volume.map({ $0.isFinite && (0...1).contains($0) }) ?? true else {
+                throw LibraryError("The saved library could not be read safely.")
+            }
             _ = try Self.contained(game.entry, in:folder(for:game))
         }
         return games
     }
 
     func save(_ games: [Game]) throws {
+        guard games.allSatisfy({ $0.volume.map({ $0.isFinite && (0...1).contains($0) }) ?? true }) else {
+            throw LibraryError("Game volume must be between 0 and 100 percent.")
+        }
         try FileManager.default.createDirectory(at:root, withIntermediateDirectories:true)
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
@@ -174,6 +196,30 @@ struct GameLibrary: Sendable {
             guard info.isRegularFile == true, (info.fileSize ?? 0) > 0, (info.fileSize ?? 0) <= 32 * 1024 * 1024 else {
                 throw LibraryError("Choose a nonempty HTML game page smaller than 32 MB.")
             }
+        } else if url.pathExtension.lowercased() == "jnlp" {
+            _ = try LegacyImport.jnlpDocument(url)
+        } else if url.pathExtension.lowercased() == "scummvm" {
+            _ = try DirectorLaunch.read(url)
+        } else if url.pathExtension.lowercased() == "win98" {
+            let info = try url.resourceValues(forKeys:[.isRegularFileKey,.isSymbolicLinkKey,.fileSizeKey])
+            guard info.isRegularFile == true, info.isSymbolicLink != true,
+                  let size = info.fileSize, size > 0, size <= 16_384 else {
+                throw LibraryError("This Classic Windows game record is damaged.")
+            }
+            let data = try Data(contentsOf:url)
+            guard let manifest = try? JSONDecoder().decode(ClassicWindowsGameManifest.self,from:data),
+                  manifest.version == 1, ["discImage","executable","folder"].contains(manifest.kind),
+                  !manifest.originalName.isEmpty, manifest.originalName.utf8.count <= 1024 else {
+                throw LibraryError("This Classic Windows game record is damaged.")
+            }
+            let payload = try contained(manifest.payload,in:url.deletingLastPathComponent())
+            let values = try payload.resourceValues(forKeys:[.isRegularFileKey,.isDirectoryKey,.isSymbolicLinkKey])
+            guard values.isSymbolicLink != true,
+                  (manifest.kind == "folder" ? values.isDirectory == true : values.isRegularFile == true) else {
+                throw LibraryError("This Classic Windows game is missing its installation files.")
+            }
+        } else if ["exe", "com", "bat"].contains(url.pathExtension.lowercased()) {
+            guard try LegacyImport.isDOS(url) else { throw LibraryError("This executable is not a supported DOS game or Flash projector. Windows applications require a different player.") }
         } else if url.pathExtension.lowercased() == "jar" {
             let handle = try FileHandle(forReadingFrom:url)
             defer { try? handle.close() }
@@ -183,14 +229,14 @@ struct GameLibrary: Sendable {
         } else { try validateMovie(url) }
     }
 
-    func inspect(_ input: URL) throws -> ImportPlan {
+    func inspect(_ input: URL, allowEmpty: Bool = false) throws -> ImportPlan {
         guard input.isFileURL else { throw LibraryError("Add a file from your Mac.") }
         let values = try input.resourceValues(forKeys:[.isDirectoryKey,.isRegularFileKey,.isSymbolicLinkKey])
         guard values.isSymbolicLink != true else { throw LibraryError("Add the original game files instead of a symbolic link.") }
         let source = input.standardizedFileURL.resolvingSymlinksInPath()
         let folder = values.isDirectory == true
-        if !folder && !["swf", "jar", "html", "htm", "dcr", "dir", "dxr"].contains(source.pathExtension.lowercased()) {
-            throw LibraryError("Add a Flash, Java, HTML, or Shockwave game, ZIP, or game folder. Applet-only pages and .jnlp links need the game's downloadable JAR.")
+        if !folder && !LegacyImport.extensions.contains(source.pathExtension.lowercased()) {
+            throw LibraryError("Add a Flash, Java, HTML, Shockwave, DOS, or Director game, JNLP file, ZIP, or game folder.")
         }
         guard !root.path.hasPrefix(source.path + "/"), source != root else {
             throw LibraryError("Choose the game's own folder, rather than a folder containing the Flashback library.")
@@ -228,8 +274,8 @@ struct GameLibrary: Sendable {
             if let error = scanError { throw error }
         } else { try include(source) }
         files.sort()
-        let movies = files.filter { ["swf", "jar", "html", "htm", "dcr", "dir", "dxr"].contains(URL(fileURLWithPath:$0).pathExtension.lowercased()) }
-        guard !movies.isEmpty else { throw LibraryError("There are no Flash, Java, HTML, or Shockwave games in this folder.") }
+        let movies = files.filter { LegacyImport.extensions.contains(URL(fileURLWithPath:$0).pathExtension.lowercased()) }
+        guard allowEmpty || !movies.isEmpty else { throw LibraryError("There are no recognized game entries in this folder. For a classic Director CD-ROM game, add its complete data folder.") }
         return ImportPlan(source:source, files:files, movies:movies, bytes:bytes, isFolder:folder)
     }
 
@@ -268,6 +314,15 @@ struct GameLibrary: Sendable {
             guard info.isRegularFile == true, info.isSymbolicLink != true,
                   (info.fileSize ?? 0) <= 512 * 1024 * 1024 else { continue }
             executables[file.deletingLastPathComponent(),default:[]].append(file)
+            let data = try Data(contentsOf:file,options:.mappedIfSafe)
+            if let range = LegacyImport.flashProjector(in:data) {
+                let target = file.deletingPathExtension().appendingPathExtension("swf")
+                let movie = data.subdata(in:range)
+                if fm.fileExists(atPath:target.path) {
+                    guard try Data(contentsOf:target) == movie else { throw LibraryError("The projector and its neighboring SWF have the same name but different contents. Rename one before importing.") }
+                } else { try movie.write(to:target,options:.withoutOverwriting) }
+                try validateMovie(target)
+            }
         }
         for (folder, files) in executables where files.count == 1 {
             let target = folder.appendingPathComponent("projector-loader.dcr")
@@ -279,7 +334,7 @@ struct GameLibrary: Sendable {
     }
 
     func prepare(_ input: URL, resources: URL) throws -> ImportPlan {
-        guard input.pathExtension.lowercased() == "zip" else { return try inspect(input) }
+        guard input.pathExtension.lowercased() == "zip" else { return try LegacyImport.prepare(input, library:self, resources:resources) }
         let info = try input.resourceValues(forKeys:[.isRegularFileKey,.isSymbolicLinkKey])
         guard input.isFileURL, info.isRegularFile == true, info.isSymbolicLink != true else {
             throw LibraryError("Choose the original ZIP file on your Mac.")
@@ -311,7 +366,10 @@ struct GameLibrary: Sendable {
             var source = extracted
             if children.count == 1, try children[0].resourceValues(forKeys:[.isDirectoryKey]).isDirectory == true { source = children[0] }
             try Self.recoverProjectorMovies(in:source)
+            try LegacyImport.normalize(in:source,resources:resources)
             var plan = try inspect(source)
+            plan.movies = try LegacyImport.entries(plan.movies,in:source)
+            guard !plan.movies.isEmpty else { throw LibraryError("No supported game was found in this archive.") }
             plan.temporaryDirectory = temp
             plan.suggestedTitle = input.deletingPathExtension().lastPathComponent
             return plan

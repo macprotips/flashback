@@ -285,6 +285,32 @@ actor WebsiteCollector {
         guard main.bytes > 0 else { throw LibraryError("The game download is empty.") }
         record.entryURL = main.url
         record.parameters.merge(WebPage.queryParameters(main.url)) { old, _ in old }
+        var jnlpArchives: [URL] = [], jnlpLaunch = ""
+        var javaBase = candidate.baseURL ?? main.url.deletingLastPathComponent()
+        if candidate.kind == "jnlp" {
+            let source = WebPage.text(try Data(contentsOf:main.file))
+            guard main.bytes <= 2 * 1024 * 1024, !source.localizedCaseInsensitiveContains("<!DOCTYPE"), !source.localizedCaseInsensitiveContains("<!ENTITY") else { throw LibraryError("This JNLP contains unsupported XML declarations or is too large.") }
+            guard let document = try? XMLDocument(xmlString:source,options:[.nodeLoadExternalEntitiesNever]),
+                  let root = document.rootElement(), root.name == "jnlp" else { throw LibraryError("This JNLP descriptor is invalid.") }
+            if !((try? root.nodes(forXPath:".//nativelib|.//extension|.//installer-desc|.//all-permissions")) ?? []).isEmpty {
+                throw LibraryError("This JNLP requests native, extension, installer, or elevated permissions that Flashback cannot run.")
+            }
+            if !((try? root.nodes(forXPath:".//property|.//resources[@os or @arch or @locale]|.//security/*[not(self::sandbox)]")) ?? []).isEmpty {
+                throw LibraryError("This JNLP requests platform-specific resources, system properties, or unsupported security settings.")
+            }
+            let codebase = root.attribute(forName:"codebase")?.stringValue ?? ""
+            let descriptorBase = main.url.deletingLastPathComponent()
+            guard let resourceBase = codebase.isEmpty ? descriptorBase : WebAddress.resolve(codebase.hasSuffix("/") ? codebase : codebase + "/",from:descriptorBase) else { throw LibraryError("This JNLP has an invalid codebase.") }
+            javaBase = resourceBase
+            let launches = (try? root.nodes(forXPath:"./application-desc|./applet-desc")) ?? []
+            guard launches.count == 1, let launch = launches.first as? XMLElement else { throw LibraryError("This JNLP needs one application or applet launch descriptor.") }
+            jnlpLaunch = launch.xmlString(options:[])
+            for case let jar as XMLElement in (try? root.nodes(forXPath:".//resources/jar")) ?? [] {
+                guard let href = jar.attribute(forName:"href")?.stringValue, let url = WebAddress.resolve(href,from:resourceBase) else { throw LibraryError("This JNLP has an invalid JAR resource.") }
+                jnlpArchives.append(url)
+            }
+            guard !jnlpArchives.isEmpty else { throw LibraryError("This JNLP has no local Java archives.") }
+        }
         var gameBase = candidate.baseURL ?? main.url.deletingLastPathComponent()
         if candidate.kind == "swf", candidate.baseURL == nil {
             // A direct SWF link loses its HTML base. Recover it only when a
@@ -305,7 +331,8 @@ actor WebsiteCollector {
             }
         }
         record.baseURL = gameBase
-        let mainPath = WebImportRecord.path(main.url,kind:candidate.kind)
+        let storedKind = candidate.kind == "applet" ? (main.url.pathExtension.lowercased() == "class" ? "class" : "jar") : candidate.kind
+        let mainPath = WebImportRecord.path(main.url,kind:storedKind)
         var entries = Set<URL>(), paths = Set<String>()
         func store(_ download: WebDownload, kind: String? = nil) throws -> String {
             var path = WebImportRecord.path(download.url,kind:kind)
@@ -323,18 +350,21 @@ actor WebsiteCollector {
             record.files.append(.init(urls:Array(Set([download.requestedURL,download.url])).sorted { $0.absoluteString < $1.absoluteString },path:path,mime:download.mimeType,bytes:download.bytes,sha256:try WebImportRecord.hashFile(target)))
             return path
         }
-        _ = try store(main,kind:candidate.kind)
+        _ = try store(main,kind:storedKind)
         entries.insert(candidate.url); entries.insert(main.url)
         if candidate.kind == "zip" { return WebRecovery(source:try GameLibrary.contained(mainPath,in:payload),entry:nil,record:record) }
-        try GameLibrary.validateGame(GameLibrary.contained(mainPath,in:payload))
-        var queue: [(WebReference,Int)] = candidate.companions.map { (WebReference(url:$0,role:"Companion archive"),0) }
+        if candidate.kind != "applet" && candidate.kind != "jnlp" {
+            try GameLibrary.validateGame(GameLibrary.contained(mainPath,in:payload))
+        }
+        var queue: [(WebReference,Int)] = candidate.companions.map { (WebReference(url:$0,role:"Companion archive"),0) } +
+            jnlpArchives.map { (WebReference(url:$0,role:"JNLP archive"),0) }
         let context = pages[candidate.pageURL]
         if candidate.kind == "html" {
             let page = WebPage.parse(WebPage.text(try Data(contentsOf:main.file)),url:main.url)
             record.documentBases[mainPath] = page.base
             queue += page.resources.map { ($0,0) }
             if let context { queue += context.resources.map { ($0,0) } }
-        } else if candidate.kind != "jar" {
+        } else if candidate.kind != "jar" && candidate.kind != "applet" && candidate.kind != "jnlp" {
             queue += WebPage.binaryReferences(try Data(contentsOf:main.file),from:gameBase).prefix(500).map { (WebReference(url:$0,role:"Possible game asset"),0) }
             if let context {
                 queue += context.resources.filter { $0.url.path.hasPrefix(main.url.deletingLastPathComponent().path + "/") && $0.url.host == main.url.host }.map { ($0,0) }
@@ -345,7 +375,7 @@ actor WebsiteCollector {
         }
         // Public directory indexes are often the only surviving map of old sound/level folders.
         var seenDirectories = Set<URL>()
-        if candidate.kind != "jar" {
+        if candidate.kind != "jar" && candidate.kind != "applet" && candidate.kind != "jnlp" {
             let assetFolders = queue.map { Self.assetDirectory($0.0.url) }.filter {
                 candidate.kind != "html" || ($0.host == main.url.host && $0.path.hasPrefix(main.url.deletingLastPathComponent().path + "/"))
             }
@@ -404,6 +434,38 @@ actor WebsiteCollector {
         if !queue.isEmpty { record.issues.append(.init(url:candidate.url,reason:"Stopped at the 5,000-file limit.",evidence:"Recovery limit")) }
         record.issues += issues
         record.files.sort { $0.path < $1.path }
+        var entry = mainPath
+        func xml(_ value: String) -> String { value.replacingOccurrences(of:"&",with:"&amp;").replacingOccurrences(of:"<",with:"&lt;").replacingOccurrences(of:"\"",with:"&quot;") }
+        let javaDirectory = (WebImportRecord.path(WebAddress.directory(javaBase).appendingPathComponent("base")) as NSString).deletingLastPathComponent
+        func relativeJavaPath(_ path: String) -> String {
+            let base = javaDirectory.split(separator:"/").map(String.init), target = path.split(separator:"/").map(String.init)
+            var common = 0
+            while common < min(base.count,target.count), base[common] == target[common] { common += 1 }
+            return LegacyImport.pathURL((Array(repeating:"..",count:base.count-common) + target.dropFirst(common)).joined(separator:"/"))
+        }
+        if candidate.kind == "applet" {
+            let archives = [main.url] + candidate.companions
+            func local(_ url: URL) -> String? { record.files.first(where:{ $0.urls.contains(url) })?.path }
+            guard let code = candidate.parameters["__flashback_java_class"],
+                  let first = local(main.url) else { throw LibraryError("This applet is missing its main Java archive.") }
+            let paths = [first] + archives.dropFirst().compactMap(local)
+            guard paths.count == archives.count else { throw LibraryError("This applet is missing one or more required Java archives. Add its complete game folder instead.") }
+            let width = candidate.parameters["__flashback_java_width"] ?? "640"
+            let height = candidate.parameters["__flashback_java_height"] ?? "480"
+            let params = candidate.parameters.filter { !$0.key.hasPrefix("__flashback_java_") }.sorted { $0.key < $1.key }
+                .map { "<param name=\"\(xml($0.key))\" value=\"\(xml($0.value))\"/>" }.joined()
+            let jars = paths.filter { !($0 as NSString).pathExtension.lowercased().elementsEqual("class") }.map { "<jar href=\"\(xml(relativeJavaPath($0)))\"/>" }.joined()
+            let launch = "<jnlp codebase=\"\(xml(LegacyImport.pathURL(javaDirectory)))\"><resources>\(jars)</resources><applet-desc main-class=\"\(xml(code.replacingOccurrences(of:".class",with:"").replacingOccurrences(of:"/",with:".")))\" width=\"\(xml(width))\" height=\"\(xml(height))\">\(params)</applet-desc></jnlp>"
+            entry = "Flashback-launch.jnlp"
+            try Data(launch.utf8).write(to:payload.appendingPathComponent(entry))
+        }
+        if candidate.kind == "jnlp" {
+            let paths = jnlpArchives.compactMap { url in record.files.first(where:{ $0.urls.contains(url) })?.path }
+            guard paths.count == jnlpArchives.count else { throw LibraryError("This JNLP is missing one or more required Java archives. Add its complete game folder instead.") }
+            entry = "Flashback-launch.jnlp"
+            let jars = paths.map { "<jar href=\"\(xml(relativeJavaPath($0)))\"/>" }.joined()
+            try Data("<jnlp codebase=\"\(xml(LegacyImport.pathURL(javaDirectory)))\"><resources>\(jars)</resources>\(jnlpLaunch)</jnlp>".utf8).write(to:payload.appendingPathComponent(entry))
+        }
         // Preserve launch-setting identity without changing any downloaded game bytes.
         if !record.parameters.isEmpty || record.baseURL != nil {
             let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
@@ -411,6 +473,6 @@ actor WebsiteCollector {
             let settings = Launch(baseURL:record.baseURL,parameters:record.parameters)
             try encoder.encode(settings).write(to:payload.appendingPathComponent("Flashback-launch.json"))
         }
-        return WebRecovery(source:payload,entry:mainPath,record:record)
+        return WebRecovery(source:payload,entry:entry,record:record)
     }
 }

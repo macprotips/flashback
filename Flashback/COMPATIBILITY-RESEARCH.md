@@ -1,5 +1,38 @@
 # Flash and Shockwave Emulation Compatibility
 
+## Flashback 1.11.0 investigation
+
+This round makes compatibility work evidence driven even when a developer
+cannot watch every game. Every native collection and corpus probe now produces
+`Health.json`. The report distinguishes a hard runtime or resource failure, a
+stalled capture, active visual/state/audio evidence, and an authored gameplay
+assertion. Animation, input delivery, or a title screen alone never becomes a
+gameplay pass. Early crashes are recovered from the timeout diagnostic with
+their exact VM state, console tail, and call stack.
+
+Redline Rumble Revolution exposed the first defect through this path. Its
+`Values.AddValue` handler looked up a cast member by name and asked for the
+result's `.ilk`, expecting a missing reference to have `#void`. The VM instead
+threw `Cannot get prop ilk of invalid cast member (-1, -1)`. The shared type
+utility now maps invalid or null cast references to `#void` and positive cast
+references to `#member`. Runtime unit tests cover both cases, the compatibility
+patch reproduces the supplied source tree, and a native rerun reaches Redline's
+menu without runtime errors or missing resources. Menu input and a game-owned
+state assertion are required before recording gameplay.
+
+Per-game exceptions now have a narrow, reviewable mechanism. A versioned
+registry can add inert launch-parameter overrides only for one exact entry
+SHA-256. It fails closed on malformed or duplicate records and cannot replace
+the entry `src`. The active profile is exposed in diagnostics and the registry
+starts empty. Shared VM defects such as Redline's invalid-member behavior stay
+shared fixes rather than title-specific workarounds.
+
+The Shockwave toolbar also copies a report containing the game identity and
+entry hash, runtime state, errors, recent console output, active stack, and
+profile. For behavior that cannot be established automatically, this turns a
+user's exact first broken action into evidence that can be matched to a pinned
+fixture and converted into an authored regression.
+
 ## Flashback 1.10.0 investigation
 
 This round relaunched every indexed title against the runtime the application
@@ -225,7 +258,7 @@ Remote-service restoration is a separate project when the program depends on liv
 
 ### Release and evidence, as delivered for 1.8.0
 
-The changes are delivered as Flashback 1.8.0 with the patched Director source, a reproducible compatibility patch, source manifest, and rebuild instructions. Standalone Ruffle remains at 0.6.0. The original downloaded games and test screenshots remain outside the distributable application and corresponding-source archive.
+The changes are delivered as Flashback 1.8.0 with the patched Director source, a reproducible compatibility patch, source manifest, and rebuild instructions. Standalone Ruffle remains at 0.6.0. Game assets and test screenshots remain outside the distributable application and corresponding-source archive.
 
 `check-shockwave-corpus.py` records the native opening interactions, including Monster Bash’s successful hit. `check-shockwave.sh` covers the four established core games and their host behavior. The final signed app also passes `shockwave-host-probe.json`, including archived `_movie.path`/`src` preservation and native pointer accuracy at three window sizes. The native gameplay set passes 13 of 15 recorded conditions, up from 12; Backlot and Creepy Pong remain limited. The runtime unit suite passes 123 tests, including the new constrained-skeleton and high-index checks. The collection’s structural evidence and title-level observations are recorded in `compatibility-results.json` and `skeleton-corpus.json`; a parser pass, an opening observation, and a gameplay pass retain distinct labels.
 

@@ -13,6 +13,7 @@ from pathlib import Path
 import subprocess
 import shutil
 import time
+from shockwave_health import write_health
 
 
 def main():
@@ -67,9 +68,11 @@ def main():
                 detail = (out/'Result.txt').read_text().strip() if (out/'Result.txt').exists() else 'No result'
             except subprocess.TimeoutExpired:
                 detail = f'Timed out after {max(45, args.wait+30):g} seconds'
+        health = write_health(out)
         status = 'OBSERVED' if detail.startswith('OBSERVED:') else 'FAIL'
         results.append(dict(id=case['id'], title=case['title'], sha256=case['sha256'], status=status,
-                            seconds=round(time.monotonic()-start, 1), detail=detail))
+                            seconds=round(time.monotonic()-start, 1), detail=detail,
+                            health_assessment=health['assessment'], health_signals=health['signals']))
         (root/'Results.json').write_text(json.dumps(results, indent=2)+'\n')
         print(f"{case['title']}: {status} — {detail}", flush=True)
         library = out/'Library'

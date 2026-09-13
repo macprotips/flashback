@@ -10,7 +10,7 @@ server_pid=$!
 for attempt in 1 2 3 4 5; do [ -s "$fixture/address" ] && break; sleep 1; done
 sdk="${SDKROOT:-$(xcrun --show-sdk-path)}"
 mkdir -p build
-swiftc -sdk "$sdk" Library.swift WebPage.swift WebTransfer.swift WebImport.swift WebRouting.swift WebChecks.swift -o build/website-checks
+swiftc -sdk "$sdk" Library.swift LegacyImport.swift WebPage.swift WebTransfer.swift WebImport.swift WebRouting.swift WebChecks.swift -o build/website-checks
 build/website-checks "$(cat "$fixture/address")"
 if [ "${1:-}" = '--ui' ]; then
     ../Flashback.app/Contents/MacOS/Flashback --website-check "$(cat "$fixture/address")html/play.html" "${2:-/tmp/flashback-website-ui}"

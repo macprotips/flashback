@@ -143,7 +143,7 @@ import UniformTypeIdentifiers
             var game = try model.library.importGame(plan, entry:entry)
             let duplicate = try model.library.importGame(plan, entry:entry)
             guard duplicate.id == game.id else { throw LibraryError("Repeated import changed game identity") }
-            game.title = game.isJava ? "Wiz 3" : (game.isHTML ? "HTML Game Check" : (game.isShockwave ? "Shockwave Game Check" : "TextTwist 2"))
+            game.title = game.isNative ? "Native Game Check" : game.isJava ? "Wiz 3" : (game.isHTML ? "HTML Game Check" : (game.isShockwave ? "Shockwave Game Check" : "TextTwist 2"))
             try model.library.save([game]); model.games = [game]
             if game.isShockwave && (game.entry.contains("rapunzel") || game.entry == "Merlin.dcr") {
                 let rapunzel = game.entry.contains("rapunzel")
@@ -167,6 +167,27 @@ import UniformTypeIdentifiers
                 try model.library.saveWebRecord(record,for:game)
             }
             model.play(game)
+            if game.isNative {
+                guard let session = model.nativeSessions[game.id] else { throw LibraryError("Native session was not created") }
+                let onReady = session.onReady
+                session.onReady = { [weak self, weak session] in
+                    onReady?()
+                    guard let self, let session else { return }
+                    Task { do { try await self.checkNative(session) } catch { self.finish(error.localizedDescription) } }
+                }
+                let onExit = session.onExit
+                session.onExit = { [weak self] error in
+                    onExit?(error)
+                    guard let self, !self.finished else { return }
+                    self.finish(error ?? (self.phase == 11 ? nil : "Native game exited before completing its checks"))
+                }
+                Task { [weak self] in
+                    try? await Task.sleep(nanoseconds:45_000_000_000)
+                    guard let self, !self.finished else { return }
+                    session.stop(); self.finish("Native player check timed out")
+                }
+                return
+            }
             if game.isJava {
                 guard let session = model.javaSessions[game.id] else { throw LibraryError("Java session was not created") }
                 let onReady = session.onReady
@@ -242,6 +263,18 @@ import UniformTypeIdentifiers
         } catch { finish(error.localizedDescription) }
     }
 
+    func checkNative(_ session: NativeSession) async throws {
+        try await Task.sleep(nanoseconds:3_000_000_000)
+        guard session.isRunning, let pid = session.processIdentifier else { throw LibraryError("Native game was not running") }
+        model.play(session.game)
+        guard model.nativeSessions.count == 1, model.nativeSessions[session.game.id]?.processIdentifier == pid else { throw LibraryError("Playing an open native game created another process") }
+        try await renderLibrary("Library-native-light.png",scheme:.light)
+        try await renderLibrary("Library-native-dark.png",scheme:.dark)
+        guard try model.library.load().first?.lastPlayed != nil else { throw LibraryError("Native recent-play history was not saved") }
+        phase = 11
+        session.stop()
+    }
+
     func checkJava(_ session: JavaSession) async throws {
         try await Task.sleep(nanoseconds:3_000_000_000)
         guard session.process.isRunning else { throw LibraryError("Java game was not running") }
@@ -277,6 +310,12 @@ import UniformTypeIdentifiers
             let volume = try await session.web.evaluateJavaScript("player.ruffle().volume")
             guard (volume as? NSNumber)?.doubleValue == 0 else { throw LibraryError("Mute failed") }
             session.toggleMute()
+            session.previewVolume(0.35); session.commitVolume()
+            let reduced = try await session.web.evaluateJavaScript("player.ruffle().volume")
+            guard abs(((reduced as? NSNumber)?.doubleValue ?? -1) - 0.35) < 0.001,
+                  try model.library.load().first?.playbackVolume == 0.35 else {
+                throw LibraryError("Per-game volume was not applied and saved")
+            }
             let blocked = try await session.web.callAsyncJavaScript("try { await fetch('https://example.com/'); return false; } catch { return true; }", arguments:[:], in:nil, contentWorld:.page)
             guard blocked as? Bool == true else { throw LibraryError("The offline content policy did not block a remote request") }
             let previous = try await session.web.evaluateJavaScript("localStorage.getItem('flashback-self-check')")
@@ -536,7 +575,7 @@ import UniformTypeIdentifiers
     }
 
     func shockwaveSnapshot(_ session: PlayerSession, _ name: String) async throws {
-        let state = try await session.web.evaluateJavaScript("JSON.stringify({console:__vm.mcp_get_console_output(100),state:JSON.parse(__vm.mcp_get_execution_state()),globals:JSON.parse(__vm.mcp_get_globals()),audio:window.shockwaveAudioCheck,audioState:window.getAudioContext?.().state,input:window.shockwaveInputCheck,errors:window.shockwaveErrors,diagnostics:window.shockwaveDiagnostics,game:JSON.parse(__vm.mcp_get_globals()).globals.g?JSON.parse(__vm.mcp_inspect_datum(JSON.parse(__vm.mcp_get_globals()).globals.g.datum_id)):null,main:JSON.parse(__vm.mcp_get_globals()).globals.gMainManager?JSON.parse(__vm.mcp_inspect_datum(JSON.parse(__vm.mcp_get_globals()).globals.gMainManager.datum_id)):null})") as? String ?? ""
+        let state = try await session.web.evaluateJavaScript("JSON.stringify({console:__vm.mcp_get_console_output(100),state:JSON.parse(__vm.mcp_get_execution_state()),globals:JSON.parse(__vm.mcp_get_globals()),audio:window.shockwaveAudioCheck,audioState:window.getAudioContext?.().state,input:window.shockwaveInputCheck,errors:window.shockwaveErrors,diagnostics:window.shockwaveDiagnostics,compatibilityProfile:window.shockwaveCompatibilityProfile,game:JSON.parse(__vm.mcp_get_globals()).globals.g?JSON.parse(__vm.mcp_inspect_datum(JSON.parse(__vm.mcp_get_globals()).globals.g.datum_id)):null,main:JSON.parse(__vm.mcp_get_globals()).globals.gMainManager?JSON.parse(__vm.mcp_inspect_datum(JSON.parse(__vm.mcp_get_globals()).globals.gMainManager.datum_id)):null})") as? String ?? ""
         try Data(state.utf8).write(to:output.appendingPathComponent("Shockwave-\(name).json"))
         let image = try await session.web.takeSnapshot(configuration:nil)
         if let tiff = image.tiffRepresentation, let png = NSBitmapImageRep(data:tiff)?.representation(using:.png,properties:[:]) {
@@ -654,7 +693,8 @@ import UniformTypeIdentifiers
 
     func finish(_ error: String?) {
         guard !finished else { return }; finished = true
-        let passed = phase == 10 ? "PASS: Shockwave recorded gameplay condition, native input sequence, and game assets"
+        let passed = phase == 11 ? "PASS: native game import, visible sandboxed runtime, duplicate-process prevention, recent history, process cleanup, and library rendering"
+            : phase == 10 ? "PASS: Shockwave recorded gameplay condition, native input sequence, and game assets"
             : phase == 9 ? "OBSERVED: Shockwave opened; screenshots and runtime state captured; gameplay has not been asserted"
             : phase == 8 ? "PASS: Shockwave import, original game playback, native mouse/keyboard input, audio backend, offline policy, resizing/fullscreen/restore, Director preference persistence across restart, recent history, and player/library rendering"
             : phase == 5 && htmlIs2048

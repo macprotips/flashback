@@ -3,6 +3,44 @@ import Cocoa
 import SwiftUI
 import ImageIO
 
+struct GameSourceLink: Identifiable {
+    let title: String
+    let format: String
+    let source: String
+    let terms: String
+    let url: URL
+    let tested: Bool
+    var id: String { url.absoluteString }
+
+    static let recommendations = [
+        GameSourceLink(title:"Happyland Adventures",format:"DOS",source:"DOS Games Archive",terms:"Freeware",url:URL(string:"https://www.dosgamesarchive.com/download/happyland-adventures/")!,tested:true),
+        GameSourceLink(title:"Commander Keen 1",format:"DOS",source:"DOSGames.com",terms:"Shareware episode",url:URL(string:"https://dosgames.com/game/commander-keen-1-invasion-of-the-vorticons/")!,tested:false),
+        GameSourceLink(title:"Jazz Jackrabbit",format:"DOS",source:"DOSGames.com",terms:"Shareware episode",url:URL(string:"https://dosgames.com/game/jazz-jackrabbit")!,tested:false),
+        GameSourceLink(title:"Tyrian 2000",format:"DOS",source:"GOG",terms:"Free, DRM-free",url:URL(string:"https://www.gog.com/en/game/tyrian_2000")!,tested:false),
+        GameSourceLink(title:"Alex the Allegator",format:"DOS",source:"DOS Games Archive",terms:"Freeware + source",url:URL(string:"https://www.dosgamesarchive.com/download/alex-the-allegator")!,tested:false),
+        GameSourceLink(title:"Major Stryker",format:"DOS",source:"DOS Games Archive",terms:"Full freeware",url:URL(string:"https://www.dosgamesarchive.com/download/major-stryker/")!,tested:false),
+        GameSourceLink(title:"Stargunner",format:"DOS",source:"DOS Games Archive",terms:"Full freeware",url:URL(string:"https://www.dosgamesarchive.com/download/stargunner")!,tested:false),
+        GameSourceLink(title:"Prince of Persia",format:"DOS",source:"DOSGames.com",terms:"Playable demo",url:URL(string:"https://dosgames.com/game/prince-of-persia/")!,tested:false)
+    ]
+}
+
+struct GameSourceProvider: Identifiable {
+    let name: String
+    let detail: String
+    let symbol: String
+    let url: URL?
+    var id: String { name }
+
+    static let all = [
+        GameSourceProvider(name:"Internet Archive",detail:"Search inside Flashback",symbol:"building.columns",url:nil),
+        GameSourceProvider(name:"DOS Games Archive",detail:"Classic DOS picks",symbol:"shippingbox",url:URL(string:"https://www.dosgamesarchive.com/")!),
+        GameSourceProvider(name:"DOSGames.com",detail:"Popular DOS games",symbol:"gamecontroller",url:URL(string:"https://dosgames.com/")!),
+        GameSourceProvider(name:"itch.io",detail:"New creator-made DOS games",symbol:"sparkles",url:URL(string:"https://itch.io/games/free/tag-dos")!),
+        GameSourceProvider(name:"GOG",detail:"Classic store releases",symbol:"bag",url:URL(string:"https://www.gog.com/en/games?priceRange=0,0")!),
+        GameSourceProvider(name:"ScummVM",detail:"Free classic adventures",symbol:"map",url:URL(string:"https://www.scummvm.org/games/")!)
+    ]
+}
+
 @MainActor final class ArchiveModel: ObservableObject {
     unowned let libraryModel: LibraryModel
     let service: ArchiveService
@@ -137,33 +175,160 @@ struct ArchiveView: View {
     @ObservedObject var model: ArchiveModel
     @ObservedObject var libraryModel: LibraryModel
     @FocusState private var focused: Bool
+    @State private var showingAllFeatured = false
     var body: some View {
         VStack(alignment:.leading,spacing:0) {
-            VStack(alignment:.leading,spacing:18) {
-                HStack(alignment:.firstTextBaseline) {
-                    Text("Discover").font(.system(size:27,weight:.semibold))
-                    Spacer()
-                    Label("Internet Archive",systemImage:"building.columns").font(.system(size:12)).foregroundStyle(.secondary)
-                }
-                Text("Find old favorites. Bring them back to your library.").font(.system(size:13)).foregroundStyle(.secondary)
+            VStack(alignment:.leading,spacing:15) {
+                Text("Discover").font(.system(size:27,weight:.semibold))
+                Text("Find a favorite, try something new, and add it to your library.").font(.system(size:13)).foregroundStyle(.secondary)
                 HStack(spacing:10) {
                     HStack(spacing:8) {
                         Image(systemName:"magnifyingglass").foregroundStyle(.secondary).accessibilityHidden(true)
-                        TextField("Search Internet Archive",text:$model.query).textFieldStyle(.plain).focused($focused).onSubmit { model.search() }
+                        TextField("Search the Internet Archive",text:$model.query).textFieldStyle(.plain).focused($focused).onSubmit { showingAllFeatured = false; model.search() }
                             .accessibilityLabel("Search Internet Archive")
-                        if !model.query.isEmpty { Button { model.query = ""; model.search() } label: { Image(systemName:"xmark.circle.fill") }.buttonStyle(.plain).foregroundStyle(.secondary).accessibilityLabel("Clear search") }
+                        if !model.query.isEmpty { Button { model.query = ""; showingAllFeatured = false; model.search() } label: { Image(systemName:"xmark.circle.fill") }.buttonStyle(.plain).foregroundStyle(.secondary).accessibilityLabel("Clear search") }
                     }.padding(10).background(Palette.card,in:RoundedRectangle(cornerRadius:7))
                         .overlay(RoundedRectangle(cornerRadius:7).strokeBorder(focused ? Palette.accent : Palette.separator.opacity(0.6),lineWidth:focused ? 2 : 1))
                         .auditFrame("archive-search",model:libraryModel)
-                    Button("Search") { model.search() }.controlSize(.large).buttonStyle(.borderedProminent).tint(Palette.action).auditFrame("archive-search-button",model:libraryModel)
+                    Button("Search") { showingAllFeatured = false; model.search() }.controlSize(.large).buttonStyle(.borderedProminent).tint(Palette.action).auditFrame("archive-search-button",model:libraryModel)
                 }
                 HStack {
                     Picker("Format",selection:$model.filter) { ForEach(ArchiveFilter.allCases,id:\.self) { Text($0.rawValue).tag($0) } }
-                        .pickerStyle(.segmented).frame(width:265).onChange(of:model.filter) { _ in model.search() }
+                        .pickerStyle(.segmented).labelsHidden().frame(width:265).accessibilityLabel("Archive format")
+                        .onChange(of:model.filter) { _ in showingAllFeatured = false; model.search() }
                     Spacer()
                     if !model.loading && model.error == nil && !model.featured { Text("\(model.items.count.formatted()) shown").font(.system(size:11)).foregroundStyle(.secondary) }
                 }
-            }.padding(28)
+            }.padding(.horizontal,28).padding(.top,24).padding(.bottom,18)
+            if model.featured {
+                featuredContent
+            } else {
+                resultsContent
+            }
+            Text("Archive results are filtered · Source links open in your browser")
+                .font(.system(size:11)).foregroundStyle(.secondary).padding(.horizontal,28).padding(.vertical,12).frame(maxWidth:.infinity,alignment:.leading).overlay(alignment:.top) { Divider() }
+        }.frame(maxWidth:.infinity,maxHeight:.infinity).background(Palette.background)
+            .onAppear { if !model.started { model.search() } }
+            .onReceive(NotificationCenter.default.publisher(for:NSNotification.Name("FlashbackFindGame"))) { _ in focused = true }
+    }
+
+    private var featuredContent: some View {
+        ScrollView {
+            VStack(alignment:.leading,spacing:28) {
+                if model.items.isEmpty && model.loading {
+                    inlineStatus("Finding this week’s games…",detail:"",symbol:nil)
+                } else if let error = model.error, model.items.isEmpty {
+                    VStack(spacing:12) {
+                        statusText("Featured games are unavailable",detail:error,symbol:"wifi.exclamationmark")
+                        Button("Try Again") { model.search() }.controlSize(.large)
+                    }.frame(maxWidth:.infinity).padding(.vertical,28)
+                } else if !model.items.isEmpty {
+                    VStack(alignment:.leading,spacing:14) {
+                        sectionHeader("Top games this week",detail:"A new selection every Monday")
+                        LazyVGrid(columns:[GridItem(.adaptive(minimum:220,maximum:360),spacing:16)],alignment:.leading,spacing:16) {
+                            ForEach(Array(model.items.prefix(3))) { archiveCard($0,artworkHeight:108) }
+                        }
+                        if model.items.count > 3 {
+                            Button(showingAllFeatured ? "Show top games only" : "Browse all \(model.items.count) featured games") {
+                                showingAllFeatured.toggle()
+                            }.buttonStyle(.link).font(.system(size:12,weight:.medium))
+                                .accessibilityHint(showingAllFeatured ? "Hides the remaining featured games" : "Shows the remaining featured games")
+                                .auditFrame("archive-browse-all",model:libraryModel)
+                        }
+                    }
+                }
+
+                sourceSection
+
+                if showingAllFeatured && model.items.count > 3 {
+                    VStack(alignment:.leading,spacing:14) {
+                        sectionHeader("More featured games",detail:"Selected from the Flash and Shockwave catalog")
+                        LazyVGrid(columns:[GridItem(.adaptive(minimum:205,maximum:300),spacing:18)],alignment:.leading,spacing:18) {
+                            ForEach(Array(model.items.dropFirst(3))) { archiveCard($0,artworkHeight:132) }
+                        }
+                    }.auditFrame("archive-featured-more",model:libraryModel)
+                }
+                if let error = model.error, !model.items.isEmpty { Text(error).font(.system(size:12)).foregroundStyle(.secondary).textSelection(.enabled) }
+            }.padding(.horizontal,28).padding(.bottom,28)
+        }
+    }
+
+    private var sourceSection: some View {
+        VStack(alignment:.leading,spacing:14) {
+            sectionHeader("Browse more sources",detail:"Find a DOS folder or ZIP, then choose Add Games")
+            LazyVGrid(columns:[GridItem(.adaptive(minimum:200,maximum:280),spacing:10)],alignment:.leading,spacing:10) {
+                ForEach(GameSourceProvider.all) { provider in providerCard(provider) }
+            }
+            Text("Handpicked games").font(.system(size:13,weight:.semibold)).padding(.top,2)
+            ScrollView(.horizontal,showsIndicators:false) {
+                HStack(spacing:10) {
+                    ForEach(GameSourceLink.recommendations) { game in
+                        Link(destination:game.url) {
+                            VStack(alignment:.leading,spacing:5) {
+                                HStack(spacing:5) {
+                                    Text(game.title).font(.system(size:12,weight:.semibold)).lineLimit(1)
+                                    if game.tested { Text("TESTED").font(.system(size:8,weight:.bold)).foregroundStyle(Palette.action) }
+                                }
+                                HStack { Text("\(game.format) · \(game.source)").lineLimit(1); Spacer(); Image(systemName:"arrow.up.right") }
+                                    .font(.system(size:10)).foregroundStyle(.secondary)
+                            }.padding(11).frame(width:195,height:64,alignment:.leading)
+                                .background(Palette.card,in:RoundedRectangle(cornerRadius:8))
+                                .overlay(RoundedRectangle(cornerRadius:8).strokeBorder(Palette.separator.opacity(0.45)))
+                        }.buttonStyle(.plain).help("Open the download page for \(game.title)")
+                            .accessibilityLabel("Open \(game.title) on \(game.source)")
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder private func providerCard(_ provider: GameSourceProvider) -> some View {
+        if let url = provider.url {
+            Link(destination:url) { providerLabel(provider,external:true) }
+                .buttonStyle(.plain).help("Open \(provider.name)").accessibilityLabel("Open \(provider.name)")
+        } else {
+            Button { focused = true } label: { providerLabel(provider,external:false) }
+                .buttonStyle(.plain).help("Search Internet Archive in Flashback").accessibilityLabel("Search Internet Archive in Flashback")
+        }
+    }
+
+    private func providerLabel(_ provider: GameSourceProvider, external: Bool) -> some View {
+        HStack(spacing:10) {
+            Image(systemName:provider.symbol).font(.system(size:15)).foregroundStyle(Palette.accent).frame(width:18)
+            VStack(alignment:.leading,spacing:3) {
+                Text(provider.name).font(.system(size:11,weight:.semibold)).lineLimit(1)
+                Text(provider.detail).font(.system(size:9)).foregroundStyle(.secondary).lineLimit(1)
+            }
+            Spacer(minLength:2)
+            Image(systemName:external ? "arrow.up.right" : "magnifyingglass").font(.system(size:9)).foregroundStyle(.secondary)
+        }.padding(10).frame(height:54).background(Palette.card,in:RoundedRectangle(cornerRadius:8))
+            .overlay(RoundedRectangle(cornerRadius:8).strokeBorder(Palette.separator.opacity(0.45)))
+    }
+
+    private func sectionHeader(_ title: String, detail: String) -> some View {
+        HStack(alignment:.firstTextBaseline,spacing:10) {
+            Text(title).font(.system(size:17,weight:.semibold))
+            Spacer()
+            Text(detail).font(.system(size:10)).foregroundStyle(.secondary).multilineTextAlignment(.trailing)
+        }
+    }
+
+    private func archiveCard(_ item: ArchiveItem, artworkHeight: CGFloat) -> some View {
+        Button { model.show(item) } label: {
+            VStack(alignment:.leading,spacing:0) {
+                ArchiveArtwork(item:item,service:model.service,height:artworkHeight)
+                VStack(alignment:.leading,spacing:6) {
+                    Text(item.title).font(.system(size:13,weight:.semibold)).lineLimit(2).frame(height:34,alignment:.topLeading)
+                    HStack { Text(item.format); Spacer(); Image(systemName:"arrow.right") }.font(.system(size:10)).foregroundStyle(.secondary)
+                }.padding(12).frame(maxWidth:.infinity,alignment:.leading)
+            }.background(Palette.card,in:RoundedRectangle(cornerRadius:9)).clipShape(RoundedRectangle(cornerRadius:9))
+                .overlay(RoundedRectangle(cornerRadius:9).strokeBorder(Palette.separator.opacity(0.45)))
+        }.buttonStyle(.plain).help("View \(item.title)").accessibilityLabel("Details for \(item.title)")
+            .auditFrame("archive-card-\(item.id)",model:libraryModel)
+    }
+
+    private var resultsContent: some View {
+        Group {
             if model.items.isEmpty && model.loading {
                 status("Searching Internet Archive…",symbol:nil)
             } else if let error = model.error, model.items.isEmpty {
@@ -176,34 +341,24 @@ struct ArchiveView: View {
             } else {
                 ScrollView {
                     VStack(alignment:.leading,spacing:18) {
-                        Text(model.featured ? "Featured games" : "Search results").font(.system(size:17,weight:.semibold))
-                        LazyVGrid(columns:[GridItem(.adaptive(minimum:205,maximum:300),spacing:20)],alignment:.leading,spacing:20) {
-                            ForEach(model.items) { item in
-                                Button { model.show(item) } label: {
-                                    VStack(alignment:.leading,spacing:0) {
-                                        ArchiveArtwork(item:item,service:model.service,height:145)
-                                        VStack(alignment:.leading,spacing:7) {
-                                            Text(item.title).font(.system(size:14,weight:.semibold)).lineLimit(2).frame(height:36,alignment:.topLeading)
-                                            HStack { Text(item.format); Spacer(); Image(systemName:"arrow.up.right") }.font(.system(size:11)).foregroundStyle(.secondary)
-                                        }.padding(14).frame(maxWidth:.infinity,alignment:.leading)
-                                    }.background(Palette.card,in:RoundedRectangle(cornerRadius:10)).clipShape(RoundedRectangle(cornerRadius:10))
-                                        .overlay(RoundedRectangle(cornerRadius:10).strokeBorder(Palette.separator.opacity(0.45)))
-                                }.buttonStyle(.plain).help("View \(item.title)").accessibilityLabel("Details for \(item.title)").auditFrame("archive-card-\(item.id)",model:libraryModel)
-                            }
+                        sectionHeader("Search results",detail:"\(model.items.count.formatted()) shown")
+                        LazyVGrid(columns:[GridItem(.adaptive(minimum:205,maximum:300),spacing:18)],alignment:.leading,spacing:18) {
+                            ForEach(model.items) { archiveCard($0,artworkHeight:140) }
                         }
                         if model.loading { ProgressView().frame(maxWidth:.infinity).padding() }
                         if let error = model.error { Text(error).font(.system(size:12)).foregroundStyle(.secondary).textSelection(.enabled) }
-                        if !model.featured && !model.loading && model.nextPage != nil {
+                        if !model.loading && model.nextPage != nil {
                             Button(model.error == nil ? "Load More" : "Try Again") { model.search(more:true) }.controlSize(.large).frame(maxWidth:.infinity).padding(.vertical,8)
                         }
                     }.padding(.horizontal,28).padding(.bottom,28)
                 }
             }
-            Text("Adult content filter on · Games from Internet Archive")
-                .font(.system(size:11)).foregroundStyle(.secondary).padding(.horizontal,28).padding(.vertical,12).frame(maxWidth:.infinity,alignment:.leading).overlay(alignment:.top) { Divider() }
-        }.frame(maxWidth:.infinity,maxHeight:.infinity).background(Palette.background)
-            .onAppear { if !model.started { model.search() } }
-            .onReceive(NotificationCenter.default.publisher(for:NSNotification.Name("FlashbackFindGame"))) { _ in focused = true }
+        }
+    }
+
+    private func inlineStatus(_ title: String, detail: String, symbol: String?) -> some View {
+        VStack(spacing:10) { if symbol == nil { ProgressView() }; statusText(title,detail:detail,symbol:symbol) }
+            .frame(maxWidth:.infinity,minHeight:150).padding(.vertical,8)
     }
     private func status(_ title: String, detail: String = "", symbol: String?) -> some View {
         VStack(spacing:14) { if symbol == nil { ProgressView() }; statusText(title,detail:detail,symbol:symbol) }.frame(maxWidth:.infinity,maxHeight:.infinity).padding(28)

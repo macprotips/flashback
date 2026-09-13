@@ -1,5 +1,21 @@
 # Discover catalog — Flashback 1.7.0
 
+## 2026-09-12 weekly recommendations and external sources
+
+The 141 compiled featured identifiers rotate by one 24-card screen each UTC
+week. The order stays fixed for an open service instance. Date-independent tests
+cover adjacent weeks, full-catalog reachability, de-duplication, and rotated
+paging. The review JSON accounts for every identifier compiled into the app.
+
+Discover shows a static three-card preview with an explicit control to expand all
+24 recommendations for the week. Below it, six provider cards link to Internet
+Archive search, DOS Games Archive, DOSGames.com, itch.io, GOG, and ScummVM. Eight compact
+handpicked DOS links follow. `DISCOVER-SOURCES.md` records the reviewed title,
+source, terms, and compatibility-claim boundary. Flashback bundles no game or
+artwork; only Happyland Adventures is marked Tested. The native catalog check
+validates provider and game-link metadata, expands and collapses the weekly set,
+and captures normal, dark, and minimum-width layouts alongside existing flows.
+
 Discover adds Internet Archive search, featured entries, Flash/Shockwave filters,
 thumbnail cards, native game details, file selection, and download-to-library.
 Game downloads retain source provenance and supporting files; Archive artwork is

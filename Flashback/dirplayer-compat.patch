@@ -104,6 +104,38 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
      return {
        x: (p.x - panRef.current.x) / effectiveScaleRef.current,
        y: (p.y - panRef.current.y) / effectiveScaleRef.current,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/src/vm/callbacks.ts b/src/vm/callbacks.ts
+--- a/src/vm/callbacks.ts
++++ b/src/vm/callbacks.ts
+@@ -159,17 +159,24 @@
+     onDebugContent: (content) => {
+       store.dispatch(debugContentAdded(content));
+     },
+-    onScheduleTimeout: (timeoutName: string, periodMs: number) => {
++    onScheduleTimeout: (timeoutName: string, initialDelayMs: number, periodMs: number) => {
+       // Handles are keyed by name, so a re-schedule under a live name would
+       // orphan the previous interval — it keeps firing with no way to reach it.
+       const previous = store.getState().vm.timeoutHandles[timeoutName];
+       if (previous) {
+         clearInterval(previous as Parameters<typeof clearInterval>[0]);
+       }
+-      const handle = setInterval(() => {
++      const initialHandle = setTimeout(() => {
+         trigger_timeout(timeoutName)
+-      }, periodMs);
+-      store.dispatch(setTimeoutHandle({ name: timeoutName, handle }))
++        // The timeout handler may forget or reschedule itself. Only install the
++        // repeating interval if this initial handle is still the live one.
++        if (store.getState().vm.timeoutHandles[timeoutName] !== initialHandle) return;
++        const intervalHandle = setInterval(() => {
++          trigger_timeout(timeoutName)
++        }, periodMs);
++        store.dispatch(setTimeoutHandle({ name: timeoutName, handle: intervalHandle }))
++      }, initialDelayMs);
++      store.dispatch(setTimeoutHandle({ name: timeoutName, handle: initialHandle }))
+     },
+     onClearTimeout: (timeoutName: string) => {
+       const handle = store.getState().vm.timeoutHandles[timeoutName];
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/examples/inspect_scripts.rs b/vm-rust/examples/inspect_scripts.rs
 --- a/vm-rust/examples/inspect_scripts.rs
 +++ b/vm-rust/examples/inspect_scripts.rs
@@ -231,7 +263,55 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              }
  
              // Align to 4 bytes
-@@ -879,11 +879,13 @@
+@@ -356,16 +356,38 @@
+         let name = Symbol::from_str(&r.read_ifx_string()?);
+         let attrs = r.read_u32()?;
+ 
+-        let mut mat = W3dMaterial { name, ..Default::default() };
+-        if (attrs & 0x01) != 0 { mat.ambient = r.read_color_rgba()?; }
+-        if (attrs & 0x02) != 0 { mat.diffuse = r.read_color_rgba()?; }
+-        if (attrs & 0x04) != 0 { mat.specular = r.read_color_rgba()?; }
+-        if (attrs & 0x08) != 0 { mat.emissive = r.read_color_rgba()?; }
+-        if (attrs & 0x10) != 0 { mat.reflectivity = r.read_f32()?; }
+-        if (attrs & 0x20) != 0 { mat.opacity = r.read_f32()?; }
+-        if (attrs & 0x40) != 0 { let _ = r.read_f32()?; } // reserved
+-        if (attrs & 0x80) != 0 { mat.shininess = r.read_f32()?; }
++        // Director's legacy 0xFFFFFF10/11 W3D material blocks always contain
++        // four RGBA vectors followed by reflectivity and opacity. `attrs` says
++        // which values IFX exposes; it does not omit bytes from this block.
++        // This differs from the later canonical U3D ResourceMaterial block,
++        // whose colors are RGB triples and whose type is 0xFFFFFF54.
++        let ambient = r.read_color_rgba()?;
++        let diffuse = r.read_color_rgba()?;
++        let specular = r.read_color_rgba()?;
++        let emissive = r.read_color_rgba()?;
++        let reflectivity = r.read_f32()?;
++        let opacity = r.read_f32()?;
+ 
++        // CIFXMaterialResource returns black for disabled color attributes,
++        // zero reflectivity, and opaque alpha. Start with those effective
++        // values rather than the user-created DefaultShader defaults.
++        let mut mat = W3dMaterial {
++            name,
++            ambient: [0.0, 0.0, 0.0, 1.0],
++            diffuse: [0.0, 0.0, 0.0, 1.0],
++            specular: [0.0, 0.0, 0.0, 1.0],
++            emissive: [0.0, 0.0, 0.0, 1.0],
++            reflectivity: 0.0,
++            opacity: 1.0,
++            shininess: 0.0,
++        };
++        if (attrs & 0x01) != 0 { mat.ambient = ambient; }
++        if (attrs & 0x02) != 0 { mat.diffuse = diffuse; }
++        if (attrs & 0x04) != 0 { mat.specular = specular; }
++        if (attrs & 0x08) != 0 { mat.emissive = emissive; }
++        if (attrs & 0x10) != 0 { mat.reflectivity = reflectivity; }
++        if (attrs & 0x20) != 0 { mat.opacity = opacity; }
++
+         log(&format!("  Material: \"{}\" diffuse=({:.2},{:.2},{:.2}) emissive=({:.2},{:.2},{:.2}) opacity={:.2} reflectivity={:.4} shininess={:.4} attrs=0x{:02X}", name, mat.diffuse[0], mat.diffuse[1], mat.diffuse[2], mat.emissive[0], mat.emissive[1], mat.emissive[2], mat.opacity, mat.reflectivity, mat.shininess, attrs));
+         self.scene.materials.push(mat);
+         Ok(())
+@@ -879,11 +901,13 @@
      fn parse_bones_block(&mut self, r: &mut W3dBlockReader) -> Result<(), String> {
          let skel_name = Symbol::from_str(&r.read_ifx_string()?);
          let num_bones = r.read_u32()?;
@@ -246,7 +326,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              let bone_name = Symbol::from_str(&r.read_ifx_string()?);
              let parent_idx = r.read_u32()?;
              let length = r.read_f32()?;
-@@ -896,6 +898,16 @@
+@@ -896,6 +920,16 @@
              let qy = r.read_f32()?;
              let qz = r.read_f32()?;
              let bone_attrs = r.read_u32()?;
@@ -263,7 +343,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
  
              skeleton.bones.push(W3dBone {
                  name: bone_name,
-@@ -1238,4 +1250,49 @@
+@@ -1238,4 +1272,89 @@
          1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
      ];
      m.iter().zip(I.iter()).all(|(a, b)| (a - b).abs() < 1e-6)
@@ -312,11 +392,117 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
 +        assert!(truncated.parse_bones_block(&mut W3dBlockReader::new(&bytes[..bytes.len()-1])).is_err());
 +        assert!(truncated.scene.skeletons.is_empty());
 +    }
++}
++
++#[cfg(test)]
++mod material_tests {
++    use super::*;
++
++    fn push_f32s(bytes: &mut Vec<u8>, values: &[f32]) {
++        for value in values {
++            bytes.extend_from_slice(&value.to_le_bytes());
++        }
++    }
++
++    #[test]
++    fn material_attributes_do_not_change_binary_layout() {
++        crate::player::symbols::symbol_table::init_symbol_table();
++        let mut bytes = Vec::new();
++        bytes.extend_from_slice(&4u16.to_le_bytes());
++        bytes.extend_from_slice(b"test");
++        // Only diffuse and opacity are enabled, but every value remains encoded.
++        bytes.extend_from_slice(&(0x02u32 | 0x20).to_le_bytes());
++        push_f32s(&mut bytes, &[0.1, 0.2, 0.3, 1.0]);
++        push_f32s(&mut bytes, &[0.4, 0.5, 0.6, 0.8]);
++        push_f32s(&mut bytes, &[0.7, 0.8, 0.9, 0.6]);
++        push_f32s(&mut bytes, &[0.91, 0.92, 0.93, 0.4]);
++        push_f32s(&mut bytes, &[0.42, 0.37]);
++
++        let mut parser = W3dFileParser::new(vec![]);
++        let mut reader = W3dBlockReader::new(&bytes);
++        parser.parse_material(&mut reader).unwrap();
++
++        assert_eq!(reader.remaining(), 0);
++        let material = &parser.scene.materials[0];
++        assert_eq!(material.name.as_str(), "test");
++        assert_eq!(material.ambient, [0.0, 0.0, 0.0, 1.0]);
++        assert_eq!(material.diffuse, [0.4, 0.5, 0.6, 0.8]);
++        assert_eq!(material.specular, [0.0, 0.0, 0.0, 1.0]);
++        assert_eq!(material.emissive, [0.0, 0.0, 0.0, 1.0]);
++        assert_eq!(material.reflectivity, 0.0);
++        assert_eq!(material.opacity, 0.37);
++    }
  }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/director/lingo/datum.rs b/vm-rust/src/director/lingo/datum.rs
+--- a/vm-rust/src/director/lingo/datum.rs
++++ b/vm-rust/src/director/lingo/datum.rs
+@@ -275,6 +275,10 @@
+     SoundChannel(u16),
+     CursorRef(CursorRef),
+     TimeoutRef(TimeoutRef),
++    /// A named timeout lookup for which no active object exists. It remains a
++    /// timeout receiver so legacy `timeout(name).new(...)` syntax can create
++    /// the object, while comparing equal to VOID as Director does on lookup.
++    MissingTimeoutRef(TimeoutRef),
+     TimeoutFactory,
+     /// Boxed (~100B of fields) to keep `Datum` small.
+     TimeoutInstance(Box<TimeoutInstanceData>),
+@@ -394,6 +398,7 @@
+             Datum::SoundRef(_) => DatumType::SoundRef,
+             Datum::CursorRef(_) => DatumType::CursorRef,
+             Datum::TimeoutRef(_) => DatumType::TimeoutRef,
++            Datum::MissingTimeoutRef(_) => DatumType::TimeoutRef,
+             Datum::TimeoutFactory => DatumType::TimeoutRef,
+             Datum::TimeoutInstance(_) => DatumType::TimeoutRef,
+             Datum::ColorRef(_) => DatumType::ColorRef,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/js_api.rs b/vm-rust/src/js_api.rs
+--- a/vm-rust/src/js_api.rs
++++ b/vm-rust/src/js_api.rs
+@@ -284,7 +284,7 @@
+     pub fn onScriptErrorCleared();
+     pub fn onDebugMessage(message: &str);
+     pub fn onDebugContent(content: js_sys::Object);
+-    pub fn onScheduleTimeout(timeout_name: &str, interval: u32);
++    pub fn onScheduleTimeout(timeout_name: &str, initial_delay: u32, interval: u32);
+     pub fn onClearTimeout(timeout_name: &str);
+     pub fn onClearTimeouts();
+     pub fn onDatumSnapshot(datum_id: DatumId, data: js_sys::Object);
+@@ -316,8 +316,8 @@
+         let snapshot = concrete_datum_to_js_bridge(&datum, player, 0);
+         onScriptInstanceSnapshot(*script_ref.unwrap(), snapshot);
+     }
+-    pub fn dispatch_schedule_timeout(timeout_name: &str, interval: u32) {
+-        onScheduleTimeout(timeout_name, interval);
++    pub fn dispatch_schedule_timeout(timeout_name: &str, initial_delay: u32, interval: u32) {
++        onScheduleTimeout(timeout_name, initial_delay, interval);
+     }
+     pub fn dispatch_clear_timeout(timeout_name: &str) {
+         onClearTimeout(timeout_name);
+@@ -2094,7 +2094,7 @@
+ impl JsApi {
+     pub fn dispatch_datum_snapshot(_: &DatumRef, _: &DirPlayer) {}
+     pub fn dispatch_script_instance_snapshot(_: Option<ScriptInstanceRef>, _: &DirPlayer) {}
+-    pub fn dispatch_schedule_timeout(_: &str, _: u32) {}
++    pub fn dispatch_schedule_timeout(_: &str, _: u32, _: u32) {}
+     pub fn dispatch_clear_timeout(_: &str) {}
+     #[allow(dead_code)]
+     pub fn dispatch_clear_timeouts() {}
+@@ -2307,6 +2307,11 @@
+         Datum::TimeoutRef(name) => {
+             map.str_set("type", &safe_js_string("timeout"));
+             map.str_set("name", &safe_js_string(name));
++        }
++        Datum::MissingTimeoutRef(name) => {
++            map.str_set("type", &safe_js_string("timeout"));
++            map.str_set("name", &safe_js_string(name));
++            map.str_set("missing", &JsValue::TRUE);
+         }
+         Datum::TimeoutFactory => {
+             map.str_set("type", &safe_js_string("timeoutFactory"));
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/lib.rs b/vm-rust/src/lib.rs
 --- a/vm-rust/src/lib.rs
 +++ b/vm-rust/src/lib.rs
-@@ -2314,6 +2314,40 @@
+@@ -2314,6 +2314,58 @@
      })
  }
  
@@ -343,8 +529,26 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
 +        let bp = w3d.runtime_state.bones_player(name);
 +        let motion = bp.and_then(|bp| bp.current_motion)
 +            .and_then(|name| scene.motions.iter().find(|motion| motion.name == name));
++        let runtime_transform = w3d.runtime_state.node_transforms.get(&name).copied();
++        let mesh_bounds = scene.clod_meshes.get(&resource).and_then(|meshes| {
++            let mut min = [f32::INFINITY; 3];
++            let mut max = [f32::NEG_INFINITY; 3];
++            let mut count = 0usize;
++            for position in meshes.iter().flat_map(|mesh| mesh.positions.iter()) {
++                for axis in 0..3 {
++                    min[axis] = min[axis].min(position[axis]);
++                    max[axis] = max[axis].max(position[axis]);
++                }
++                count += 1;
++            }
++            (count > 0).then_some(json!({"min":min,"max":max,"vertices":count}))
++        });
 +        json!({
 +            "model":node.name.as_str(), "resource":resource.as_str(),
++            "parent":node.parent_name.as_str(),
++            "parsed_transform":node.transform,
++            "runtime_transform":runtime_transform,
++            "mesh_bounds":mesh_bounds,
 +            "skeletons":scene.skeletons.iter().take(128).map(|s| json!({"name":s.name.as_str(),"bones":s.bones.len()})).collect::<Vec<_>>(),
 +            "bones":skeleton.map(|s| s.bones.iter().take(128).map(|b| json!({"name":b.name.as_str(),"parent":b.parent_index})).collect::<Vec<_>>()),
 +            "motion":motion.map(|m| json!({"name":m.name.as_str(),"duration":m.duration(),"tracks":m.tracks.iter().take(128).map(|t| json!({"name":t.bone_name.as_str(),"keys":t.keyframes.len(),"first":t.keyframes.first().map(|k| k.time),"last":t.keyframes.last().map(|k| k.time)})).collect::<Vec<_>>() })),
@@ -577,6 +781,29 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              previous_motion: None,
              blend_weight: 1.0,
              blend_duration: 0.0,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/compare.rs b/vm-rust/src/player/compare.rs
+--- a/vm-rust/src/player/compare.rs
++++ b/vm-rust/src/player/compare.rs
+@@ -60,6 +60,7 @@
+             VarRef(datum::VarRef::Script(var_ref)) => !var_ref.is_valid(),
+             CastMember(member_ref) => !member_ref.is_valid(), // TODO return true if member is empty?
+             BitmapRef(b) => *b == INVALID_BITMAP_REF,
++            MissingTimeoutRef(_) => true,
+             _ => false,
+         }),
+ 
+@@ -223,6 +224,11 @@
+         (TimeoutRef(a), o) | (o, TimeoutRef(a)) => Ok(match o {
+             TimeoutRef(b) => a == b,
+             _ => false
++        }),
++
++        (MissingTimeoutRef(a), o) | (o, MissingTimeoutRef(a)) => Ok(match o {
++            MissingTimeoutRef(b) => a == b,
++            _ => false,
+         }),
+ 
+         (TimeoutFactory, o) | (o, TimeoutFactory) => Ok(matches!(o, TimeoutFactory)),
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/datum_formatting.rs b/vm-rust/src/player/datum_formatting.rs
 --- a/vm-rust/src/player/datum_formatting.rs
 +++ b/vm-rust/src/player/datum_formatting.rs
@@ -604,7 +831,17 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
          }
          Datum::CastMember(member_ref) => {
              format!(
-@@ -325,4 +324,63 @@
+@@ -98,6 +97,9 @@
+         Datum::TimeoutRef(name) => {
+             format!("timeout(\"{name}\")")
+         }
++        Datum::MissingTimeoutRef(name) => {
++            format!("timeout(\"{name}\")")
++        }
+         Datum::TimeoutFactory => {
+             format!("<timeoutFactory>")
+         }
+@@ -325,4 +327,63 @@
      let _ = js_sys::Reflect::set(&o, &"month".into(), &"2-digit".into());
      let _ = js_sys::Reflect::set(&o, &"year".into(), &"numeric".into());
      o
@@ -1074,6 +1311,91 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
                      _ => Err(ScriptError::new(format!("Script members don't support property {}", prop))),
                  }
              }
+@@ -1583,6 +1583,15 @@
+         cast_member_ref: &CastMemberRef,
+         prop: Symbol,
+     ) -> Result<Datum, ScriptError> {
++        // Type inspection must agree with ilk(ref), including the invalid and
++        // null member sentinels. Resolve it before looking up the cast slot:
++        // Redline Rumble Revolution's AddValue checks a missing member's .ilk
++        // against #void while evaluating its menu configuration.
++        if prop == BuiltInSymbol::Ilk {
++            return Ok(Datum::Symbol(Symbol::builtin(TypeUtils::get_datum_ilk(
++                &Datum::CastMember(cast_member_ref.clone()),
++            )?)));
++        }
+         let is_invalid = cast_member_ref.cast_lib < 0 || cast_member_ref.cast_member < 0;
+         if is_invalid {
+             return Self::get_invalid_member_prop(player, cast_member_ref, prop);
+@@ -1635,7 +1644,6 @@
+             Some(BuiltInSymbol::Loaded) => Ok(Datum::Int(1)),
+             Some(BuiltInSymbol::MediaReady) => Ok(Datum::Int(1)),
+             Some(BuiltInSymbol::Comments) => Ok(Datum::String(comments)),
+-            Some(BuiltInSymbol::Ilk) => Ok(Datum::Symbol(Symbol::from_str("member"))),
+             Some(BuiltInSymbol::Member) => Ok(Datum::CastMember(cast_member_ref.clone())),
+             _ => Self::get_member_type_prop(player, cast_member_ref, &member_type, prop),
+         }
+@@ -1751,5 +1759,60 @@
+             JsApi::dispatch_cast_member_changed(cast_member_ref.to_owned());
+         }
+         result
++    }
++}
++
++#[cfg(all(test, not(target_arch = "wasm32")))]
++mod member_ilk_tests {
++    use super::*;
++    use crate::player::{
++        cast_lib::{INVALID_CAST_MEMBER_REF, NULL_CAST_MEMBER_REF},
++        symbols::symbol_table::init_symbol_table,
++        testing::{run_test, TestPlayer},
++    };
++
++    #[test]
++    fn member_ilk_matches_function_for_invalid_null_and_positive_refs() {
++        init_symbol_table();
++        run_test(async {
++            let _player = TestPlayer::new();
++            reserve_player_mut(|player| {
++                for (member_ref, expected) in [
++                    (INVALID_CAST_MEMBER_REF, BuiltInSymbol::Void),
++                    (NULL_CAST_MEMBER_REF, BuiltInSymbol::Void),
++                    (CastMemberRef { cast_lib: 1, cast_member: -1 }, BuiltInSymbol::Void),
++                    (CastMemberRef { cast_lib: -1, cast_member: 1 }, BuiltInSymbol::Void),
++                    // A positive slot reference retains its type even before
++                    // media has been loaded into that slot, just as ilk(ref).
++                    (CastMemberRef { cast_lib: 1, cast_member: 1 }, BuiltInSymbol::Member),
++                ] {
++                    let result = CastMemberRefHandlers::get_prop(
++                        player, &member_ref, Symbol::builtin(BuiltInSymbol::Ilk),
++                    ).unwrap();
++                    assert!(matches!(result, Datum::Symbol(s) if s == expected));
++                    assert_eq!(
++                        TypeUtils::get_datum_ilk(&Datum::CastMember(member_ref)).unwrap(),
++                        expected,
++                    );
++                }
++            });
++        });
++    }
++
++    #[test]
++    fn missing_member_ilk_keeps_empty_type_and_rejects_unknown_properties() {
++        init_symbol_table();
++        run_test(async {
++            let _player = TestPlayer::new();
++            reserve_player_mut(|player| {
++                let result = CastMemberRefHandlers::get_prop(
++                    player, &INVALID_CAST_MEMBER_REF, Symbol::builtin(BuiltInSymbol::Type),
++                ).unwrap();
++                assert!(matches!(result, Datum::Symbol(s) if s == BuiltInSymbol::Empty));
++                assert!(CastMemberRefHandlers::get_prop(
++                    player, &INVALID_CAST_MEMBER_REF, Symbol::from_str("unknownMemberProperty"),
++                ).is_err());
++            });
++        });
+     }
+ }
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/mod.rs b/vm-rust/src/player/handlers/datum_handlers/mod.rs
 --- a/vm-rust/src/player/handlers/datum_handlers/mod.rs
 +++ b/vm-rust/src/player/handlers/datum_handlers/mod.rs
@@ -1265,6 +1587,74 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
                              } else {
                                  // Nothing left to play.
                                  rs.current_motion = None;
+@@ -7557,9 +7573,9 @@
+     node_name: Symbol,
+ ) -> Option<[f32; 16]> {
+     let bp = w3d.runtime_state.bones_players.get(&node_name)?;
+-    if !bp.animation_playing {
+-        return None;
+-    }
++    // Pausing a keyframePlayer, or reaching the end of a non-looping motion,
++    // freezes its current pose. It does not restore the model's rest transform.
++    // stop()/removeLast() clear current_motion when the pose should be removed.
+     let motion_name = bp.current_motion?;
+     let scene = w3d.parsed_scene.as_ref()?;
+     let motion = scene.motions.iter().find(|m| m.name == motion_name)?;
+@@ -7595,28 +7611,13 @@
+     if let Some(member) = player.movie.cast_manager.find_member_by_ref(member_ref) {
+         if let Some(w3d) = member.member_type.as_shockwave3d() {
+             let motion = keyframe_motion_matrix(w3d, node_name);
+-            // Check runtime override first (exact match, then case-insensitive fallback)
+-            // Symbol identity is already case-insensitive, so the exact lookup
+-            // subsumes the case-insensitive fallback scan this used to need.
+-            let override_t = w3d.runtime_state.node_transforms.get(&node_name).copied();
+-            // Compose exactly as the renderer does: an explicitly placed model keeps
+-            // its runtime placement and takes the keyframe locally; otherwise the
+-            // keyframe applies relative to the authored rest pose.
+-            if let Some(rt) = override_t {
+-                return match motion {
+-                    Some(km) => mat4_mul_f32(&rt, &km),
+-                    None => rt,
+-                };
++            let base = w3d.runtime_state.node_transforms.get(&node_name).copied()
++                .or_else(|| w3d.parsed_scene.as_ref()
++                    .and_then(|scene| scene.nodes.iter().find(|n| n.name == node_name))
++                    .map(|node| node.transform));
++            if let Some(base) = base {
++                return motion.map(|km| mat4_mul_f32(&base, &km)).unwrap_or(base);
+             }
+-            // Fall back to parsed scene (case-insensitive)
+-            if let Some(scene) = &w3d.parsed_scene {
+-                if let Some(node) = scene.nodes.iter().find(|n| n.name == node_name) {
+-                    return match motion {
+-                        Some(km) => mat4_mul_f32(&km, &node.transform),
+-                        None => node.transform,
+-                    };
+-                }
+-            }
+         }
+     }
+     IDENTITY
+@@ -8016,8 +8017,17 @@
+         return datum_ref;
+     }
+ 
+-    // Create new persistent datum from current transform
+-    let m = get_node_transform(player, member_ref, key);
++    // The persistent datum stores the model's placement, not its transient
++    // keyframe pose. Seeding it from get_node_transform() baked the current
++    // animation into the placement; the next render then applied the motion a
++    // second time merely because Lingo had read `model.transform`.
++    let m = player.movie.cast_manager.find_member_by_ref(member_ref)
++        .and_then(|member| member.member_type.as_shockwave3d())
++        .and_then(|w3d| w3d.runtime_state.node_transforms.get(&key).copied()
++            .or_else(|| w3d.parsed_scene.as_ref()
++                .and_then(|scene| scene.nodes.iter().find(|node| node.name == key))
++                .map(|node| node.transform)))
++        .unwrap_or(IDENTITY);
+     let m64: [f64; 16] = m.map(|v| v as f64);
+     let datum_ref = player.alloc_datum(Datum::transform3d(m64));
+ 
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/sprite.rs b/vm-rust/src/player/handlers/datum_handlers/sprite.rs
 --- a/vm-rust/src/player/handlers/datum_handlers/sprite.rs
 +++ b/vm-rust/src/player/handlers/datum_handlers/sprite.rs
@@ -1441,6 +1831,189 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              "ilk" => Ok(player.alloc_datum(Datum::Symbol(Symbol::from_str("symbol")))),
              _ => Err(ScriptError::new(format!(
                  "Cannot get symbol property {}",
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/timeout.rs b/vm-rust/src/player/handlers/datum_handlers/timeout.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/timeout.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/timeout.rs
+@@ -72,7 +72,7 @@
+                     }
+                     player.get_datum(&args[0]).string_value()
+                 }
+-                Datum::TimeoutRef(timeout_name) => {
++                Datum::TimeoutRef(timeout_name) | Datum::MissingTimeoutRef(timeout_name) => {
+                     // Named call: timeout("name").new(...)
+                     Ok(timeout_name.clone())
+                 }
+@@ -100,7 +100,7 @@
+                     let tgt = if args.len() >= 4 { Some(3) } else { None };
+                     Ok((1usize, 2usize, tgt))
+                 }
+-                Datum::TimeoutRef(_) => {
++                Datum::TimeoutRef(_) | Datum::MissingTimeoutRef(_) => {
+                     // Named: timeout("name").new(period, handler {, target})
+                     // args[0] = period, args[1] = handler, args[2] = target?
+                     if args.len() < 2 {
+@@ -273,7 +273,7 @@
+             let timeout_name = {
+                 let timeout_ref = player.get_datum(datum);
+                 match timeout_ref {
+-                    Datum::TimeoutRef(timeout_name) => Some(timeout_name.to_owned()),
++                    Datum::TimeoutRef(timeout_name) | Datum::MissingTimeoutRef(timeout_name) => Some(timeout_name.to_owned()),
+                     Datum::TimeoutInstance(ti) => Some(ti.name.to_owned()),
+                     _ => None,
+                 }
+@@ -290,7 +290,7 @@
+             let timeout_name = {
+                 let timeout_ref = player.get_datum(datum);
+                 match timeout_ref {
+-                    Datum::TimeoutRef(timeout_name) => Ok(timeout_name.to_owned()),
++                    Datum::TimeoutRef(timeout_name) | Datum::MissingTimeoutRef(timeout_name) => Ok(timeout_name.to_owned()),
+                     Datum::TimeoutInstance(ti) => Ok(ti.name.to_owned()),
+                     _ => Err(ScriptError::new("Cannot forget non-timeout".to_string())),
+                 }?
+@@ -316,12 +316,25 @@
+                         let p = timeout.map_or(0, |t| t.period as i32);
+                         Ok(player.alloc_datum(Datum::Int(p)))
+                     }
++                    "time" => {
++                        let next = timeout.map_or(0, |t| {
++                            let now = crate::player::testing_shared::now_ms();
++                            let elapsed = chrono::Utc::now().timestamp_millis()
++                                - player.system_start_time.timestamp_millis();
++                            (elapsed as f64 + (t.next_fire_ms - now)).max(0.0) as i32
++                        });
++                        Ok(player.alloc_datum(Datum::Int(next)))
++                    }
+                     _ => Err(ScriptError::new(format!(
+                         "Cannot get timeout property {}",
+                         prop
+                     ))),
+                 }
+             }
++            Datum::MissingTimeoutRef(timeout_name) => match prop.as_lower_str() {
++                "name" => Ok(player.alloc_datum(Datum::String(timeout_name.to_owned()))),
++                _ => Ok(DatumRef::Void),
++            },
+             Datum::TimeoutInstance(ti) => {
+                 match prop.as_lower_str() {
+                     "name" => Ok(player.alloc_datum(Datum::String(ti.name.to_owned()))),
+@@ -333,6 +346,15 @@
+                             .map_or(0, |t| t.period as i32);
+                         Ok(player.alloc_datum(Datum::Int(p)))
+                     }
++                    "time" => {
++                        let next = player.timeout_manager.get_timeout(&ti.name).map_or(0, |t| {
++                            let now = crate::player::testing_shared::now_ms();
++                            let elapsed = chrono::Utc::now().timestamp_millis()
++                                - player.system_start_time.timestamp_millis();
++                            (elapsed as f64 + (t.next_fire_ms - now)).max(0.0) as i32
++                        });
++                        Ok(player.alloc_datum(Datum::Int(next)))
++                    }
+                     _ => Err(ScriptError::new(format!(
+                         "Cannot get timeout property {}",
+                         prop
+@@ -354,16 +376,20 @@
+         let timeout_datum = player.get_datum(datum);
+         let timeout_name = match timeout_datum {
+             Datum::TimeoutRef(timeout_name) => timeout_name.clone(),
++            // A missing named lookup compares equal to VOID. Property writes
++            // are ignored if game code nevertheless performs one, matching a
++            // stale object reference rather than inventing an active timer.
++            Datum::MissingTimeoutRef(_) => return Ok(()),
+             Datum::TimeoutInstance(ti) => ti.name.clone(),
+             _ => return Err(ScriptError::new(
+                 "Cannot set prop of non-timeout".to_string(),
+             )),
+         };
+         
+-        let timeout = player.timeout_manager.get_timeout_mut(&timeout_name);
+         match prop.into_builtin() {
+             Some(BuiltInSymbol::Target) => {
+                 let new_target = value.clone();
++                let timeout = player.timeout_manager.get_timeout_mut(&timeout_name);
+                 if let Some(timeout) = timeout {
+                     timeout.target_ref = new_target;
+                     Ok(())
+@@ -398,10 +424,79 @@
+                     ))
+                 }
+             }
++            // `time` is the absolute millisecond-clock value for the next
++            // event. Redline sets active garage timers to `the milliSeconds`
++            // when skipping the introduction, which must make those events
++            // due immediately without changing their repeat periods.
++            Some(BuiltInSymbol::Time) => {
++                let requested = player.get_datum(value).int_value()? as i64;
++                let elapsed = chrono::Utc::now().timestamp_millis()
++                    - player.system_start_time.timestamp_millis();
++                let delay = requested.saturating_sub(elapsed).clamp(0, u32::MAX as i64) as u32;
++                let timeout = player.timeout_manager.get_timeout_mut(&timeout_name);
++                if let Some(timeout) = timeout {
++                    timeout.schedule_after(delay);
++                    Ok(())
++                } else {
++                    Err(ScriptError::new(
++                        "Cannot set time of unscheduled timeout".to_string(),
++                    ))
++                }
++            }
+             _ => Err(ScriptError::new(format!(
+                 "Cannot set timeout property {}",
+                 prop.to_string()
+             ))),
+         }
++    }
++}
++
++#[cfg(all(test, not(target_arch = "wasm32")))]
++mod time_property_tests {
++    use super::*;
++    use crate::player::{compare::datum_equals, reserve_player_mut, symbols::symbol_table::init_symbol_table, testing::{run_test, TestPlayer}};
++
++    #[test]
++    fn missing_named_timeout_compares_equal_to_void_and_ignores_property_write() {
++        init_symbol_table();
++        run_test(async {
++            let _test_player = TestPlayer::new();
++            reserve_player_mut(|player| {
++                let missing = player.alloc_datum(Datum::MissingTimeoutRef("absent".into()));
++                assert!(datum_equals(player.get_datum(&missing), &Datum::Void, &player.allocator).unwrap());
++                let value = player.alloc_datum(Datum::Int(1));
++                TimeoutDatumHandlers::set_prop(player, &missing, Symbol::builtin(BuiltInSymbol::Time), &value).unwrap();
++                assert!(player.timeout_manager.timeouts.is_empty());
++            });
++        });
++    }
++
++    #[test]
++    fn timeout_time_is_read_write_and_keeps_period() {
++        init_symbol_table();
++        run_test(async {
++            let _test_player = TestPlayer::new();
++            reserve_player_mut(|player| {
++                let now = (chrono::Utc::now().timestamp_millis()
++                    - player.system_start_time.timestamp_millis()) as i32;
++                let mut timeout = Timeout {
++                    name: "time-property-test".into(), period: 250,
++                    handler: Symbol::from_str("tick"), target_ref: DatumRef::Void,
++                    is_scheduled: false, next_fire_ms: 0.0,
++                };
++                timeout.schedule();
++                player.timeout_manager.add_timeout(timeout);
++                let reference = player.alloc_datum(Datum::TimeoutRef("time-property-test".into()));
++                let value = player.alloc_datum(Datum::Int(now));
++                TimeoutDatumHandlers::set_prop(player, &reference, Symbol::builtin(BuiltInSymbol::Time), &value).unwrap();
++                let name = "time-property-test".to_string();
++                let timeout = player.timeout_manager.get_timeout(&name).unwrap();
++                assert_eq!(timeout.period, 250);
++                assert!(timeout.is_scheduled);
++                assert!(timeout.next_fire_ms <= crate::player::testing_shared::now_ms() + 20.0);
++                let read = TimeoutDatumHandlers::get_prop(player, &reference, Symbol::builtin(BuiltInSymbol::Time)).unwrap();
++                assert!(player.get_datum(&read).int_value().unwrap() <= now + 20);
++            });
++        });
+     }
+ }
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/transform3d.rs b/vm-rust/src/player/handlers/datum_handlers/transform3d.rs
 --- a/vm-rust/src/player/handlers/datum_handlers/transform3d.rs
 +++ b/vm-rust/src/player/handlers/datum_handlers/transform3d.rs
@@ -1511,6 +2084,17 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
 +        });
 +    }
  }
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/datum_handlers/xml.rs b/vm-rust/src/player/handlers/datum_handlers/xml.rs
+--- a/vm-rust/src/player/handlers/datum_handlers/xml.rs
++++ b/vm-rust/src/player/handlers/datum_handlers/xml.rs
+@@ -1088,6 +1088,7 @@
+             Datum::ScriptRef(_) => "ScriptRef",
+             Datum::CastLib(_) => "CastLib",
+             Datum::TimeoutRef(_) => "TimeoutRef",
++            Datum::MissingTimeoutRef(_) => "TimeoutRef",
+             _ => "Unknown",
+         }
+     }
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/manager.rs b/vm-rust/src/player/handlers/manager.rs
 --- a/vm-rust/src/player/handlers/manager.rs
 +++ b/vm-rust/src/player/handlers/manager.rs
@@ -1545,6 +2129,14 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
                      })?;
                      let value = reserve_player_ref(|player| {
                          player.get_datum(&args[3]).string_value()
+@@ -2843,6 +2849,7 @@
+                 | Datum::SoundChannel(_)
+                 | Datum::CursorRef(_)
+                 | Datum::TimeoutRef(_)
++                | Datum::MissingTimeoutRef(_)
+             );
+             
+             Ok(player.alloc_datum(Datum::Int(if is_object { 1 } else { 0 })))
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/movie.rs b/vm-rust/src/player/handlers/movie.rs
 --- a/vm-rust/src/player/handlers/movie.rs
 +++ b/vm-rust/src/player/handlers/movie.rs
@@ -1637,6 +2229,15 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/handlers/types.rs b/vm-rust/src/player/handlers/types.rs
 --- a/vm-rust/src/player/handlers/types.rs
 +++ b/vm-rust/src/player/handlers/types.rs
+@@ -52,7 +52,7 @@
+                 BuiltInSymbol::Void
+             }]),
+             Datum::ColorRef(..) => Ok(vec![BuiltInSymbol::Color]),
+-            Datum::TimeoutRef(..) => Ok(vec![BuiltInSymbol::Timeout]),
++            Datum::TimeoutRef(..) | Datum::MissingTimeoutRef(..) => Ok(vec![BuiltInSymbol::Timeout]),
+             Datum::TimeoutFactory => Ok(vec![BuiltInSymbol::Timeout]),
+             Datum::TimeoutInstance { .. } => Ok(vec![BuiltInSymbol::Timeout]),
+             Datum::BitmapRef(..) => Ok(vec![BuiltInSymbol::Image]),
 @@ -93,7 +93,17 @@
          Ok(*Self::get_datum_ilks(datum)?.get(0).unwrap())
      }
@@ -1649,7 +2250,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
 +            return Ok(matches!(datum,
 +                Datum::ScriptInstanceRef(..) | Datum::ScriptRef(..) |
 +                Datum::Xtra(..) | Datum::XtraInstance(..) | Datum::CastLib(..) |
-+                Datum::SpriteRef(..) | Datum::Stage | Datum::TimeoutRef(..) |
++                Datum::SpriteRef(..) | Datum::Stage | Datum::TimeoutRef(..) | Datum::MissingTimeoutRef(..) |
 +                Datum::TimeoutInstance(..) | Datum::BitmapRef(..) | Datum::Matte(..)
 +            ) || matches!(datum, Datum::CastMember(member) if member.is_valid()));
 +        }
@@ -1693,7 +2294,20 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              } else {
                  return Err(ScriptError::new(format!(
                      "Cannot convert datum of type {} to symbol",
-@@ -2498,3 +2513,39 @@
+@@ -1036,7 +1051,11 @@
+             } else {
+                 // Called with a name argument: return a timeout reference
+                 let name = player.get_datum(&args[0]).string_value()?;
+-                Ok(player.alloc_datum(Datum::TimeoutRef(name)))
++                if player.timeout_manager.get_timeout(&name).is_some() {
++                    Ok(player.alloc_datum(Datum::TimeoutRef(name)))
++                } else {
++                    Ok(player.alloc_datum(Datum::MissingTimeoutRef(name)))
++                }
+             }
+         })
+     }
+@@ -2498,3 +2517,39 @@
      false
  }
  
@@ -1745,7 +2359,53 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
  }
  
  #[derive(Serialize)]
-@@ -615,6 +617,7 @@
+@@ -204,9 +206,45 @@
+     pub member_type: String,
+     pub script_type: Option<String>,
+     pub handlers: Option<Vec<String>>,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub w3d_motions: Option<Vec<McpW3dMotion>>,
+ }
+ 
+ #[derive(Serialize)]
++pub struct McpW3dMotion {
++    pub name: String,
++    pub duration: f32,
++    pub tracks: Vec<McpW3dMotionTrack>,
++}
++
++#[derive(Serialize)]
++pub struct McpW3dMotionTrack {
++    pub name: String,
++    pub keyframe_count: usize,
++    pub first: Option<McpW3dKeyframe>,
++    pub last: Option<McpW3dKeyframe>,
++}
++
++#[derive(Serialize)]
++pub struct McpW3dKeyframe {
++    pub time: f32,
++    pub position: [f32; 3],
++    pub rotation: [f32; 4],
++    pub scale: [f32; 3],
++}
++
++impl From<&crate::director::chunks::w3d::types::W3dKeyframe> for McpW3dKeyframe {
++    fn from(k: &crate::director::chunks::w3d::types::W3dKeyframe) -> Self {
++        Self {
++            time: k.time,
++            position: [k.pos_x, k.pos_y, k.pos_z],
++            rotation: [k.rot_x, k.rot_y, k.rot_z, k.rot_w],
++            scale: [k.scale_x, k.scale_y, k.scale_z],
++        }
++    }
++}
++
++#[derive(Serialize)]
+ pub struct McpBreakpointInfo {
+     pub script_name: String,
+     pub handler_name: String,
+@@ -615,6 +653,7 @@
      let valid_scopes: Vec<_> = player
          .scopes
          .iter()
@@ -1753,7 +2413,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
          .enumerate()
          .filter(|(_, scope)| scope.script_ref.cast_lib != 0 || scope.script_ref.cast_member != 0)
          .collect();
-@@ -686,6 +689,8 @@
+@@ -686,6 +725,8 @@
                      None
                  },
                  stack_depth: scope.stack.len(),
@@ -1762,7 +2422,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              }
          })
          .collect();
-@@ -702,6 +707,7 @@
+@@ -702,6 +743,7 @@
      let valid_scopes: Vec<_> = player
          .scopes
          .iter()
@@ -1770,7 +2430,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
          .enumerate()
          .filter(|(_, scope)| scope.script_ref.cast_lib != 0 || scope.script_ref.cast_member != 0)
          .collect();
-@@ -774,7 +780,7 @@
+@@ -774,7 +816,7 @@
  
  /// Get locals for a specific scope
  pub fn mcp_get_locals(player: &DirPlayer, scope_index: Option<usize>) -> String {
@@ -1779,6 +2439,37 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
  
      let scope = match player.scopes.get(index) {
          Some(s) => s,
+@@ -938,6 +980,22 @@
+         })
+         .unwrap_or((None, None));
+ 
++    // Keep 3D inspection bounded: expose track counts and endpoint keyframes,
++    // which are enough to diagnose parser/animation composition without dumping
++    // every keyframe from large game worlds into a probe report.
++    let w3d_motions = member.member_type.as_shockwave3d()
++        .and_then(|w3d| w3d.parsed_scene.as_ref())
++        .map(|scene| scene.motions.iter().map(|motion| McpW3dMotion {
++            name: motion.name.as_str().to_owned(),
++            duration: motion.duration(),
++            tracks: motion.tracks.iter().map(|track| McpW3dMotionTrack {
++                name: track.bone_name.as_str().to_owned(),
++                keyframe_count: track.keyframes.len(),
++                first: track.keyframes.first().map(McpW3dKeyframe::from),
++                last: track.keyframes.last().map(McpW3dKeyframe::from),
++            }).collect(),
++        }).collect());
++
+     to_json(&McpCastMemberDetails {
+         cast_lib,
+         cast_member,
+@@ -945,6 +1003,7 @@
+         member_type: member.member_type.type_string().to_string(),
+         script_type,
+         handlers: handlers.map(|h| h.iter().map(|x| x.as_str().to_owned()).collect_vec()),
++        w3d_motions,
+     })
+ }
+ 
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/mod.rs b/vm-rust/src/player/mod.rs
 --- a/vm-rust/src/player/mod.rs
 +++ b/vm-rust/src/player/mod.rs
@@ -2126,6 +2817,15 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              }
          }
      };
+@@ -549,7 +568,7 @@
+         Datum::Point(..) => reserve_player_mut(|player| {
+             PointDatumHandlers::set_prop(player, obj_ref, prop_name, value_ref)
+         }),
+-        Datum::TimeoutRef(_) | Datum::TimeoutInstance { .. } | Datum::TimeoutFactory 
++        Datum::TimeoutRef(_) | Datum::MissingTimeoutRef(_) | Datum::TimeoutInstance { .. } | Datum::TimeoutFactory 
+             => reserve_player_mut(|player| {
+             TimeoutDatumHandlers::set_prop(player, obj_ref, prop_name, value_ref)
+         }),
 @@ -723,10 +742,7 @@
                  &player.allocator,
              )?))
@@ -2138,6 +2838,15 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
          Datum::Rect(..) => {
              Ok(player.alloc_datum(RectDatumHandlers::get_prop(player, obj_ref, prop_name)?))
          }
+@@ -1172,7 +1188,7 @@
+                 )?)),
+             }
+         }
+-        Datum::TimeoutRef(_) | Datum::TimeoutInstance { .. } | Datum::TimeoutFactory
++        Datum::TimeoutRef(_) | Datum::MissingTimeoutRef(_) | Datum::TimeoutInstance { .. } | Datum::TimeoutFactory
+              => Ok(TimeoutDatumHandlers::get_prop(player, obj_ref, prop_name)?),
+         Datum::Symbol(_) => SymbolDatumHandlers::get_prop(player, obj_ref, prop_name),
+         Datum::Void => VoidDatumHandlers::get_prop(player, obj_ref, prop_name),
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/stage.rs b/vm-rust/src/player/stage.rs
 --- a/vm-rust/src/player/stage.rs
 +++ b/vm-rust/src/player/stage.rs
@@ -2248,6 +2957,35 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
  /// Native test harness. Wraps the global DirPlayer for in-memory testing.
  pub struct TestPlayer {
      _tx: channel::Sender<PlayerVMExecutionItem>,
+diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/player/timeout.rs b/vm-rust/src/player/timeout.rs
+--- a/vm-rust/src/player/timeout.rs
++++ b/vm-rust/src/player/timeout.rs
+@@ -120,6 +120,14 @@
+     }
+ 
+     pub fn schedule(&mut self) {
++        self.schedule_after(self.period);
++    }
++
++    /// Schedule the first event independently from the repeating period.
++    /// Director's writable timeout `time` property is an absolute value in the
++    /// same clock as `the milliSeconds`, so moving it must move the next event
++    /// without changing subsequent spacing.
++    pub fn schedule_after(&mut self, initial_delay: u32) {
+         self.cancel();
+ 
+         // A timeout whose period is 0 is dormant — it sends no events until its
+@@ -133,8 +141,8 @@
+         }
+ 
+         let timeout_name = self.name.to_owned();
+-        JsApi::dispatch_schedule_timeout(&timeout_name, self.period);
++        JsApi::dispatch_schedule_timeout(&timeout_name, initial_delay, self.period);
+         self.is_scheduled = true;
+-        self.next_fire_ms = crate::player::testing_shared::now_ms() + self.period as f64;
++        self.next_fire_ms = crate::player::testing_shared::now_ms() + initial_delay as f64;
+     }
+ }
 diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-extension -x .DS_Store -x npm-build.log -x test-results -x playwright-report a/vm-rust/src/rendering_gpu/webgl2/scene3d.rs b/vm-rust/src/rendering_gpu/webgl2/scene3d.rs
 --- a/vm-rust/src/rendering_gpu/webgl2/scene3d.rs
 +++ b/vm-rust/src/rendering_gpu/webgl2/scene3d.rs
@@ -2261,7 +2999,28 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
      // NPR/toon
      u_shader_mode: Option<WebGlUniformLocation>,
      u_toon_steps: Option<WebGlUniformLocation>,
-@@ -338,7 +339,15 @@
+@@ -154,6 +155,20 @@
+     specular: Option<&'a WebGlTexture>,
+ }
+ 
++/// Convert Director/IFX texture blend functions to the fragment shader's
++/// extra-layer encoding. The authored blend function is authoritative: a
++/// texture named "lightmap" may be either additive lighting or a multiplicative
++/// baked shadow map, and guessing from its name washes out the latter.
++fn extra_layer_blend_mode(blend_func: u8) -> i32 {
++    match blend_func {
++        0 => 3, // IFX_SELECT_ARG0 / #replace
++        1 => 2, // IFX_ADD / #add
++        2 => 1, // IFX_MODULATE / #multiply
++        3 => 4, // IFX_INTERPOLATE / #blend
++        _ => 1, // other modulate variants are closest to #multiply
++    }
++}
++
+ /// Particle billboard shader
+ struct ParticleShader {
+     program: WebGlProgram,
+@@ -338,7 +353,15 @@
  
  // Skeletal skinning
  uniform int u_skinning_enabled;
@@ -2278,7 +3037,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
  
  // Texture coordinate transform (post-projection UV-space tweak)
  uniform mat4 u_tex_transform;
-@@ -362,10 +371,10 @@
+@@ -362,10 +385,10 @@
      vec3 local_normal = a_normal;
  
      if (u_skinning_enabled > 0) {
@@ -2293,7 +3052,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
          local_pos = skin_mat * local_pos;
          local_normal = mat3(skin_mat) * local_normal;
      }
-@@ -766,6 +775,23 @@
+@@ -766,6 +789,23 @@
          let gl = context.gl();
          let u = |name: &str| gl.get_uniform_location(&program, name);
  
@@ -2317,7 +3076,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
          self.shader = Some(Shader3d {
              u_model: u("u_model"),
              u_view: u("u_view"),
-@@ -797,7 +823,8 @@
+@@ -797,7 +837,8 @@
              u_uv_proj_mode: u("u_uv_proj_mode"),
              u_wrap_transform: u("u_wrap_transform"),
              u_skinning_enabled: u("u_skinning_enabled"),
@@ -2327,7 +3086,47 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              u_shader_mode: u("u_shader_mode"),
              u_toon_steps: u("u_toon_steps"),
              u_num_lights: u("u_num_lights"),
-@@ -2917,34 +2944,11 @@
+@@ -2112,7 +2153,6 @@
+                 // a multi-track skeletal motion applies each track to its named bone.
+                 if let Some(rs) = runtime_state {
+                     for (model_name, bp) in &rs.bones_players {
+-                        if !bp.animation_playing { continue; }
+                         let motion_name = match &bp.current_motion { Some(m) => m, None => continue };
+                         let motion = match scene.motions.iter().find(|m| m.name.eq_ignore_ascii_case(motion_name.as_str())) {
+                             Some(m) => m, None => continue,
+@@ -2813,14 +2853,11 @@
+             true
+         };
+ 
+-        // A model explicitly placed via Lingo `transform.position` (e.g. a cloned
+-        // On the Run bonus, repositioned after cloning) has a runtime transform
+-        // override. When such a model ALSO runs a keyframePlayer motion, place it
+-        // with the runtime transform and apply the keyframe LOCALLY (runtime *
+-        // motion) — otherwise the spin would be applied to the stale parsed base
+-        // (the template's position) and the model renders nowhere near where
+-        // `worldPosition` reports it. Models WITHOUT a runtime override (Splat's
+-        // per-part keyframes) keep `motion * base`, relative to the rest pose.
++        // A keyframePlayer motion is local to the model's authored or scripted
++        // placement. Intel's U3D animation modifier composes the input node matrix
++        // with the animated root clearance in that order. This also matters when
++        // the base contains rotation: motion * base moves the model in world axes
++        // and sends Redline Rumble Revolution's title logo out of frame.
+         let runtime_override: Option<[f32; 16]> =
+             runtime_state.and_then(|rs| get_runtime_transform(rs, *&node.name));
+         // Get this node's transform: motion (combined with base), runtime override, or parsed
+@@ -2831,10 +2868,7 @@
+             {
+                 // Lookup is case-insensitive (bones_players keys are lowercased;
+                 // node names aren't).
+-                match runtime_override {
+-                    Some(rt) => mat4_multiply_col_major(&rt, km),
+-                    None => mat4_multiply_col_major(km, &node.transform),
+-                }
++                compose_object_keyframe_transform(runtime_override.unwrap_or(node.transform), km)
+             } else if let Some(motion_t) = self.motion_transforms.get(&node.name) {
+                 match runtime_override {
+                     Some(rt) => mat4_multiply_col_major(&rt, motion_t),
+@@ -2917,34 +2951,11 @@
              );
  
              let world_matrix = self.accumulate_transform_with_state(scene, model_node, runtime_state);
@@ -2366,7 +3165,28 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              // Per-model visibility culling
              // Only explicitly set #both or #back modes change GL state.
              // Default (#front / no entry) keeps the global cull_face(FRONT).
-@@ -5008,17 +5012,8 @@
+@@ -4059,19 +4070,7 @@
+                 // IFX blend func (IFXEnums.h): 0 = IFX_SELECT_ARG0, 1 = IFX_ADD,
+                 // 2 = IFX_MODULATE (out = tex * incoming), 3 = IFX_INTERPOLATE.
+                 // Mapped to our extra-layer modes below (1 = multiply, 2 = add).
+-                let blend = if lower.contains("lightmap") && !lower.contains("shadow") {
+-                    // Lightmap-only meshes (empty textureList[1], lightmap in textureList[2])
+-                    // should shade as material color multiplied by light intensity.
+-                    let lightmap_only = layer_idx > 0
+-                        && layers[..layer_idx].iter().all(|prev| prev.name.is_empty());
+-                    if lightmap_only { 1 } else { 2 }
+-                } else {
+-                    match layer.blend_func {
+-                        1 => 2,  // #add / GL_ADD → our add mode
+-                        2 => 1,  // #replace / GL_MODULATE → our multiply mode
+-                        _ => 1,  // #multiply → multiply
+-                    }
+-                };
++                let blend = extra_layer_blend_mode(layer.blend_func);
+ 
+                 result.extra_layers.push(TextureLayerBinding {
+                     tex,
+@@ -5008,17 +5007,8 @@
              .or_else(|| runtime_state.and_then(|rs| rs.previous_motion.map(|s| s.as_str())));
          let blending = blend_weight < 1.0 && prev_motion_name.is_some();
  
@@ -2386,7 +3206,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
  
          if blending {
              let prev_motion = prev_motion_name.and_then(|n| scene.motions.iter().find(|m| m.name == n));
-@@ -5044,12 +5039,15 @@
+@@ -5044,12 +5034,15 @@
              }
          }
  
@@ -2408,7 +3228,7 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
      }
  
      fn bind_default_material(&self, gl: &WebGl2RenderingContext, shader: &Shader3d, scene: &W3dScene) {
-@@ -5727,7 +5725,7 @@
+@@ -5727,7 +5720,7 @@
          let mut idx4 = [0.0f32; 4];
          let mut wgt4 = [0.0f32; 4];
          for (k, &(b, w)) in pairs.iter().enumerate() {
@@ -2417,13 +3237,30 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
              wgt4[k] = w;
          }
          let sum: f32 = wgt4.iter().sum();
-@@ -6038,3 +6036,15 @@
+@@ -6038,3 +6031,61 @@
      r
  }
  
++/// A single-track keyframePlayer motion is a local transform applied after the
++/// model's authored or scripted placement: base * motion.
++fn compose_object_keyframe_transform(
++    base_placement: [f32; 16],
++    keyframe: &[f32; 16],
++) -> [f32; 16] {
++    mat4_multiply_col_major(&base_placement, keyframe)
++}
++
 +
 +#[cfg(test)]
 +mod skin_palette_tests {
++    #[test]
++    fn extra_texture_layers_preserve_director_blend_semantics() {
++        assert_eq!(super::extra_layer_blend_mode(0), 3); // #replace
++        assert_eq!(super::extra_layer_blend_mode(1), 2); // #add
++        assert_eq!(super::extra_layer_blend_mode(2), 1); // #multiply
++        assert_eq!(super::extra_layer_blend_mode(3), 4); // #blend
++    }
++
 +    #[test]
 +    fn weights_keep_high_bone_indices() {
 +        let (indices, weights) = super::pack_bone_influences_sorted(
@@ -2431,5 +3268,34 @@ diff -ruN -x node_modules -x target -x pkg -x dist -x dist-polyfill -x dist-exte
 +        assert_eq!(indices[0], [109.0, 108.0, 80.0, 48.0]);
 +        assert!((weights[0].iter().sum::<f32>() - 1.0).abs() < 0.00001);
 +        assert!(weights[0][0] > weights[0][1]);
++    }
++
++    #[test]
++    fn object_keyframe_is_local_to_a_rotated_authored_placement() {
++        let rest = [
++            0.0,1.0,0.0,0.0, -1.0,0.0,0.0,0.0,
++            0.0,0.0,1.0,0.0, 10.0,20.0,30.0,1.0,
++        ];
++        let keyframe = [
++            1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0,
++            0.0,0.0,1.0,0.0, 2.0,3.0,4.0,1.0,
++        ];
++        let result = super::compose_object_keyframe_transform(rest, &keyframe);
++        assert_eq!([result[12], result[13], result[14]], [7.0, 22.0, 34.0]);
++        assert_ne!(result, super::mat4_multiply_col_major(&keyframe, &rest));
++    }
++
++    #[test]
++    fn object_keyframe_is_local_to_an_explicit_runtime_placement() {
++        let placement = [
++            1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0,
++            0.0,0.0,1.0,0.0, 10.0,20.0,30.0,1.0,
++        ];
++        let keyframe = [
++            1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0,
++            0.0,0.0,1.0,0.0, 2.0,3.0,4.0,1.0,
++        ];
++        let result = super::compose_object_keyframe_transform(placement, &keyframe);
++        assert_eq!([result[12], result[13], result[14]], [12.0, 23.0, 34.0]);
 +    }
 +}

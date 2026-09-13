@@ -25,6 +25,10 @@ for the build shell:
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 ```
 
+Install Python 3.12 or newer and confirm `python3 --version` selects it.
+The source fetchers use `tomllib` and tar extraction filters; an older Python
+bundled with developer tools may not provide these APIs.
+
 **2. Clone the repository.**
 
 ```sh
@@ -36,11 +40,16 @@ cd flashback
 
 ```sh
 sh Flashback/bootstrap-toolchain.sh
+. Flashback/toolchain-env.sh
 sh Flashback/fetch-runtime.sh
 sh Flashback/fetch-java.sh
-sh Flashback/fetch-shockwave.sh
+python3 Flashback/fetch-archive-dependencies.py
+sh Flashback/fetch-dos.sh
+sh Flashback/fetch-scummvm.sh
+python3 Flashback/fetch-native-sources.py
 python3 Flashback/fetch-sources.py
 python3 Flashback/fetch-js-sources.py
+sh Flashback/fetch-shockwave.sh
 ```
 
 **4. Build.**
@@ -49,7 +58,7 @@ python3 Flashback/fetch-js-sources.py
 sh Flashback/build.sh
 ```
 
-That produces `Flashback.app` next to the repository, runs the unit suite, and
+That produces `Flashback.app` in the repository root, runs the unit suite, and
 runs the website and archive checks on the way through.
 
 ## Running the checks

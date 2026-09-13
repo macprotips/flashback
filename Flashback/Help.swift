@@ -12,23 +12,32 @@ struct HelpView: View {
                     Text("Flashback keeps its own copy. A single imported game opens automatically.")
                 }
                 section("Discover games") {
-                    Text("Choose Discover in the sidebar to browse Internet Archive. Search for a game, choose All, Flash, or Shockwave, and open a card for its description and downloads. Download to Library keeps the game and its supporting files on your Mac. When it finishes, choose Play or Show in Library.")
+                    Text("Choose Discover in the sidebar to see three top games for the week. Browse all 24 featured games, explore more sources, or use the handpicked game links. The selection changes every Monday and stays still while you browse. Source links open the provider’s page; download a supported DOS folder or ZIP there, then use Add Games. Archive cards provide descriptions and downloads inside Flashback.")
                     Text("Discover hides listings marked as adult or NSFW before showing cards or artwork. The filter uses titles, tags, descriptions, and file names; it can miss content that is not labelled. Keep Looking continues past a page with no visible results.")
-                    Text("Archive artwork becomes the game’s default cover. Your custom artwork takes priority. Compatibility notes describe only the gameplay that has been checked; other games may need unavailable servers or unsupported features.")
+                    Text("Flashback does not bundle games from Discover. Availability, download terms, and store requirements can change. A Tested label and other compatibility notes describe only the gameplay that Flashback has checked.")
+                    Text("Archive artwork becomes the game’s default cover. Your custom artwork takes priority. Other games may need unavailable servers or unsupported features.")
                 }
                 section("Import from a website") {
                     Text("Choose File → Add from Website and paste a game page or direct download address. Find Games locates game files; Look Deeper checks content loaded by the page’s scripts. Select a result, recover its files, and review the report before adding it.")
-                    Text("Only extract copyright-free games. Removed files, sign-in requirements, and games that depend on live servers may prevent recovery.")
+                    Text("Removed files, sign-in requirements, and games that depend on live servers may prevent recovery.")
                     Text("Right-click an imported game and choose Website Details to reopen its report.")
                 }
                 section("Supported games") {
-                    definition("Flash", ".swf files. Pause, restart, mute, and full screen are available in the player.")
-                    definition("Java", "Runnable Java 8 desktop .jar games and Java ME/MIDP mobile .jar games. Applet-only pages and JNLP launchers are not supported. Games open in their own windows; use their own controls.")
+                    definition("Flash", ".swf files and standard Flash projector .exe files. Pause, restart, per-game volume, and full screen are available in the player.")
+                    definition("Java", "Java 8 desktop games, applets with their HTML/JAR files, local JNLP descriptors, and Java ME/MIDP mobile games. Include companion JARs and assets. Native libraries and unrestricted permissions are not supported. Games open in their own windows.")
+                    definition("DOS", "Original DOS EXE, COM, or BAT games with their complete data folders and DOS filenames. A private writable game copy retains saves.")
+                    definition("Classic Director", "Complete game data folders recognized by ScummVM. Only detected titles are offered; compatibility varies by game and edition.")
                     definition("HTML5", "Offline .html or .htm games. Add the entire game folder. Use the game’s own pause and sound controls.")
                     definition("Shockwave", ".dcr, .dir, and .dxr movies. Support is experimental; some games and Xtras are not supported. Include external cast files, sounds, and levels.")
                 }
+                section("DOS settings and recovery") {
+                    Text("Right-click a DOS game and choose DOS Settings. Choose its starting program, run a setup utility, adjust speed and per-game volume, or attach a CD or floppy image. Close the game before changing settings.")
+                    Text("The Controls & Help tab lists DOS shortcuts, including Option–Return for full screen and Command–F10 to release the mouse. These apply to the DOS game window; other players have different controls.")
+                    Text("Saves & Recovery opens the actual writable game files and lets you back them up, restore a backup, or reset to the original game data. Reset and restore keep a backup of the previous data. Use each game's own Save and Load commands; DOS save states are not provided.")
+                }
                 section("Organize your library") {
                     Text("Click a game’s cover to play. Use the heart to mark a favorite. Search by name, or choose Recently Played to return to a game. Right-click a game to rename it, show its files, or remove it from the library.")
+                    Text("Choose Flashback → Settings to see or change where imported games, covers, and Java, DOS, and ScummVM saves are stored. Flashback verifies a copied library and keeps the previous copy. App preferences and Flash/HTML browser storage remain in macOS-managed app data.")
                     Text("Removing a game moves Flashback’s copy to the Trash. Your original files and supported saved data are kept.")
                     Text("Drag an image onto a game's card to use it as that game's artwork, or right-click the game and choose Change Artwork to select an image from your Mac. Your choice is kept when you play or reopen Flashback. Restore Default Artwork brings back the original cover, or the placeholder until a screenshot is captured.")
                 }
@@ -43,6 +52,7 @@ struct HelpView: View {
                     shortcut("Find Game", "⌘F")
                     shortcut("Full Screen", "⌃⌘F")
                     shortcut("Close Window", "⌘W")
+                    shortcut("Settings", "⌘,")
                 }
                 Divider()
                 Text("Flashback is free software under GPLv3, without warranty. Choose Flashback → Licenses and Source for the license, player credits, and corresponding source.")

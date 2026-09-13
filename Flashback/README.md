@@ -1,8 +1,14 @@
 # Flashback
 
-A native Mac library for Flash, Java, offline HTML, and experimental Shockwave games. Drop a game in and play.
+A native Mac library for Flash, Java, offline HTML, DOS, supported classic Director, and experimental Shockwave games. Drop a game in and play.
 
 ## Use it
+
+Version 1.11.0 adds validated Flash projector extraction, classic Java applet
+and local JNLP playback, DOS games through DOSBox Staging, and classic Director
+games detected by ScummVM. Native players run offline under a supervised macOS
+sandbox with private saves. Website recovery can preserve applet and JNLP
+launch settings for offline use. See the user guide for exact format limits.
 
 Version 1.10.0 lets you **drag an image straight onto a game's card** to use it as that game's artwork, and fills **Discover** with 136 well-known browser games from the Flash and Shockwave era, each matched to an Internet Archive item that has a playable file. `featured-catalog.json` records how that list was assembled and what was rejected; listings are still labelled untested unless Flashback has actually checked them. It also validates a score entry before reading it as a sprite span, which stops fifteen titles from reporting a frame count in the billions and never looping; reads a movie property written with call syntax; and reads a vector's components by index. It adds native gameplay cases for Beach Soccer and American Football, and relaunches every indexed title against the shipped runtime. See [tested interactions](SHOCKWAVE-COMPATIBILITY.md) for the measured scope and remaining failures.
 
@@ -81,6 +87,8 @@ in its standalone JAR.**
 ## Compatibility
 
 ### Internet Archive catalog
+
+Discover presents three top games and lets the user expand all 24 featured picks for the week. The selection changes every Monday, stays fixed while the user browses, and eventually brings every curated entry into the weekly set. A separate source area links to Internet Archive search, DOS Games Archive, DOSGames.com, itch.io, GOG, and ScummVM, followed by eight handpicked game links. External links open the original source; Flashback does not mirror or bundle their files.
 
 Discover reads Internet Archive’s public search, metadata, file listing, and thumbnail APIs. No account or separate browser is needed. Downloads use the item’s listed files, check file sizes and available SHA-1 checksums, and retain source URLs in the existing website report. ZIPs go through the same validated extraction as local imports. A loose game includes supported companion assets from its folder and subfolders. Download limits are 512 MB per file, 500 files, and 1 GB total. Restricted items, installers, and unsupported archives explain why a download is unavailable.
 
@@ -205,12 +213,22 @@ runtime, so no extra dependency is downloaded.
 
 ## Build
 
-The build script runs on Apple Silicon with Apple's command-line developer
-tools and produces a universal Mac app. No third-party build framework is used.
+The build script runs on Apple Silicon with full Xcode selected and produces
+a universal Mac app. The standalone Command Line Tools lack the SwiftUI macro
+plugin required by the app. Use Python 3.12 or newer for source fetching.
+See [SETUP.md](../SETUP.md) for prerequisites and
+disk requirements. No third-party build framework is used.
 
 ```sh
+sh Flashback/bootstrap-toolchain.sh
+. Flashback/toolchain-env.sh
 ./Flashback/fetch-runtime.sh  # Only needed if vendor/ruffle-web is missing
 ./Flashback/fetch-java.sh     # Downloads pinned Java archives; verifies SHA-256
+sh Flashback/fetch-dos.sh
+sh Flashback/fetch-scummvm.sh
+python3 Flashback/fetch-sources.py
+python3 Flashback/fetch-js-sources.py
+python3 Flashback/fetch-native-sources.py
 ./Flashback/fetch-shockwave.sh # Downloads pinned DirPlayer assets; verifies SHA-256
 ./Flashback/build.sh
 ```
@@ -383,7 +401,7 @@ opening-gameplay checks, not a claim that every level or feature is compatible.
 Merlin’s Revenge 1 is also checked as a known incompatible movie with the pinned
 emulator: its `goTitle` handler currently fails. The check verifies that Flashback
 shows a compatibility error instead of leaving the opening overlay indefinitely.
-The downloaded games and their owners’ rights remain separate from the player.
+Game content and its owners’ rights remain separate from the player.
 
 ## Runtime credits
 
@@ -430,3 +448,24 @@ from an older source-inclusive ZIP in an isolated profile, run:
 ```sh
 python3 Flashback/check-installation.py OLD-RELEASE.zip Flashback.app GAME-ASSET-FOLDER /tmp/flashback-update-check
 ```
+
+
+## Additional formats in development
+
+The local build includes Flash projector extraction, Java applet and JNLP hosts,
+DOSBox Staging for DOS games, and ScummVM for detected classic Director games.
+See the [user guide](../USER-GUIDE.md#additional-classic-formats) for import and
+compatibility boundaries. `NativeHost` supervises native engines under an offline
+macOS sandbox; only the game's data and private saves are available.
+
+Run `check-java-formats.sh` for authored applet/JNLP lifecycle and permission
+checks, and `python3 Flashback/check-native-sandbox.py --windows` from the
+repository root for native isolation and engine window checks. These supplement,
+rather than replace, the existing build and gameplay checks.
+
+`python3 Flashback/check-native-games.py --keep` exercises an authored DOS
+program through the app, including private saves, repeat launch, history, and
+shutdown. Java format checks also recover authored HTML embeds and JNLP over a
+local fixture server, import the resulting files, then execute them offline.
+The native source inventory is currently partial; the release packager refuses
+to distribute these runtimes until their corresponding-source coverage is complete.

@@ -17,13 +17,17 @@ import Foundation
         <!doctype html><html><head><title>One &amp; Two</title><base href="/game/"></head><body>
         <object><param name="movie" value="Main.SWF?x=1&amp;y=two"><param name="flashvars" value="lang=en&amp;token=a%3Db"></object>
         <iframe src="nested/play.html"></iframe><script src="loader.js"></script>
-        <applet codebase="java" archive="game.jar, support.jar"></applet></body></html>
+        <applet codebase="java" code="GameApplet" archive="game.jar, support.jar" width="320" height="200"><param name="level" value="two words"/></applet></body></html>
         """
         var page = WebPage.parse(html,url:publicURL)
         try require(page.title == "One & Two" && page.base.absoluteString == "https://games.example/game/","Legacy HTML title/base parsing: \(page.title), \(page.base)")
         let flash = page.candidates.first { $0.kind == "swf" }!
         try require(flash.url.path == "/game/Main.SWF" && flash.parameters["token"] == "a=b" && flash.parameters["y"] == "two","Embed URL and FlashVars")
-        try require(page.candidates.filter { $0.kind == "jar" }.count == 2 && page.candidates.first { $0.kind == "jar" }?.companions.count == 1,"Applet archive/codebase discovery")
+        try require(page.candidates.first { $0.kind == "applet" }?.companions.count == 1 &&
+            page.candidates.first { $0.kind == "applet" }?.parameters["__flashback_java_class"] == "GameApplet" &&
+            page.candidates.first { $0.kind == "applet" }?.parameters["level"] == "two words","Applet archive, class, codebase, and parameters")
+        let multiple = WebPage.parse("<applet code='First' archive='game.jar'></applet><applet code='Second' archive='game.jar'></applet><applet code='First' archive='game.jar'><param name='level' value='2'></applet>",url:publicURL).candidates.filter { $0.kind == "applet" }
+        try require(multiple.count == 3 && Set(multiple.map(\.id)).count == 3,"Distinct applet classes/parameters sharing an archive were merged")
         page.addScript("const root='level/'; var flashvars={language:'fr'}; swfobject.embedSWF(root+'start.swf', 'game'); AC_FL_RunContent('movie','old');")
         try require(page.candidates.contains { $0.url.path == "/game/level/start.swf" && $0.parameters["language"] == "fr" },"SWFObject concatenated URL and parameters")
         try require(page.candidates.contains { $0.url.path == "/game/old.swf" },"AC_FL_RunContent movie extension")
@@ -87,6 +91,18 @@ import Foundation
         let repeated = try library.importGame(plan,entry:recovered.entry!)
         try require(game.id == repeated.id,"Duplicate recovery changed game identity")
         await collector.clean()
+        let javaCollector = WebsiteCollector(allowLocal:true,progress:{ _ in })
+        let appletGames = try await javaCollector.scan(base.appendingPathComponent("java/applet.html"))
+        guard let appletCandidate = appletGames.first(where:{ $0.kind == "applet" }) else { throw LibraryError("Applet was not discovered") }
+        let appletGame = try await javaCollector.recover(appletCandidate,title:"Applet Check")
+        let appletLaunch = WebPage.text(try Data(contentsOf:GameLibrary.contained(appletGame.entry!,in:appletGame.source)))
+        try require(appletLaunch.contains("FixtureApplet") && appletLaunch.contains("level") && appletLaunch.contains("helper.jar"),"Applet recovery did not generate a local launch descriptor")
+        let jnlpGames = try await javaCollector.scan(base.appendingPathComponent("java/direct.jnlp"))
+        guard let jnlpCandidate = jnlpGames.first(where:{ $0.kind == "jnlp" }) else { throw LibraryError("JNLP was not discovered") }
+        let jnlpGame = try await javaCollector.recover(jnlpCandidate,title:"JNLP Check")
+        let jnlpLaunch = WebPage.text(try Data(contentsOf:GameLibrary.contained(jnlpGame.entry!,in:jnlpGame.source)))
+        try require(jnlpLaunch.contains("FixtureMain") && jnlpLaunch.contains("two words") && jnlpLaunch.contains("helper.jar"),"JNLP resources or arguments were not localized")
+        await javaCollector.clean()
         let htmlCollector = WebsiteCollector(allowLocal:true,progress:{ _ in })
         let htmlGames = try await htmlCollector.scan(base.appendingPathComponent("html/play.html"))
         let htmlGame = try await htmlCollector.recover(htmlGames.first { $0.kind == "html" }!,title:"Offline Web Check")

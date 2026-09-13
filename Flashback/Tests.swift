@@ -39,7 +39,16 @@ import ImageIO
         game.favorite = true
         try library.save([game])
         let restored = try library.load()
-        assert(restored == [game])
+        assert(restored == [game] && restored[0].playbackVolume == 1,
+               "Libraries without a volume value must retain full volume")
+        game.volume = 0.35
+        try library.save([game])
+        let restoredVolume = try library.load().first?.playbackVolume
+        assert(restoredVolume == 0.35,
+               "Per-game volume must survive a library reload")
+        var invalidVolume = game
+        invalidVolume.volume = 1.01
+        mustFail { try library.save([invalidVolume]) }
         try fm.removeItem(at:source)
         let independentData = try Data(contentsOf:copy)
         assert(independentData == swf, "Imported games must survive moving the originals")

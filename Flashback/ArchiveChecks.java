@@ -16,6 +16,11 @@ public final class ArchiveChecks {
         try { GameArchive.extract(archive, output); throw new AssertionError("Accepted unsafe ZIP: " + archive); }
         catch (IOException expected) {}
     }
+    static void lemmings(Path archive, Path output) throws IOException {
+        GameArchive.extract(archive, output);
+        if (!Files.exists(output.resolve("VGALEMMI.EXE")) || !Files.exists(output.resolve("MAIN.DAT")))
+            throw new AssertionError("Lemmings demo did not unpack its executable and data files");
+    }
     public static void main(String[] args) throws Exception {
         Path root = Files.createTempDirectory("Flashback-zip-check-");
         try {
@@ -50,7 +55,9 @@ public final class ArchiveChecks {
                 data[j+16] ^= 1; break;
             }
             Files.write(damaged, data); reject(damaged, root.resolve("damaged"));
-            System.out.println("PASS: ZIP assets, metadata filtering, traversal, collisions, entry and size limits, invalid archives, damaged checksums");
+            if (args.length == 1) lemmings(Paths.get(args[0]), root.resolve("lemmings"));
+            else if (args.length != 0) throw new IllegalArgumentException("pass an optional Lemmings demo ZIP");
+            System.out.println("PASS: ZIP assets, metadata filtering, traversal, collisions, entry and size limits, invalid archives, damaged checksums, and optional Imploding ZIP");
         } finally {
             try (java.util.stream.Stream<Path> files = Files.walk(root)) {
                 files.sorted(java.util.Comparator.reverseOrder()).forEach(path -> { try { Files.delete(path); } catch (IOException ignored) {} });

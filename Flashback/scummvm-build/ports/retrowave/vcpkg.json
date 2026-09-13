@@ -1,0 +1,1 @@
+{"name":"retrowave","version-string":"e6bf60eed2d2bd1deff688d645be71a32bbf05bb","description":"RetroWave hardware interface at ScummVM's retained source pin","license":"AGPL-3.0-or-later","supports":"osx","dependencies":[{"name":"vcpkg-cmake","host":true}]}

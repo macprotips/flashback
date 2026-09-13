@@ -85,18 +85,32 @@ final class GameResources: NSObject, WKURLSchemeHandler {
     let resources: URL
     @Published var loading = true
     @Published var paused = false
-    @Published var muted = false
+    @Published private(set) var volume: Double
     @Published var failure: String?
     @Published var missingFiles = false
+    @Published var diagnosticsCopied = false
     var missingResources: [String] = []
     var web: WKWebView!
     var onReady: (() -> Void)?
     var onCover: (() -> Void)?
     private var timeout: Task<Void, Never>?
     private var routing: WebRouting?
+    /// Resolved once from the imported entry bytes. Game titles and paths do
+    /// not participate in compatibility matching.
+    private let shockwaveProfile: ShockwaveCompatibility.Applied?
+    private let shockwaveProfileLoadError: String?
+    private let shockwaveEntrySHA256: String?
+    private var lastAudibleVolume: Double
+    var onVolumeChange: ((Double) -> Void)?
+    var muted: Bool { volume <= 0.0001 }
 
     init(game: Game, library: GameLibrary, resources: URL, dataStore: WKWebsiteDataStore) {
         self.game = game; self.library = library; self.resources = resources
+        volume = game.playbackVolume
+        lastAudibleVolume = game.playbackVolume > 0 ? game.playbackVolume : 1
+        shockwaveEntrySHA256 = game.isShockwave ? (try? library.movie(for:game)).flatMap { ShockwaveCompatibility.entrySHA256($0) } : nil
+        shockwaveProfile = shockwaveEntrySHA256.flatMap { ShockwaveCompatibility.shared.profile(forEntryHash:$0) }
+        shockwaveProfileLoadError = game.isShockwave ? ShockwaveCompatibility.shared.loadError : nil
         super.init()
         let config = WKWebViewConfiguration()
         config.websiteDataStore = dataStore
@@ -145,18 +159,30 @@ final class GameResources: NSObject, WKURLSchemeHandler {
             var options: [String:Any] = ["url":movieURL.absoluteString,
                            "base":movieURL.deletingLastPathComponent().absoluteString,
                            "publicPath":origin.appendingPathComponent("runtime", isDirectory:true).absoluteString]
-            if game.isShockwave && routing == nil { options["parameters"] = library.localShockwaveParameters(game) }
+            var parameters = game.isShockwave && routing == nil ? library.localShockwaveParameters(game) : [:]
             if let routing {
                 options.merge(routing.options) { _, new in new }
-                options["parameters"] = routing.record.parameters
+                parameters = routing.record.parameters
                 if game.isFlash || game.isShockwave { options["base"] = (routing.record.baseURL ?? routing.record.entryURL.deletingLastPathComponent()).absoluteString }
                 // Director exposes its movie address to Lingo and embedded Flash.
                 // Keep the archived address; WebRouting maps every fetch to local files.
                 if game.isShockwave { options["url"] = routing.record.entryURL.absoluteString }
             }
+            if let profile = shockwaveProfile {
+                // A registry value may override a recovered parameter, but it
+                // can never replace the movie URL or activate by game title.
+                parameters.merge(profile.parameters) { _, override in override }
+                options["compatibilityProfile"] = ["id":profile.id,"entrySHA256":profile.entrySHA256]
+            }
+            if game.isShockwave { options["parameters"] = parameters }
             do {
                 let json = try JSONSerialization.data(withJSONObject:options)
-                web.evaluateJavaScript("startGame(\(String(decoding:json, as:UTF8.self))); void 0;")
+                var diagnostics: [String:String] = [:]
+                if let profile = shockwaveProfile { diagnostics = ["id":profile.id,"entrySHA256":profile.entrySHA256] }
+                else if let error = shockwaveProfileLoadError { diagnostics = ["registryError":error] }
+                let diagnosticJSON = try JSONSerialization.data(withJSONObject:diagnostics)
+                let prefix = game.isShockwave ? "window.shockwaveCompatibilityProfile=\(String(decoding:diagnosticJSON,as:UTF8.self));if(Object.keys(window.shockwaveCompatibilityProfile).length){window.shockwaveDiagnostics?.push('Compatibility profile: '+JSON.stringify(window.shockwaveCompatibilityProfile));}" : ""
+                web.evaluateJavaScript("\(prefix)startGame(\(String(decoding:json, as:UTF8.self))); void 0;")
             } catch { failure = error.localizedDescription; loading = false }
         } else if event == "ready" {
             ready()
@@ -170,7 +196,7 @@ final class GameResources: NSObject, WKURLSchemeHandler {
 
     private func ready() {
         timeout?.cancel(); loading = false
-        if muted && game.isFlash { web.evaluateJavaScript("player.ruffle().volume = 0; void 0;") }
+        applyVolume()
         web.window?.makeFirstResponder(web)
         onReady?()
         Task { [weak self] in
@@ -190,17 +216,71 @@ final class GameResources: NSObject, WKURLSchemeHandler {
         web.evaluateJavaScript(paused ? "player.ruffle().suspend();" : "player.ruffle().resume();")
         if !paused { web.window?.makeFirstResponder(web) }
     }
+    func previewVolume(_ value: Double) {
+        volume = min(max(value, 0), 1)
+        if volume > 0.0001 { lastAudibleVolume = volume }
+        applyVolume()
+    }
+    func commitVolume() {
+        game.volume = volume
+        onVolumeChange?(volume)
+    }
     func toggleMute() {
-        guard game.isFlash else { return }
-        muted.toggle()
-        web.evaluateJavaScript("player.ruffle().volume = \(muted ? 0 : 1); void 0;")
+        previewVolume(muted ? lastAudibleVolume : 0)
+        commitVolume()
         web.window?.makeFirstResponder(web)
+    }
+    private func applyVolume() {
+        guard !loading, failure == nil else { return }
+        if game.isFlash {
+            web.evaluateJavaScript("player.ruffle().volume = \(volume); void 0;")
+        }
     }
     func stop() {
         timeout?.cancel()
         web.stopLoading()
         web.configuration.userContentController.removeScriptMessageHandler(forName:"player")
         web.loadHTMLString("", baseURL:nil)
+    }
+    func copyCompatibilityDiagnostics() {
+        guard game.isShockwave else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            let script = "JSON.stringify({state:window.__vm?JSON.parse(__vm.mcp_get_execution_state()):null,errors:window.shockwaveErrors||[],diagnostics:window.shockwaveDiagnostics||[],console:window.__vm?.mcp_get_console_output?.(30)||'',stack:window.__vm?JSON.parse(__vm.mcp_get_call_stack(8,false)):null,profile:window.shockwaveCompatibilityProfile||null})"
+            let runtime: String
+            do { runtime = try await web.evaluateJavaScript(script) as? String ?? "{}" }
+            catch {
+                let data = try? JSONSerialization.data(withJSONObject:["diagnosticError":String(describing:error)])
+                runtime = data.map { String(decoding:$0,as:UTF8.self) } ?? "{}"
+            }
+            #if arch(arm64)
+            let architecture = "arm64"
+            #else
+            let architecture = "x86_64"
+            #endif
+            let version = Bundle.main.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String ?? "unknown"
+            let report = """
+            Flashback Shockwave compatibility report
+            Flashback: \(version)
+            macOS: \(ProcessInfo.processInfo.operatingSystemVersionString)
+            Architecture: \(architecture)
+            Game: \(game.title)
+            Entry: \(game.entry)
+            Entry SHA-256: \(shockwaveEntrySHA256 ?? "unavailable")
+            Compatibility profile: \(shockwaveProfile?.id ?? "none")
+            Player failure: \(failure ?? "none")
+            Missing resources: \(missingResources.isEmpty ? "none" : missingResources.joined(separator:", "))
+
+            Runtime evidence:
+            \(runtime)
+            """
+            let pasteboard = NSPasteboard.general
+            pasteboard.clearContents()
+            pasteboard.setString(report,forType:.string)
+            diagnosticsCopied = true
+            try? await Task.sleep(nanoseconds:2_000_000_000)
+            diagnosticsCopied = false
+        }
     }
     func captureCover() {
         let destination = library.defaultArtworkURL(game)
@@ -251,6 +331,7 @@ struct GameWebView: NSViewRepresentable {
 struct PlayerView: View {
     @ObservedObject var session: PlayerSession
     @State private var confirmRestart = false
+    @State private var showingVolume = false
     var body: some View {
         VStack(spacing:0) {
             HStack(spacing:10) {
@@ -266,8 +347,38 @@ struct PlayerView: View {
                 Button { confirmRestart = true } label: { Image(systemName:"arrow.counterclockwise").frame(width:32,height:30).contentShape(Rectangle()) }
                     .help("Restart game").accessibilityLabel("Restart game")
                 if session.game.isFlash {
-                    Button { session.toggleMute() } label: { Image(systemName:session.muted ? "speaker.slash.fill" : "speaker.wave.2.fill").frame(width:32,height:30).contentShape(Rectangle()) }
-                        .help(session.muted ? "Unmute" : "Mute").accessibilityLabel(session.muted ? "Unmute" : "Mute")
+                    Button { showingVolume.toggle() } label: {
+                        Image(systemName:session.muted ? "speaker.slash.fill" : (session.volume < 0.5 ? "speaker.wave.1.fill" : "speaker.wave.2.fill"))
+                            .frame(width:32,height:30).contentShape(Rectangle())
+                    }
+                    .help("Game volume: \(Int((session.volume * 100).rounded()))%")
+                    .accessibilityLabel("Game volume")
+                    .popover(isPresented:$showingVolume,arrowEdge:.bottom) {
+                        VStack(alignment:.leading,spacing:12) {
+                            Text("Game Volume").font(.headline)
+                            HStack(spacing:10) {
+                                Button { session.toggleMute() } label: {
+                                    Image(systemName:session.muted ? "speaker.slash.fill" : "speaker.wave.2.fill")
+                                        .frame(width:24,height:24).contentShape(Rectangle())
+                                }
+                                .buttonStyle(.borderless)
+                                .help(session.muted ? "Restore volume" : "Mute")
+                                Slider(value:Binding(get:{ session.volume },set:{ session.previewVolume($0) }),in:0...1,onEditingChanged:{ editing in
+                                    if !editing { session.commitVolume() }
+                                })
+                                .frame(width:150)
+                                .accessibilityLabel("Game volume")
+                                Text("\(Int((session.volume * 100).rounded()))%")
+                                    .monospacedDigit().frame(width:38,alignment:.trailing)
+                            }
+                        }.padding(16)
+                    }
+                }
+                if session.game.isShockwave {
+                    Button { session.copyCompatibilityDiagnostics() } label: {
+                        Image(systemName:session.diagnosticsCopied ? "checkmark" : "doc.on.clipboard").frame(width:32,height:30).contentShape(Rectangle())
+                    }.help(session.diagnosticsCopied ? "Compatibility report copied" : "Copy compatibility report")
+                        .accessibilityLabel(session.diagnosticsCopied ? "Compatibility report copied" : "Copy compatibility report")
                 }
                 Divider().frame(height:18)
                 Button { session.web.window?.toggleFullScreen(nil) } label: { Image(systemName:"arrow.up.left.and.arrow.down.right").frame(width:32,height:30).contentShape(Rectangle()) }
@@ -291,7 +402,10 @@ struct PlayerView: View {
                         Image(systemName:"exclamationmark.triangle").font(.system(size:30,weight:.light)).foregroundStyle(.secondary)
                         Text("Unable to Open Game").font(.system(size:20,weight:.semibold))
                         Text(failure).font(.system(size:13)).multilineTextAlignment(.center).foregroundStyle(.secondary).frame(maxWidth:400).fixedSize(horizontal:false,vertical:true)
-                        Button("Try Again") { session.start() }.buttonStyle(.borderedProminent).tint(Palette.action).controlSize(.large)
+                        HStack(spacing:10) {
+                            Button("Try Again") { session.start() }.buttonStyle(.borderedProminent).tint(Palette.action).controlSize(.large)
+                            if session.game.isShockwave { Button("Copy Compatibility Report") { session.copyCompatibilityDiagnostics() }.controlSize(.large) }
+                        }
                     }.padding(24).frame(maxWidth:.infinity,maxHeight:.infinity).background(Palette.background)
                 } else if session.paused {
                     VStack(spacing:16) {

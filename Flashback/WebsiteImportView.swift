@@ -202,13 +202,9 @@ import WebKit
         #else
         let arch = "x86_64"
         #endif
-        let process = Process(), output = Pipe()
-        process.executableURL = resources.appendingPathComponent("Java/\(arch)/bin/java")
-        process.arguments = ["-Xmx128m","-Djava.awt.headless=true","-cp",resources.appendingPathComponent("JavaRunner.jar").path,"JavaRunner","--inspect",file.path]
-        process.environment = ["PATH":"/usr/bin:/bin","LANG":"en_US.UTF-8"]
-        process.standardOutput = output; process.standardError = output
-        try process.run(); let message = output.fileHandleForReading.readDataToEndOfFile(); process.waitUntilExit()
-        guard process.terminationStatus == 0 else { throw LibraryError("This JAR cannot launch as a desktop or Java ME game. It may be an applet or library. " + String(String(decoding:message,as:UTF8.self).prefix(400))) }
+        let result = try ToolResult.run(resources.appendingPathComponent("Java/\(arch)/bin/java"),
+            ["-Xmx128m","-Djava.awt.headless=true","-cp",resources.appendingPathComponent("JavaRunner.jar").path,"JavaRunner","--inspect",file.path])
+        guard result.status == 0 else { throw LibraryError("This Java game cannot launch. " + String(result.text.prefix(500))) }
     }
     func cancel() {
         guard phase != .adding else { return }
@@ -269,7 +265,6 @@ struct WebsiteImportView: View {
                     if model.phase == .address {
                         VStack(alignment:.leading,spacing:9) {
                             Text("Before you import").fontWeight(.semibold)
-                            Text("Only extract copyright-free games.")
                             Text("Flashback recovers available game files. Removed files, sign-in requirements, and games that depend on live servers can prevent offline play.")
                                 .foregroundStyle(.secondary).fixedSize(horizontal:false,vertical:true)
                         }.padding(.top,10)

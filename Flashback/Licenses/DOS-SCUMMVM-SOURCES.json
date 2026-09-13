@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "components": [
+    {
+      "name": "DOSBox Staging",
+      "version": "0.83.0",
+      "license": "GPL-2.0-or-later",
+      "runtime": {
+        "url": "https://github.com/dosbox-staging/dosbox-staging/releases/download/v0.83.0/dosbox-staging-macOS-v0.83.0.dmg",
+        "sha256": "d8a771adfb8010fa6b5f7fb5351abfba659273ad01c89f03675a92bdbdae8167",
+        "architectures": [
+          "arm64",
+          "x86_64"
+        ]
+      },
+      "source": {
+        "url": "https://codeload.github.com/dosbox-staging/dosbox-staging/tar.gz/refs/tags/v0.83.0",
+        "sha256": "9b36be5a666784adaeffa560bd0950691f851a76bdb97e7ae3c989561e91caf3",
+        "retained_as": "vendor/sources/dosbox-staging-v0.83.0.tar.gz",
+        "source_markers": [
+          "dosbox-staging-0.83.0/.github/workflows/macos.yml",
+          "dosbox-staging-0.83.0/CMakeLists.txt"
+        ]
+      },
+      "notice": "vendor/dosbox-staging/LICENSE",
+      "local_transformation": {
+        "removes": "DOSBox Staging.app/Contents/PlugIns/Nuked-SC55.clap",
+        "reason": "The optional plug-in's original MAME license prohibits commercial product or activity use.",
+        "resigning": "ad-hoc, preserving com.apple.security.cs.allow-jit"
+      },
+      "dependency_inventory": "Flashback/Licenses/NATIVE-SOURCES.json",
+      "corresponding_source_status": "complete"
+    },
+    {
+      "name": "ScummVM",
+      "version": "2026.3.0",
+      "license": "GPL-3.0-or-later (ScummVM), AGPL-3.0-or-later (RetroWave), and retained dependency terms",
+      "runtime": {
+        "origin": "retained-source-build",
+        "build_recipe": "Flashback/build-scummvm.py",
+        "binary_sha256": "08f0eaf5d8b321884ba0932f9ca54a93114fcf331d86024fa94081058f1f418a",
+        "architectures": [
+          "arm64",
+          "x86_64"
+        ]
+      },
+      "source": {
+        "url": "https://downloads.scummvm.org/frs/scummvm/2026.3.0/scummvm-2026.3.0.tar.xz",
+        "sha256": "b863a81e1598df8bc4aa0c33e3d9b1c8bbede1879d94d91568a4f200057677e7",
+        "retained_as": "vendor/sources/scummvm-2026.3.0.tar.xz",
+        "official_release_tag": "v2026.3.0",
+        "official_release_commit": "fed42f2068dcafc6aafa1c28c77e4c88def74b66",
+        "source_markers": [
+          "scummvm-2026.3.0/base/version.h",
+          "scummvm-2026.3.0/ports.mk",
+          "scummvm-2026.3.0/vcpkg.json"
+        ]
+      },
+      "notice_directory": "vendor/scummvm/notices",
+      "dependency_inventory": "Flashback/Licenses/NATIVE-SOURCES.json",
+      "corresponding_source_status": "complete",
+      "superseded_official_runtime": {
+        "url": "https://downloads.scummvm.org/frs/scummvm/2026.3.0/scummvm-2026.3.0-macosx.dmg",
+        "sha256": "d483f41a67d389a3bf50832b9a1a054fbeded56fc148216e4f84a06d330d2172",
+        "architectures": [
+          "arm64",
+          "x86_64"
+        ]
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # Flashback
 
 Flashback is a native macOS library for playing classic Flash, Shockwave,
-Java, and offline HTML games.
+Java, DOS, supported classic Director, and offline HTML games.
 
 It runs on macOS 13 and later, with native Apple Silicon and Intel support.
 The app bundles the required players, so no browser plug-in, separate Java
@@ -24,10 +24,10 @@ using every app button and keyboard shortcut.
 
 ## Features
 
-- Import SWF, desktop or Java ME/MIDP JAR, HTML, Shockwave movies, folders, and ZIP archives.
+- Import SWF and Flash projectors, Java applications/applets/JNLP and Java ME games, HTML, Shockwave, DOS, and detected classic Director data folders.
 - Recover games and launch settings from archived web pages.
 - Keep each game's files, artwork, and local storage isolated.
-- Browse a curated catalog of archived Flash and Shockwave games.
+- Browse a weekly three-game preview, expand all 24 featured picks, visit additional game sources, and search the Archive catalog.
 - Run imported games offline, with remote game requests blocked.
 - Use native pause, restart, mute, full-screen, and library controls.
 

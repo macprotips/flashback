@@ -3,6 +3,8 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.zip.*;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 
 /** Extracts data only. Never executes an archived program or restores symlinks. */
 public final class GameArchive {
@@ -12,14 +14,19 @@ public final class GameArchive {
         if (Files.size(archive) > limit) throw new IOException("Choose a ZIP smaller than 1 GB.");
         Files.createDirectory(destination);
         Path root = destination.toRealPath();
-        try (ZipFile zip = new ZipFile(archive.toFile())) {
-            if (zip.size() > 10000) throw new IOException("This ZIP contains more than 10,000 entries.");
-            Enumeration<? extends ZipEntry> entries = zip.entries();
+        try (ZipFile zip = ZipFile.builder().setFile(archive.toFile()).get()) {
+            Enumeration<ZipArchiveEntry> entries = zip.getEntries();
             byte[] buffer = new byte[32768];
+            int entriesSeen = 0;
             while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
+                if (++entriesSeen > 10000) throw new IOException("This ZIP contains more than 10,000 entries.");
+                if (System.nanoTime() > deadline) throw new IOException("This ZIP took too long to unpack.");
+                ZipArchiveEntry entry = entries.nextElement();
                 String name = entry.getName();
-                if (name.isEmpty() || name.startsWith("/") || name.contains("\\") || name.contains(":"))
+                byte[] rawName = entry.getRawName();
+                boolean unsafeSeparator = false;
+                for (byte character : rawName) unsafeSeparator |= character == '\\' || character == ':';
+                if (name.isEmpty() || name.startsWith("/") || unsafeSeparator)
                     throw new IOException("A ZIP entry has an unsafe path.");
                 boolean hidden = false;
                 for (String part : name.split("/")) {
@@ -31,7 +38,11 @@ public final class GameArchive {
                 if (!target.startsWith(root) || target.equals(root)) throw new IOException("Unsafe ZIP path.");
                 if (hidden) continue;
                 if (entry.isDirectory()) { Files.createDirectories(target); continue; }
-                if (entry.getSize() > limit - total) throw new IOException("The expanded game exceeds 1 GB.");
+                if (entry.isUnixSymlink()) throw new IOException("A ZIP entry is a symbolic link.");
+                long expectedSize = entry.getSize(), expectedCrc = entry.getCrc();
+                if (expectedSize < 0 || expectedCrc < 0 || expectedSize > limit - total)
+                    throw new IOException("This ZIP contains an invalid or oversized file.");
+                if (!zip.canReadEntryData(entry)) throw new IOException("This ZIP uses an unsupported encrypted or compressed file.");
                 Files.createDirectories(target.getParent());
                 CRC32 crc = new CRC32();
                 long size = 0;
@@ -45,7 +56,7 @@ public final class GameArchive {
                         output.write(buffer, 0, count); crc.update(buffer, 0, count);
                     }
                 }
-                if (size != entry.getSize() || crc.getValue() != entry.getCrc())
+                if (size != expectedSize || crc.getValue() != expectedCrc)
                     throw new IOException("This ZIP contains a damaged file.");
             }
         }

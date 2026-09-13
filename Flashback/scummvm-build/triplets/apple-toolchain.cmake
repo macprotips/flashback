@@ -1,0 +1,17 @@
+# Apple's command shims honor DEVELOPER_DIR and avoid unquoted space-bearing
+# Xcode executable paths in older upstream shell build systems.
+set(CMAKE_C_COMPILER /usr/bin/clang)
+set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+set(CMAKE_AR /usr/bin/ar)
+set(CMAKE_RANLIB /usr/bin/ranlib)
+set(CMAKE_LINKER /usr/bin/ld)
+set(CMAKE_SYSTEM_NAME Darwin)
+if(VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
+    set(CMAKE_OSX_ARCHITECTURES x86_64 CACHE STRING "" FORCE)
+    set(CMAKE_SYSTEM_PROCESSOR x86_64)
+elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
+    set(CMAKE_OSX_ARCHITECTURES arm64 CACHE STRING "" FORCE)
+    set(CMAKE_SYSTEM_PROCESSOR arm64)
+else()
+    message(FATAL_ERROR "Unsupported Flashback ScummVM architecture")
+endif()
